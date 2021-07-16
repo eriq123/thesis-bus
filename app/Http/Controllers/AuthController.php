@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function login()
+    public function login(Request $request)
     {
         $request->validate([
             'email' => 'required',
@@ -21,7 +24,7 @@ class AuthController extends Controller
         return redirect("login")->withSuccess('Email or password is not valid.');
     }
 
-    public function register()
+    public function register(Request $request)
     {
         $request->validate([
             'name' => 'required',
