@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -18,20 +19,23 @@ class GoogleController extends Controller
     public function handleGoogleCallback()
     {
         $user = Socialite::driver('google')->stateless()->user();
-        $finduser = User::where('google_id', $user->id)->first();
-        if ($finduser) {
-            Auth::login($finduser);
-            return redirect()->intended('dashboard');
+        $userByGoogleId = User::where('google_id', $user->id)->first();
+
+        if ($userByGoogleId) {
+            Auth::login($userByGoogleId);
+            return redirect('/');
         } else {
+            $role = Role::all();
             $user = User::create([
-                'name' => $user->name,
+                'first_name' => $user->name,
                 'email' => $user->email,
                 'google_id' => $user->id,
-                'password' => encrypt('123456dummy')
+                'password' => encrypt('123456'),
+                'role_id' => $role->first()->id,
             ]);
 
             Auth::login($user);
-            return redirect()->intended('dashboard');
+            return redirect('/');
         }
     }
 }

@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Auth::routes();
-Route::view('/','layouts.admin');
+
+Route::middleware(['web','auth'])->group(function () {
+    Route::view('/','layouts.admin');
+});
 
 Route::resource('/buses', BusController::class);
 Route::resource('/users', UserController::class);
