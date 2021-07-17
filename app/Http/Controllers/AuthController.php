@@ -18,9 +18,9 @@ class AuthController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
-            return redirect('/')->withSuccess('Sign in successful!');
-        }
+        $remember =  $request->remember == 'on' ? true : false;
+
+        if (Auth::attempt($credentials, $remember)) return redirect('/')->withSuccess('Sign in successful!');
 
         return redirect("login")->withSuccess('Email or password is not valid.');
     }
