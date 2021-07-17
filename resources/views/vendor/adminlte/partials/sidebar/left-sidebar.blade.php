@@ -19,6 +19,13 @@
                 {{-- @each('adminlte::partials.sidebar.menu-item', $adminlte->menu('sidebar'), 'item') --}}
 
                 <li class="nav-item">
+                    <a href="{{ route('buses.index') }}" class="nav-link">
+                        <i class="fas fa-bus"></i>
+                        <p class="ml-1">Bus</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <form id="logout-form" action="{{ route('logout') }}" method="POST">
                         @csrf
                         <a href="javascript:void()" onclick="document.getElementById('logout-form').submit();" class="nav-link">

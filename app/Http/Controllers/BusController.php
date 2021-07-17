@@ -7,66 +7,97 @@ use Illuminate\Http\Request;
 
 class BusController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $this->data['buses'] = Bus::all();
-        return view('pages.bus.index', $this->data);
+        return view('admin.bus.index', $this->data);
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
         $this->validate($request, [
-            'bus_route' => 'required|max:255',
-            'bus_platenumber' => 'required|max:255',
-            'total_seats' => 'required|numeric',
+            'plate_number' => 'required|max:255',
+            'type' => 'required|max:255',
+            'capacity' => 'required|numeric',
         ], [
-            'bus_route.required' => 'Bus Route is required.',
-            'bus_platenumber.required' => 'Plate Number is required.',
-            'total_seats.required' => 'Total Seats is required.',
-            'total_seats.numeric' => 'Total Seats must be a number.'
+            'plate_number.required' => 'Plate Number is required.',
+            'type.required' => 'Bus Route is required.',
+            'capacity.required' => 'Total Seats is required.',
+            'capacity.numeric' => 'Total Seats must be a number.'
         ]);
 
         $bus = new Bus();
-        $bus->bus_route = $request->bus_route;
-        $bus->bus_platenumber = $request->bus_platenumber;
-        $bus->total_seats = $request->total_seats;
-        $bus->is_fullybooked = $request->is_fullybooked;
+        $bus->plate_number = $request->plate_number;
+        $bus->type = $request->type;
+        $bus->capacity = $request->capacity;
         $bus->save();
 
-        return redirect('/buses')->with('msg', 'Information Added!');
+        return redirect('/buses')->withSuccess('Added Successfully!');
     }
 
-    public function edit(Request $request, Bus $bus)
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
     {
-        return view('pages.bus.edit', compact('bus'));
+        //
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'bus_route' => 'required|max:255',
-            'bus_platenumber' => 'required|max:255',
-            'total_seats' => 'required|numeric',
-        ], [
-            'bus_route.required' => 'Bus Route is required.',
-            'bus_platenumber.required' => 'Plate Number is required.',
-            'total_seats.required' => 'Total Seats is required.',
-            'total_seats.numeric' => 'Total Seats must be a number.'
-        ]);
-
-        $bus = Bus::findorFail($id);
-        $bus->bus_route = $request->bus_route;
-        $bus->bus_platenumber = $request->bus_platenumber;
-        $bus->total_seats = $request->total_seats;
-        $bus->is_fullybooked = $request->is_fullybooked;
-        $bus->save();
-
-        return redirect('/buses')->with('msg', 'Information Updated!');
+        //
     }
 
-    public function destroy(Bus $bus)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
     {
-        $bus->delete();
-        return redirect('/buses')->with('delete', 'Information Deleted!');
+        //
     }
 }

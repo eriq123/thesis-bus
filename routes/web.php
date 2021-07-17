@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BusController;
 use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +21,7 @@ Route::middleware(['web','auth'])->group(function () {
     Route::view('/','index');
 });
 
-// Route::resource('/buses', BusController::class);
+Route::resource('/buses', BusController::class);
 // Route::resource('/users', UserController::class);
 
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
