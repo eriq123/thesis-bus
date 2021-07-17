@@ -7,6 +7,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 
 class GoogleController extends Controller
@@ -18,24 +19,20 @@ class GoogleController extends Controller
 
     public function handleGoogleCallback()
     {
-        $user = Socialite::driver('google')->stateless()->user();
-        $userByGoogleId = User::where('google_id', $user->id)->first();
+        $googleUser = Socialite::driver('google')->stateless()->user();
+        $user = User::where('google_id', $googleUser->id)->first();
 
-        if ($userByGoogleId) {
-            Auth::login($userByGoogleId);
-            return redirect('/');
-        } else {
-            $role = Role::all();
+        if (!$user) {
             $user = User::create([
-                'first_name' => $user->name,
-                'email' => $user->email,
-                'google_id' => $user->id,
-                'password' => encrypt('123456'),
-                'role_id' => $role->first()->id,
+                'first_name' => $googleUser->name,
+                'email' => $googleUser->email,
+                'google_id' => $googleUser->id,
+                'password' => Hash::make('123456'),
+                'role_id' => Role::find(1)->id,
             ]);
-
-            Auth::login($user);
-            return redirect('/');
         }
+        Auth::login($user);
+
+        return redirect('/');
     }
 }

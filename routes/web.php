@@ -1,13 +1,20 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GoogleController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Auth::routes();
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
+
+Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('login', [AuthController::class, 'login']);
+
+Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('register', [AuthController::class, 'register']);
+
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
 
 Route::middleware(['web','auth'])->group(function () {
     Route::view('/','index');

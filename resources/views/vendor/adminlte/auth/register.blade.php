@@ -11,24 +11,38 @@
     @php( $register_url = $register_url ? url($register_url) : '' )
 @endif
 
-@section('auth_header', __('adminlte::adminlte.register_message'))
+{{-- @section('auth_header', __('adminlte::adminlte.register_message')) --}}
 
 @section('auth_body')
-    <form action="{{ $register_url }}" method="post">
-        {{ csrf_field() }}
+    <form action="{{ $register_url }}" method="post" class="mt-3">
+        @csrf
 
-        {{-- Name field --}}
         <div class="input-group mb-3">
-            <input type="text" name="name" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
-                   value="{{ old('name') }}" placeholder="{{ __('adminlte::adminlte.full_name') }}" autofocus>
+            <input type="text" name="first_name" class="form-control {{ $errors->has('first_name') ? 'is-invalid' : '' }}"
+                   value="{{ old('first_name') }}" placeholder="First Name" autofocus>
             <div class="input-group-append">
                 <div class="input-group-text">
                     <span class="fas fa-user {{ config('adminlte.classes_auth_icon', '') }}"></span>
                 </div>
             </div>
-            @if($errors->has('name'))
+            @if($errors->has('first_name'))
                 <div class="invalid-feedback">
-                    <strong>{{ $errors->first('name') }}</strong>
+                    <strong>{{ $errors->first('first_name') }}</strong>
+                </div>
+            @endif
+        </div>
+
+        <div class="input-group mb-3">
+            <input type="text" name="last_name" class="form-control {{ $errors->has('last_name') ? 'is-invalid' : '' }}"
+                   value="{{ old('last_name') }}" placeholder="Last Name" autofocus>
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-user {{ config('adminlte.classes_auth_icon', '') }}"></span>
+                </div>
+            </div>
+            @if($errors->has('last_name'))
+                <div class="invalid-feedback">
+                    <strong>{{ $errors->first('last_name') }}</strong>
                 </div>
             @endif
         </div>
@@ -94,8 +108,9 @@
 
 @section('auth_footer')
     <p class="my-0">
+        Already have an account?
         <a href="{{ $login_url }}">
-            {{ __('adminlte::adminlte.i_already_have_a_membership') }}
+            SIGN IN
         </a>
     </p>
 @stop
