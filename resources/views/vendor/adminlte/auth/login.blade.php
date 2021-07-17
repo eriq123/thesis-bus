@@ -22,15 +22,6 @@
 {{-- @section('auth_header', __('adminlte::adminlte.login_message')) --}}
 
 @section('auth_body')
-<div class="row">
-    <div class="col-12">
-        <a href="{{ url('auth/google') }}" role="button" class="d-flex justify-content-center">
-            <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" class="">
-        </a>
-    </div>
-</div>
-
-<p class="text-center mt-3">OR</p>
 <form action="{{ $login_url }}" method="post" class="mt-3">
     @csrf
 
@@ -83,6 +74,17 @@
             </button>
         </div>
     </div>
+
+    <p class="text-center mt-3">OR</p>
+
+    <div class="row">
+        <div class="col-12">
+            <a href="{{ url('auth/google') }}" role="button" class="d-flex justify-content-center">
+                <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" class="">
+            </a>
+        </div>
+    </div>
+
 </form>
 @stop
 
