@@ -18,16 +18,6 @@ class BusController extends Controller
         return view('admin.bus.index', $this->data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     public function validateRequest($request)
     {
         $this->validate($request, [
@@ -62,28 +52,6 @@ class BusController extends Controller
         $bus = new Bus();
         $this->saveRequest($bus, $request);
         return redirect()->route('buses.index')->withSuccess('Added Successfully!');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
