@@ -1,10 +1,10 @@
-<div class="modal fade" id="crud-modal" tabindex="-1" aria-labelledby="modalTitles" aria-hidden="true">
+<div class="modal fade" id="crud-modal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <form action="{{ $formRoute }}" method="POST" class="mt-1">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title text-center" id="modalTitles">
+                    <h5 class="modal-title text-center" id="modalTitle">
                         {{ $modalTitle }}
                     </h5>
                     <button type="button" class="close float-right" data-dismiss="modal" aria-label="Close">

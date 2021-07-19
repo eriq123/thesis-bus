@@ -3,15 +3,16 @@
 
 @section('content_header')
 <div class="text-center">
-    <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#crud-modal">
+    <button class="btn btn-outline-success" type="button" id="openAddModal">
         <i class="fa fa-bus mr-1"></i>
         Add a bus
     </button>
     <x-modal modalTitle="Add a bus" :formRoute="route('buses.store')">
         <x-slot name="modalBody">
+            <input type="hidden" name="id" id="id">
             <div class="input-group mb-3">
-                <input type="text" name="plate_number" class="form-control" value="{{ old('plate_number') }}"
-                    placeholder="Plate Number" autofocus>
+                <input type="text" name="plate_number" id="plate_number" class="form-control"
+                    value="{{ old('plate_number') }}" placeholder="Plate Number" autofocus>
                 @if($errors->has('plate_number'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('plate_number') }}</strong>
@@ -19,7 +20,8 @@
                 @endif
             </div>
             <div class="input-group mb-3">
-                <input type="text" name="type" class="form-control" value="{{ old('type') }}" placeholder="Bus Type">
+                <input type="text" name="type" id="type" class="form-control" value="{{ old('type') }}"
+                    placeholder="Bus Type">
                 @if($errors->has('type'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('type') }}</strong>
@@ -27,7 +29,7 @@
                 @endif
             </div>
             <div class="input-group mb-3">
-                <input type="number" name="capacity" class="form-control" value="{{ old('capacity') }}"
+                <input type="number" name="capacity" id="capacity" class="form-control" value="{{ old('capacity') }}"
                     placeholder="Bus Capacity">
                 @if($errors->has('capacity'))
                 <div class="invalid-feedback">
@@ -37,7 +39,7 @@
             </div>
         </x-slot>
         <x-slot name="modalFooter">
-            <button class="btn btn-success">Save</button>
+            <button class="btn btn-success" id="footerButton">Save</button>
         </x-slot>
     </x-modal>
 </div>
@@ -65,7 +67,9 @@
                         <td>{{ $item->type}}</td>
                         <td>{{ $item->capacity}}</td>
                         <td>
-                            <button class="btn btn-primary">Update</button>
+                            <button class="btn btn-primary" type="button" id="openUpdateModal" data-id="{{ $item->id }}"
+                                data-plate_number="{{ $item->plate_number }}" data-type="{{ $item->type }}"
+                                data-capacity="{{ $item->capacity }}">Update</button>
                             <button class="btn btn-danger">Delete</button>
                         </td>
                     </tr>
@@ -82,5 +86,57 @@
     </div>
 </div>
 @stop
+@section('js')
+<script>
+    $(document).ready(function() {
+        $('#openUpdateModal').click(function(){
+            $('#footerButton').removeClass('btn-success').addClass('btn-primary');
+            fillUpAndModal(
+                true,
+                'Update Bus',
+                'Update',
+                'btn-success',
+                'btn-primary',
+                $(this).data('id'),
+                $(this).data('plate_number'),
+                $(this).data('type'),
+                $(this).data('capacity')
+            );
+        });
 
+        $('#openAddModal').click(function(){
+            fillUpAndModal(
+                false,
+                'Add a bus',
+                'Save',
+                'btn-primary',
+                'btn-success',
+            );
+        });
+
+        function fillUpAndModal(
+            update = true,
+            modalTitle,
+            modalFooter,
+            removeClass,
+            addClass,
+            id = null,
+            plate_number = null,
+            type = null,
+            capacity = null
+        ){
+            if(update){
+                $('#id').val(id);
+                $('#plate_number').val(plate_number);
+                $('#type').val(type);
+                $('#capacity').val(capacity);
+            }
+            $('#modalTitle').text(modalTitle);
+            $('#footerButton').text(modalFooter);
+            $('#footerButton').removeClass(removeClass).addClass(addClass);
+            $('#crud-modal').modal('show');
+        }
+    });
+</script>
+@endsection
 @stop
