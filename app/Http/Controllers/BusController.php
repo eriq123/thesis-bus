@@ -61,7 +61,7 @@ class BusController extends Controller
         $this->validateRequest($request);
         $bus = new Bus();
         $this->saveRequest($bus, $request);
-        return redirect('/buses')->withSuccess('Added Successfully!');
+        return redirect()->route('buses.index')->withSuccess('Added Successfully!');
     }
 
     /**
@@ -102,7 +102,7 @@ class BusController extends Controller
         $bus = Bus::find($request->id);
         $this->saveRequest($bus, $request);
 
-        return redirect('/buses')->withSuccess('Updated Successfully!');
+        return redirect()->route('buses.index')->withSuccess('Updated Successfully!');
     }
 
     /**
@@ -113,6 +113,7 @@ class BusController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Bus::destroy($id);
+        return redirect()->route('buses.index')->withSuccess('Deleted Successfully!');
     }
 }
