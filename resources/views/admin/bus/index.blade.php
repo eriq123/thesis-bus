@@ -58,11 +58,24 @@
                     </tr>
                 </x-slot>
                 <x-slot name="tbody">
+                    @forelse ($buses as $item)
+                    <tr>
+                        <td>{{ $item->id}}</td>
+                        <td>{{ $item->plate_number}}</td>
+                        <td>{{ $item->type}}</td>
+                        <td>{{ $item->capacity}}</td>
+                        <td>
+                            <button class="btn btn-primary">Update</button>
+                            <button class="btn btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                    @empty
                     <tr>
                         <td colspan="5" class="text-center">
                             No data available.
                         </td>
                     </tr>
+                    @endforelse
                 </x-slot>
             </x-table>
         </div>
