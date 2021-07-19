@@ -7,7 +7,7 @@
         <i class="fa fa-bus mr-1"></i>
         Add a bus
     </button>
-    <x-modal modalTitle="Add a bus" :formRoute="">
+    <x-modal>
         <x-slot name="modalBody">
             <input type="hidden" name="id" id="id">
             <div class="input-group mb-3">
@@ -91,8 +91,7 @@
     $(document).ready(function() {
         $('#openUpdateModal').click(function(){
             fillUpAndOpenModal(
-                true,
-                {{ route('buses.update') }}
+                "{{ route('buses.update') }}",
                 'Update Bus',
                 'Update',
                 'btn-success',
@@ -106,8 +105,7 @@
 
         $('#openAddModal').click(function(){
             fillUpAndOpenModal(
-                false,
-                {{ route('buses.store') }}
+                "{{ route('buses.update') }}",
                 'Add a bus',
                 'Save',
                 'btn-primary',
@@ -116,7 +114,6 @@
         });
 
         function fillUpAndOpenModal(
-            update = true,
             formRoute,
             modalTitle,
             modalFooter,
@@ -127,12 +124,11 @@
             type = null,
             capacity = null
         ){
-            if(update){
-                $('#id').val(id);
-                $('#plate_number').val(plate_number);
-                $('#type').val(type);
-                $('#capacity').val(capacity);
-            }
+            $('#id').val(id);
+            $('#plate_number').val(plate_number);
+            $('#type').val(type);
+            $('#capacity').val(capacity);
+
             $('#crudModalForm').attr('action',formRoute);
             $('#modalTitle').text(modalTitle);
             $('#footerButton').text(modalFooter);

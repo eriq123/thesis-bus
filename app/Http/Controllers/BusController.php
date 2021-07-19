@@ -28,13 +28,7 @@ class BusController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function validateRequest($request)
     {
         $this->validate($request, [
             'plate_number' => 'required|max:255',
@@ -46,13 +40,27 @@ class BusController extends Controller
             'capacity.required' => 'Total Seats is required.',
             'capacity.numeric' => 'Total Seats must be a number.'
         ]);
+    }
 
-        $bus = new Bus();
+    public function saveRequest($bus, $request)
+    {
         $bus->plate_number = $request->plate_number;
         $bus->type = $request->type;
         $bus->capacity = $request->capacity;
         $bus->save();
+    }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $this->validateRequest($request);
+        $bus = new Bus();
+        $this->saveRequest($bus, $request);
         return redirect('/buses')->withSuccess('Added Successfully!');
     }
 
@@ -85,9 +93,16 @@ class BusController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $this->validateRequest($request);
+        $this->validate($request, [
+            'id'=>'required',
+        ]);
+        $bus = Bus::find($request->id);
+        $this->saveRequest($bus, $request);
+
+        return redirect('/buses')->withSuccess('Updated Successfully!');
     }
 
     /**

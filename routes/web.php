@@ -21,7 +21,12 @@ Route::middleware(['web','auth'])->group(function () {
     Route::view('/','index');
 });
 
-Route::resource('/buses', BusController::class);
+Route::get('/buses', [BusController::class, 'index'])->name('buses.index');
+Route::post('/buses/store', [BusController::class, 'store'])->name('buses.store');
+Route::post('/buses/update', [BusController::class, 'update'])->name('buses.update');
+Route::post('/buses/destroy', [BusController::class, 'destroy'])->name('buses.destroy');
+
+// Route::resource('/buses', BusController::class);
 // Route::resource('/users', UserController::class);
 
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
