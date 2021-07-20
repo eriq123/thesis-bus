@@ -93,7 +93,7 @@
 @section('js')
 <script>
     $(document).ready(function() {
-        $('#openUpdateModal').click(function(){
+        $('#openUpdateModal[data-id]').on('click',function(){
             fillUpAndOpenModal(
                 "{{ route('buses.update') }}",
                 'Update Bus',
