@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,5 +26,11 @@ Route::middleware(['web','auth'])->group(function () {
         Route::post('/store', [BusController::class, 'store'])->name('store');
         Route::post('/update', [BusController::class, 'update'])->name('update');
         Route::delete('/{id}', [BusController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('roles')->name('roles.')->group(function () {
+        Route::get('/', [RoleController::class, 'index'])->name('index');
+        Route::post('/store', [RoleController::class, 'store'])->name('store');
+        Route::post('/update', [RoleController::class, 'update'])->name('update');
     });
 });
