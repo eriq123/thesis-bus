@@ -3,16 +3,12 @@
 
 @section('content_header')
 <div class="text-center">
-    <button class="btn btn-outline-success" type="button" id="openAddModal">
-        <i class="fa fa-bus mr-1"></i>
-        Add a role
-    </button>
     <x-modal>
         <x-slot name="modalBody">
             <input type="hidden" name="id" id="id">
             <div class="input-group mb-3">
-                <input type="text" name="name" id="name" class="form-control"
-                    value="{{ old('name') }}" placeholder="Role Name" autofocus>
+                <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}"
+                    placeholder="Role Name" autofocus>
                 @if($errors->has('name'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('name') }}</strong>
@@ -45,9 +41,9 @@
                         <td>{{ $item->id}}</td>
                         <td>{{ $item->name}}</td>
                         <td>
-                        <button class="btn btn-primary" type="button" id="openUpdateModal"
-                            data-id="{{ $item->id }}" data-name="{{ $item->name }}">Update
-                        </button>
+                            <button class="btn btn-primary" type="button" id="openUpdateModal" data-id="{{ $item->id }}"
+                                data-name="{{ $item->name }}">Update
+                            </button>
                         </td>
                     </tr>
                     @empty
@@ -66,26 +62,15 @@
 @section('js')
 <script>
     $(document).ready(function() {
-        $('#openUpdateModal').click(function(){
+        $('#openUpdateModal[data-id]').click(function(){
             fillUpAndOpenModal(
                 "{{ route('roles.update') }}",
-                'Update Bus',
+                'Update Role',
                 'Update',
                 'btn-success',
                 'btn-primary',
                 $(this).data('id'),
                 $(this).data('name')
-                
-            );
-        });
-
-        $('#openAddModal').click(function(){
-            fillUpAndOpenModal(
-                "{{ route('roles.store') }}",
-                'Add a role',
-                'Save',
-                'btn-primary',
-                'btn-success',
             );
         });
 
@@ -95,11 +80,11 @@
             modalFooter,
             removeClass,
             addClass,
-            id = null
+            id = null,
+            name
         ){
             $('#id').val(id);
             $('#name').val(name);
-            
 
             $('#crudModalForm').attr('action',formRoute);
             $('#modalTitle').text(modalTitle);
