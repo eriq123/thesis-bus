@@ -17,7 +17,6 @@
 
                 {{-- Configured sidebar links --}}
                 {{-- @each('adminlte::partials.sidebar.menu-item', $adminlte->menu('sidebar'), 'item') --}}
-
                 <li class="nav-item">
                     <a href="{{ route('buses.index') }}" class="nav-link">
                         <i class="fas fa-bus"></i>
@@ -25,18 +24,23 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('buses.routes.index') }}" class="nav-link">
+                        <i class="fas fa-bus"></i>
+                        <p class="ml-1">Bus Routes</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{route('roles.index')}}" class="nav-link">
                         <i class="fas fa-users-cog"></i>
                         <p class="ml-1">Roles</p>
-
                     </a>
-
                 </li>
 
                 <li class="nav-item">
                     <form id="logout-form" action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <a href="javascript:void()" onclick="document.getElementById('logout-form').submit();" class="nav-link">
+                        <a href="javascript:void()" onclick="document.getElementById('logout-form').submit();"
+                            class="nav-link">
                             <i class="fas fa-power-off"></i>
                             <p class="ml-1">Logout</p>
                         </a>
