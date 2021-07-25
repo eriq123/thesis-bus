@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Bus;
+use App\Models\BusRoute;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -40,5 +43,9 @@ class DatabaseSeeder extends Seeder
                 ],
             ]
         );
+
+        User::factory()->count(50)->create();
+        Bus::factory()->count(50)->create();
+        BusRoute::factory()->count(50)->create();
     }
 }

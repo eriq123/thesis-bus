@@ -18,8 +18,8 @@ class CreateBusRoutes extends Migration
             $table->string('starting_point');
             $table->string('destination');
             $table->integer('fare');
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -22,7 +22,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $remember)) return redirect('/')->withSuccess('Sign in successful!');
 
-        return redirect("login")->withSuccess('Email or password is not valid.');
+        return redirect("login")->withErrors('Email or password is not valid.');
     }
 
     public function register(Request $request)

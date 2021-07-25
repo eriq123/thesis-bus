@@ -22,8 +22,8 @@ class CreateUsersTable extends Migration
             $table->string('google_id')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

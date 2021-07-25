@@ -22,6 +22,7 @@ class CreateBookings extends Migration
             $table->integer('grand_total');
             $table->string('status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

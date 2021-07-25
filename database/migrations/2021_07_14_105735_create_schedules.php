@@ -22,6 +22,7 @@ class CreateSchedules extends Migration
             $table->string('time_departure');
             $table->string('time_arrival');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

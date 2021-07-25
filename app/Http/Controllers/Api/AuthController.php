@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -14,39 +13,35 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        if ($request->isGoogle) {
-            $user = User::where('google_id', $request->id)->first();
-            if (!$user) {
-                $user = User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'google_id' => $request->id,
-                    'password' => Hash::make('123456'),
-                    'role_id' => Role::find(1)->id,
-                ]);
-            }
-        } else {
-            $request->validate([
-                'email' => 'required|email',
-                'password' => 'required',
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
             ]);
-
-            $user = User::where('email', $request->email)->first();
-
-            if (!$user || !Hash::check($request->password, $user->password)) {
-                throw ValidationException::withMessages([
-                    'email' => ['The provided credentials are incorrect.'],
-                ]);
-            }
         }
 
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'token' => $user->createToken('Access_token')->plainTextToken,
-                'user' => $user,
-            ],
-        ], 200);
+        $this->successResponse($user);
+    }
+
+    public function google(Request $request)
+    {
+        $user = User::where('google_id', $request->id)->first();
+        if (!$user) {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'google_id' => $request->id,
+                'password' => Hash::make('123456'),
+                'role_id' => Role::find(1)->id,
+            ]);
+        }
+        $this->successResponse($user);
     }
 
     public function register(Request $request)
@@ -64,12 +59,27 @@ class AuthController extends Controller
             'role_id' => Role::find(4)->id
         ]);
 
+        $this->successResponse($user);
+    }
+
+    public function successResponse($user)
+    {
         return response()->json([
             'success' => true,
             'data' => [
                 'token' => $user->createToken('Access_token')->plainTextToken,
                 'user' => $user,
             ],
+        ], 200);
+    }
+
+    public function logout(Request $request)
+    {
+        $user = User::find($request->id);
+        $user->tokens()->where('id', $request->token)->delete();
+
+        return response()->json([
+            'success' => true,
         ], 200);
     }
 }
