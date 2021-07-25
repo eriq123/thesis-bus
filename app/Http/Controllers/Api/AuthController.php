@@ -26,7 +26,13 @@ class AuthController extends Controller
             ]);
         }
 
-        $this->successResponse($user);
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'token' => $user->createToken('Access_token')->plainTextToken,
+                'user' => $user,
+            ]
+        ], 200);
     }
 
     public function google(Request $request)
@@ -41,7 +47,14 @@ class AuthController extends Controller
                 'role_id' => Role::find(1)->id,
             ]);
         }
-        $this->successResponse($user);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'token' => $user->createToken('Access_token')->plainTextToken,
+                'user' => $user,
+            ]
+        ], 200);
     }
 
     public function register(Request $request)
@@ -59,17 +72,12 @@ class AuthController extends Controller
             'role_id' => Role::find(4)->id
         ]);
 
-        $this->successResponse($user);
-    }
-
-    public function successResponse($user)
-    {
         return response()->json([
             'success' => true,
             'data' => [
                 'token' => $user->createToken('Access_token')->plainTextToken,
                 'user' => $user,
-            ],
+            ]
         ], 200);
     }
 
