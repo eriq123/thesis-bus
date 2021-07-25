@@ -24,7 +24,7 @@ class GoogleController extends Controller
 
         if (!$user) {
             $user = User::create([
-                'first_name' => $googleUser->name,
+                'name' => $googleUser->name,
                 'email' => $googleUser->email,
                 'google_id' => $googleUser->id,
                 'password' => Hash::make('123456'),
