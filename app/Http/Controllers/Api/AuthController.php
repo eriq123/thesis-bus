@@ -19,13 +19,27 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        if ($request->isGoogle) {
+            $user = User::where('google_id', $request->id)->first();
+            if (!$user) {
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'google_id' => $request->id,
+                    'password' => Hash::make('123456'),
+                    'role_id' => Role::find(1)->id,
+                ]);
+            }
+        } else {
+            $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                throw ValidationException::withMessages([
+                    'email' => ['The provided credentials are incorrect.'],
+                ]);
+            }
         }
+
         return response()->json([
             'success' => true,
             'data' => [
