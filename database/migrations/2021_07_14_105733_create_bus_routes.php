@@ -15,7 +15,9 @@ class CreateBusRoutes extends Migration
     {
         Schema::create('bus_routes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('starting_point');
+            $table->string('destination');
+            $table->integer('fare');
             $table->softDeletes();
             $table->timestamps();
         });

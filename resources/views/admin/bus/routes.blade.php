@@ -11,11 +11,29 @@
         <x-slot name="modalBody">
             <input type="hidden" name="id" id="id">
             <div class="input-group mb-3">
-                <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}"
-                    placeholder="Bus Route Name" autofocus>
-                @if($errors->has('name'))
+                <input type="text" name="starting_point" id="starting_point" class="form-control"
+                    value="{{ old('starting_point') }}" placeholder="Starting Point" autofocus>
+                @if($errors->has('starting_point'))
                 <div class="invalid-feedback">
-                    <strong>{{ $errors->first('name') }}</strong>
+                    <strong>{{ $errors->first('starting_point') }}</strong>
+                </div>
+                @endif
+            </div>
+            <div class="input-group mb-3">
+                <input type="text" name="destination" id="destination" class="form-control"
+                    value="{{ old('destination') }}" placeholder="Destination">
+                @if($errors->has('destination'))
+                <div class="invalid-feedback">
+                    <strong>{{ $errors->first('destination') }}</strong>
+                </div>
+                @endif
+            </div>
+            <div class="input-group mb-3">
+                <input type="number" name="fare" id="fare" class="form-control" value="{{ old('fare') }}"
+                    placeholder="Fare">
+                @if($errors->has('fare'))
+                <div class="invalid-feedback">
+                    <strong>{{ $errors->first('fare') }}</strong>
                 </div>
                 @endif
             </div>
@@ -35,7 +53,9 @@
                 <x-slot name="thead">
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
+                        <th>Starting point</th>
+                        <th>Destination</th>
+                        <th>Fare</th>
                         <th>Actions</th>
                     </tr>
                 </x-slot>
@@ -43,13 +63,17 @@
                     @forelse ($bus_routes as $item)
                     <tr>
                         <td>{{ $item->id}}</td>
-                        <td>{{ $item->name}}</td>
+                        <td>{{ $item->starting_point}}</td>
+                        <td>{{ $item->destination}}</td>
+                        <td>{{ $item->fare}}</td>
                         <td>
                             <form action="{{ route('buses.routes.destroy', ['id'=> $item->id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-primary" type="button" id="openUpdateModal"
-                                    data-id="{{ $item->id }}" data-name="{{ $item->name }}">Update</button>
+                                    data-id="{{ $item->id }}" data-starting_point="{{ $item->starting_point }}"
+                                    data-destination="{{ $item->destination }}"
+                                    data-fare="{{ $item->fare }}">Update</button>
                                 <button class="btn btn-danger">Delete</button>
                             </form>
                         </td>
@@ -78,7 +102,9 @@
                 'btn-success',
                 'btn-primary',
                 $(this).data('id'),
-                $(this).data('name'),
+                $(this).data('starting_point'),
+                $(this).data('destination'),
+                $(this).data('fare'),
             );
         });
 
@@ -99,10 +125,14 @@
             removeClass,
             addClass,
             id = null,
-            name = null,
+            starting_point = null,
+            destination = null,
+            fare = null,
         ){
             $('#id').val(id);
-            $('#name').val(name);
+            $('#starting_point').val(starting_point);
+            $('#destination').val(destination);
+            $('#fare').val(fare);
 
             $('#crudModalForm').attr('action',formRoute);
             $('#modalTitle').text(modalTitle);

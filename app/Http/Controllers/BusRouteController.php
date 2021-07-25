@@ -16,16 +16,24 @@ class BusRouteController extends Controller
     public function validateRequest($request)
     {
         $this->validate($request, [
-            'name' => 'required|max:255',
+            'starting_point' => 'required|max:255',
+            'destination' => 'required|max:255',
+            'fare' => 'required|integer',
         ], [
-            'name.required' => 'Bus route name is required.',
-            'name.max' => 'Maximum of 255 characters only.'
+            'starting_point.required' => 'Starting Point is required.',
+            'starting_point.max' => 'Maximum of 255 characters only.',
+            'destination.required' => 'Destination is required.',
+            'destination.max' => 'Maximum of 255 characters only.',
+            'fare.required' => 'Fare is required.',
+            'fare.integer' => 'Fare must be an integer.',
         ]);
     }
 
     public function saveRequest($bus, $request)
     {
-        $bus->name = $request->name;
+        $bus->starting_point = $request->starting_point;
+        $bus->destination = $request->destination;
+        $bus->fare = $request->fare;
         $bus->save();
     }
 
