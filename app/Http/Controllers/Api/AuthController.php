@@ -14,11 +14,6 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
         if ($request->isGoogle) {
             $user = User::where('google_id', $request->id)->first();
             if (!$user) {
@@ -31,6 +26,11 @@ class AuthController extends Controller
                 ]);
             }
         } else {
+            $request->validate([
+                'email' => 'required|email',
+                'password' => 'required',
+            ]);
+
             $user = User::where('email', $request->email)->first();
 
             if (!$user || !Hash::check($request->password, $user->password)) {
