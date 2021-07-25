@@ -12,7 +12,7 @@
             <input type="hidden" name="id" id="id">
             <div class="input-group mb-3">
                 <input type="text" name="starting_point" id="starting_point" class="form-control"
-                    value="{{ old('starting_point') }}" placeholder="Starting Point" autofocus>
+                    value="{{ old('starting_point') }}" placeholder="Starting Point" autofocus required>
                 @if($errors->has('starting_point'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('starting_point') }}</strong>
@@ -21,7 +21,7 @@
             </div>
             <div class="input-group mb-3">
                 <input type="text" name="destination" id="destination" class="form-control"
-                    value="{{ old('destination') }}" placeholder="Destination">
+                    value="{{ old('destination') }}" placeholder="Destination" required>
                 @if($errors->has('destination'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('destination') }}</strong>
@@ -30,7 +30,7 @@
             </div>
             <div class="input-group mb-3">
                 <input type="number" name="fare" id="fare" class="form-control" value="{{ old('fare') }}"
-                    placeholder="Fare">
+                    placeholder="Fare" required>
                 @if($errors->has('fare'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('fare') }}</strong>

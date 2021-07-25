@@ -7,6 +7,7 @@ use App\Http\Controllers\BusController;
 use App\Http\Controllers\BusRouteController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -33,6 +34,13 @@ Route::middleware(['web','auth'])->group(function () {
             Route::post('/store', [BusRouteController::class, 'store'])->name('store');
             Route::post('/update', [BusRouteController::class, 'update'])->name('update');
             Route::delete('/{id}', [BusRouteController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('schedules')->name('schedules.')->group(function () {
+            Route::get('/', [ScheduleController::class, 'index'])->name('index');
+            Route::post('/store', [ScheduleController::class, 'store'])->name('store');
+            Route::post('/update', [ScheduleController::class, 'update'])->name('update');
+            Route::delete('/{id}', [ScheduleController::class, 'destroy'])->name('destroy');
         });
     });
 

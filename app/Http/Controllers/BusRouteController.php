@@ -29,19 +29,19 @@ class BusRouteController extends Controller
         ]);
     }
 
-    public function saveRequest($bus, $request)
+    public function saveRequest($bus_route, $request)
     {
-        $bus->starting_point = $request->starting_point;
-        $bus->destination = $request->destination;
-        $bus->fare = $request->fare;
-        $bus->save();
+        $bus_route->starting_point = $request->starting_point;
+        $bus_route->destination = $request->destination;
+        $bus_route->fare = $request->fare;
+        $bus_route->save();
     }
 
     public function store(Request $request)
     {
         $this->validateRequest($request);
-        $bus = new BusRoute();
-        $this->saveRequest($bus, $request);
+        $bus_route = new BusRoute();
+        $this->saveRequest($bus_route, $request);
         return redirect()->route('buses.routes.index')->withSuccess('Added Successfully!');
     }
 
@@ -51,8 +51,8 @@ class BusRouteController extends Controller
         $this->validate($request, [
             'id'=>'required',
         ]);
-        $bus = BusRoute::find($request->id);
-        $this->saveRequest($bus, $request);
+        $bus_route = BusRoute::find($request->id);
+        $this->saveRequest($bus_route, $request);
 
         return redirect()->route('buses.routes.index')->withSuccess('Updated Successfully!');
     }

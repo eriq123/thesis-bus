@@ -12,7 +12,7 @@
             <input type="hidden" name="id" id="id">
             <div class="input-group mb-3">
                 <input type="text" name="plate_number" id="plate_number" class="form-control"
-                    value="{{ old('plate_number') }}" placeholder="Plate Number" autofocus>
+                    value="{{ old('plate_number') }}" placeholder="Plate Number" autofocus required>
                 @if($errors->has('plate_number'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('plate_number') }}</strong>
@@ -21,7 +21,7 @@
             </div>
             <div class="input-group mb-3">
                 <input type="text" name="type" id="type" class="form-control" value="{{ old('type') }}"
-                    placeholder="Bus Type">
+                    placeholder="Bus Type" required>
                 @if($errors->has('type'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('type') }}</strong>
@@ -30,7 +30,7 @@
             </div>
             <div class="input-group mb-3">
                 <input type="number" name="capacity" id="capacity" class="form-control" value="{{ old('capacity') }}"
-                    placeholder="Bus Capacity">
+                    placeholder="Bus Capacity" required>
                 @if($errors->has('capacity'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('capacity') }}</strong>

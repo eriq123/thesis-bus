@@ -11,8 +11,19 @@ class Schedule extends Model
     use HasFactory;
     use SoftDeletes;
 
-    public function bus_routes()
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function bus()
+    {
+        return $this->belongsTo(Bus::class);
+    }
+
+    public function bus_route()
     {
         return $this->belongsTo(BusRoute::class);
     }
+
 }
