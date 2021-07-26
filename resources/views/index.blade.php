@@ -3,9 +3,8 @@
 @section('title', 'Admin')
 
 @section('content_header')
-    <h1>Admin</h1>
+<h1>Welcome, {{ Auth::user()->name }}!</h1>
 @stop
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
 @stop

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BusBookingController;
 use App\Http\Controllers\BusController;
 use App\Http\Controllers\BusRouteController;
 use App\Http\Controllers\RoleController;
@@ -23,30 +24,40 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 Route::middleware(['web','auth'])->group(function () {
     Route::view('/','index');
 
-    Route::prefix('buses')->name('buses.')->group(function () {
-        Route::get('/', [BusController::class, 'index'])->name('index');
-        Route::post('/store', [BusController::class, 'store'])->name('store');
-        Route::post('/update', [BusController::class, 'update'])->name('update');
-        Route::delete('/{id}', [BusController::class, 'destroy'])->name('destroy');
+    Route::middleware('isAdmin')->group(function () {
+        Route::prefix('buses')->name('buses.')->group(function () {
+            Route::get('/', [BusController::class, 'index'])->name('index');
+            Route::post('/store', [BusController::class, 'store'])->name('store');
+            Route::post('/update', [BusController::class, 'update'])->name('update');
+            Route::delete('/{id}', [BusController::class, 'destroy'])->name('destroy');
 
-        Route::prefix('routes')->name('routes.')->group(function () {
-            Route::get('/', [BusRouteController::class, 'index'])->name('index');
-            Route::post('/store', [BusRouteController::class, 'store'])->name('store');
-            Route::post('/update', [BusRouteController::class, 'update'])->name('update');
-            Route::delete('/{id}', [BusRouteController::class, 'destroy'])->name('destroy');
+            Route::prefix('routes')->name('routes.')->group(function () {
+                Route::get('/', [BusRouteController::class, 'index'])->name('index');
+                Route::post('/store', [BusRouteController::class, 'store'])->name('store');
+                Route::post('/update', [BusRouteController::class, 'update'])->name('update');
+                Route::delete('/{id}', [BusRouteController::class, 'destroy'])->name('destroy');
+            });
+
+            Route::prefix('schedules')->name('schedules.')->group(function () {
+                Route::get('/', [ScheduleController::class, 'index'])->name('index');
+                Route::post('/store', [ScheduleController::class, 'store'])->name('store');
+                Route::post('/update', [ScheduleController::class, 'update'])->name('update');
+                Route::delete('/{id}', [ScheduleController::class, 'destroy'])->name('destroy');
+            });
+
+            Route::prefix('bookings')->name('bookings.')->group(function () {
+                Route::get('/', [BusBookingController::class, 'index'])->name('index');
+                Route::post('/store', [BusBookingController::class, 'store'])->name('store');
+                Route::post('/update', [BusBookingController::class, 'update'])->name('update');
+                Route::delete('/{id}', [BusBookingController::class, 'destroy'])->name('destroy');
+                Route::post('/scheduleByRouteID', [BusBookingController::class, 'scheduleByRouteID'])->name('scheduleByRouteID');
+            });
         });
 
-        Route::prefix('schedules')->name('schedules.')->group(function () {
-            Route::get('/', [ScheduleController::class, 'index'])->name('index');
-            Route::post('/store', [ScheduleController::class, 'store'])->name('store');
-            Route::post('/update', [ScheduleController::class, 'update'])->name('update');
-            Route::delete('/{id}', [ScheduleController::class, 'destroy'])->name('destroy');
+        Route::prefix('roles')->name('roles.')->group(function () {
+            Route::get('/', [RoleController::class, 'index'])->name('index');
+            Route::post('/store', [RoleController::class, 'store'])->name('store');
+            Route::post('/update', [RoleController::class, 'update'])->name('update');
         });
-    });
-
-    Route::prefix('roles')->name('roles.')->group(function () {
-        Route::get('/', [RoleController::class, 'index'])->name('index');
-        Route::post('/store', [RoleController::class, 'store'])->name('store');
-        Route::post('/update', [RoleController::class, 'update'])->name('update');
     });
 });

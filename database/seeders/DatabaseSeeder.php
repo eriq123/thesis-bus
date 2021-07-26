@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Bus;
 use App\Models\BusRoute;
+use App\Models\Schedule;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -47,5 +48,6 @@ class DatabaseSeeder extends Seeder
         User::factory()->count(50)->create();
         Bus::factory()->count(50)->create();
         BusRoute::factory()->count(50)->create();
+        Schedule::factory()->count(50)->create();
     }
 }

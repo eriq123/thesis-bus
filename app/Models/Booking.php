@@ -10,4 +10,14 @@ class Booking extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function schedule()
+    {
+        return $this->belongsTo(Schedule::class);
+    }
 }

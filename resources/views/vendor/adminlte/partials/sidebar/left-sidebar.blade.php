@@ -35,6 +35,12 @@
                         <p class="ml-1">Bus Schedules</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('buses.bookings.index') }}" class="nav-link">
+                        <i class="fas fa-bus"></i>
+                        <p class="ml-1">Bus Booking</p>
+                    </a>
+                </li>
                 <li>
                     <hr>
                 </li>

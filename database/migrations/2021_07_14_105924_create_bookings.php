@@ -20,7 +20,7 @@ class CreateBookings extends Migration
             $table->integer('fare_amount');
             $table->integer('quantity');
             $table->integer('grand_total');
-            $table->string('status');
+            $table->string('status')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
