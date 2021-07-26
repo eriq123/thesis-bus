@@ -220,11 +220,7 @@
             $('#status').val(status);
 
             appendScheduleByRoute($('#bus_route_id').val());
-            if(modalFooter == 'Update') {
-                BUS_ROUTE_FARE = $('#bus_route_id option:selected').data('fare');
-            } else {
-                BUS_ROUTE_FARE = fare_amount;
-            }
+            BUS_ROUTE_FARE = $('#bus_route_id option:selected').data('fare');
             $('#fare_amount').val(BUS_ROUTE_FARE);
 
             $('#crudModalForm').attr('action',formRoute);
