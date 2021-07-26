@@ -112,8 +112,7 @@
                                 @method('DELETE')
                                 <button class="btn btn-primary" type="button" id="openUpdateModal"
                                     data-id="{{ $item->id }}" data-user_id="{{ $item->user_id }}"
-                                    data-schedule_id="{{ $item->schedule_id }}"
-                                    data-fare_amount="{{ $item->fare_amount }}" data-quantity="{{ $item->quantity }}"
+                                    data-schedule_id="{{ $item->schedule_id }}" data-quantity="{{ $item->quantity }}"
                                     data-grand_total="{{ $item->grand_total }}"
                                     data-status="{{ $item->status }}">Update</button>
                                 <button class="btn btn-danger">Delete</button>
@@ -159,6 +158,8 @@
                     } else {
                         $('#schedule_id').append(`<option selected>No bus schedules available.</option>`);
                     }
+                    BUS_ROUTE_FARE = $('#bus_route_id option:selected').data('fare');
+                    $('#fare_amount').val(BUS_ROUTE_FARE);
                 },
                 errors: function(error) {
                     console.log(error);
@@ -207,7 +208,6 @@
             id = null,
             user_id = null,
             schedule_id = null,
-            fare_amount = null,
             quantity = null,
             grand_total = null,
             status = null,
