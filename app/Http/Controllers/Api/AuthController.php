@@ -26,12 +26,10 @@ class AuthController extends Controller
             ]);
         }
 
+        $user->token = $user->createToken('Access_token')->plainTextToken;
+
         return response()->json([
-            'success' => true,
-            'data' => [
-                'token' => $user->createToken('Access_token')->plainTextToken,
-                'user' => $user,
-            ]
+            'user' => $user,
         ], 200);
     }
 
@@ -48,12 +46,10 @@ class AuthController extends Controller
             ]);
         }
 
+        $user->token = $user->createToken('Access_token')->plainTextToken;
+
         return response()->json([
-            'success' => true,
-            'data' => [
-                'token' => $user->createToken('Access_token')->plainTextToken,
-                'user' => $user,
-            ]
+            'user' => $user,
         ], 200);
     }
 
@@ -72,12 +68,10 @@ class AuthController extends Controller
             'role_id' => Role::find(4)->id
         ]);
 
+        $user->token = $user->createToken('Access_token')->plainTextToken;
+
         return response()->json([
-            'success' => true,
-            'data' => [
-                'token' => $user->createToken('Access_token')->plainTextToken,
-                'user' => $user,
-            ]
+            'user' => $user,
         ], 200);
     }
 
