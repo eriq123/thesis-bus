@@ -17,6 +17,7 @@
 
                 {{-- Configured sidebar links --}}
                 {{-- @each('adminlte::partials.sidebar.menu-item', $adminlte->menu('sidebar'), 'item') --}}
+                @if(Auth::user()->role_id==1)
                 <li class="nav-item">
                     <a href="{{ route('buses.index') }}" class="nav-link">
                         <i class="fas fa-bus"></i>
@@ -51,6 +52,7 @@
                     </a>
                 </li>
                 <li>
+                
                     <hr>
                 </li>
                 <li class="nav-item">
@@ -63,6 +65,29 @@
                         </a>
                     </form>
                 </li>
+                @else
+                <li class="nav-item">
+                <a href="#" class="nav-link">
+                <i class="fas fa-book-open"></i>
+                        <p class="ml-1">Book a Bus</p>
+                    </a>
+                </li>
+                <li>
+                
+                    <hr>
+                </li>
+                <li class="nav-item">
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <a href="javascript:void()" onclick="document.getElementById('logout-form').submit();"
+                            class="nav-link">
+                            <i class="fas fa-power-off"></i>
+                            <p class="ml-1">Logout</p>
+                        </a>
+                    </form>
+                </li>
+                
+                @endif
             </ul>
         </nav>
     </div>

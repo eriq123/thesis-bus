@@ -4,7 +4,7 @@
 @section('content_header')
 <div class="text-center">
     <button class="btn btn-outline-success" type="button" id="openAddModal">
-        <i class="fa fa-bus mr-1"></i>
+        <i class="fas fa-book-open"></i>
         Book a bus
     </button>
     <x-modal>
