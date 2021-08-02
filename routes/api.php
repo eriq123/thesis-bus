@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BusRouteController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,8 +21,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('google', [AuthController::class, 'google']);
 
 Route::middleware('auth:sanctum')->group( function () {
-    Route::get('/user', function(){
-        return 'I am an authenticated user in sanctum';
-    });
+    Route::get('user', [UserController::class, 'index']);
+    Route::get('bus/route/all', [BusRouteController::class, 'all']);
     Route::post('logout', [AuthController::class, 'logout']);
 });
