@@ -52,6 +52,14 @@
                     </a>
                 </li>
                 <li>
+
+                <li class="nav-item">
+                    <a href="{{route('users.index')}}" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <p class="ml-1">Users</p>
+                    </a>
+                </li>
+                <li>
                 
                     <hr>
                 </li>
@@ -67,9 +75,9 @@
                 </li>
                 @else
                 <li class="nav-item">
-                <a href="#" class="nav-link">
-                <i class="fas fa-book-open"></i>
-                        <p class="ml-1">Book a Bus</p>
+                    <a href="{{ route('mybookings.index') }}" class="nav-link">
+                        <i class="fas fa-book-open"></i>
+                        <p class="ml-1">Book a Seat</p>
                     </a>
                 </li>
                 <li>

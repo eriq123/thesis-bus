@@ -5,7 +5,7 @@
 <div class="text-center">
     <button class="btn btn-outline-success" type="button" id="openAddModal">
         <i class="fas fa-book-open"></i>
-        Book a seat
+        Book a bus
     </button>
     <x-modal>
         <x-slot name="modalBody">
@@ -87,7 +87,7 @@
             <x-table>
                 <x-slot name="thead">
                     <tr>
-                        <th>ID</th>
+                        
                         <th>Passenger Name</th>
                         <th>Schedule</th>
                         <th>Fare</th>
@@ -99,7 +99,7 @@
                 <x-slot name="tbody">
                     @forelse ($bookings as $item)
                     <tr>
-                        <td>{{ $item->id }}</td>
+                        
                         <td>{{ $item->user->name }}</td>
                         <td>{{ $item->schedule->schedule_date }} ({{ $item->schedule->time_departure }} -
                             {{ $item->schedule->time_arrival }})</td>
@@ -107,7 +107,7 @@
                         <td>{{ $item->quantity}}</td>
                         <td>{{ $item->grand_total}}</td>
                         <td>
-                            <form action="{{ route('buses.bookings.destroy', ['id'=> $item->id]) }}" method="POST">
+                            <form action="{{ route('mybookings.destroy', ['id'=> $item->id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-primary" type="button" id="openUpdateModal"
@@ -144,7 +144,7 @@
         function appendScheduleByRoute(routeID) {
             $.ajax({
                 type: 'POST',
-                url: "{{ route('buses.bookings.scheduleByRouteID') }}",
+                url: "{{ route('mybookings.scheduleByRouteID') }}",
                 data: {
                     id: routeID,
                 },
@@ -174,7 +174,7 @@
 
         $('#openUpdateModal[data-id]').on('click',function(){
             fillUpAndOpenModal(
-                "{{ route('buses.bookings.update') }}",
+                "{{ route('mybookings.update') }}",
                 'Book a bus',
                 'Update',
                 'btn-success',
@@ -191,7 +191,7 @@
 
         $('#openAddModal').click(function(){
             fillUpAndOpenModal(
-                "{{ route('buses.bookings.store') }}",
+                "{{ route('mybookings.store') }}",
                 'Book a bus',
                 'Save',
                 'btn-primary',
