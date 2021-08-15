@@ -37,13 +37,20 @@ class AuthController extends Controller
     {
         $user = User::where('google_id', $request->id)->first();
         if (!$user) {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'google_id' => $request->id,
-                'password' => Hash::make('123456'),
-                'role_id' => Role::find(1)->id,
-            ]);
+            $user = User::where('email', $request->email)->first();
+
+            if($user){
+                $user->google_id = $request->id;
+                $user->save();
+            } else {
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'google_id' => $request->id,
+                    'password' => Hash::make('123456'),
+                    'role_id' => Role::find(1)->id,
+                ]);
+            }
         }
 
         $user->token = $user->createToken('Access_token')->plainTextToken;

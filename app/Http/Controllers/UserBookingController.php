@@ -6,19 +6,19 @@ use App\Models\Booking;
 use App\Models\BusRoute;
 use App\Models\Schedule;
 use App\Models\User;
-use App\Http\Controllers\Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class UserBookingController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $this->data['schedules'] = Schedule::all();
         $this->data['bus_routes'] = BusRoute::all();
         $this->data['bookings'] = Booking::all();
         $this->data['passengers'] = User::where('role_id', 4)->get();
-        $this->data['users'] = User::where(Auth::user()->id);
-        
+        $this->data['users'] = Auth::user();
+
         return view('userbooking.index', $this->data);
     }
 

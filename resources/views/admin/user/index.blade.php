@@ -11,8 +11,8 @@
         <x-slot name="modalBody">
             <input type="hidden" name="id" id="id">
             <div class="input-group mb-3">
-                <input type="text" name="name" id="name" class="form-control"
-                    value="{{ old('name') }}" placeholder="Name" autofocus required>
+                <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}"
+                    placeholder="Name" autofocus required>
                 @if($errors->has('name'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('name') }}</strong>
@@ -20,8 +20,8 @@
                 @endif
             </div>
             <div class="input-group mb-3">
-                <input type="text" name="email" id="email" class="form-control"
-                    value="{{ old('email') }}" placeholder="Email" required>
+                <input type="text" name="email" id="email" class="form-control" value="{{ old('email') }}"
+                    placeholder="Email" required>
                 @if($errors->has('email'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('email') }}</strong>
@@ -61,7 +61,7 @@
             <x-table>
                 <x-slot name="thead">
                     <tr>
-                    <th>Name</th>
+                        <th>Name</th>
                         <th>Email</th>
                         <th>Role ID</th>
                         <th>Actions</th>
@@ -78,10 +78,8 @@
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-primary" type="button" id="openUpdateModal"
-                                    data-id="{{ $item->id }}" 
-                                    data-name="{{ $item->name }}"
-                                    data-email="{{ $item->email }}" 
-                                    data-password="{{ $item->password }}" 
+                                    data-id="{{ $item->id }}" data-name="{{ $item->name }}"
+                                    data-email="{{ $item->email }}" data-password="{{ $item->password }}"
                                     data-role_id="{{ $item->role_id }}">Update</button>
                                 <button class="btn btn-danger">Delete</button>
                             </form>
