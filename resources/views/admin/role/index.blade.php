@@ -41,14 +41,14 @@
                         <td>{{ $item->id}}</td>
                         <td>{{ $item->name}}</td>
                         <td>
-                            <button class="btn btn-primary" type="button" id="openUpdateModal" data-id="{{ $item->id }}"
+                            <button class="btn btn-primary openUpdateModal" type="button" data-id="{{ $item->id }}"
                                 data-name="{{ $item->name }}">Update
                             </button>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="text-center">
+                        <td colspan="100%" class="text-center">
                             No data available.
                         </td>
                     </tr>
@@ -62,7 +62,7 @@
 @section('js')
 <script>
     $(document).ready(function() {
-        $('#openUpdateModal[data-id]').click(function(){
+        $('.openUpdateModal[data-id]').click(function(){
             fillUpAndOpenModal(
                 "{{ route('roles.update') }}",
                 'Update Role',

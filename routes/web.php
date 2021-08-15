@@ -55,9 +55,9 @@ Route::middleware(['web','auth'])->group(function () {
                 Route::post('/scheduleByRouteID', [BusBookingController::class, 'scheduleByRouteID'])->name('scheduleByRouteID');
             });
 
-            
+
         });
-        
+
         Route::prefix('roles')->name('roles.')->group(function () {
             Route::get('/', [RoleController::class, 'index'])->name('index');
             Route::post('/store', [RoleController::class, 'store'])->name('store');
@@ -68,9 +68,10 @@ Route::middleware(['web','auth'])->group(function () {
             Route::get('/', [UserController::class, 'index'])->name('index');
             Route::post('/store', [UserController::class, 'store'])->name('store');
             Route::post('/update', [UserController::class, 'update'])->name('update');
+            Route::post('/changePassword', [UserController::class, 'changePassword'])->name('changePassword');
             Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
         });
-        
+
     });
         Route::prefix('mybookings')->name('mybookings.')->group(function () {
             Route::get('/', [UserBookingController::class, 'index'])->name('index');
@@ -79,5 +80,5 @@ Route::middleware(['web','auth'])->group(function () {
             Route::delete('/{id}', [UserBookingController::class, 'destroy'])->name('destroy');
             Route::post('/scheduleByRouteID', [UserBookingController::class, 'scheduleByRouteID'])->name('scheduleByRouteID');
         });
-    
+
 });

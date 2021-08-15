@@ -10,6 +10,21 @@
     <x-modal>
         <x-slot name="modalBody">
             <input type="hidden" name="id" id="id">
+            <div class="alert alert-dark" role="alert">
+                The default password is <code>123456</code>
+            </div>
+            <div class="mb-3">
+                <p class="mb-0 ml-1 text-left">Role :</p>
+                <select class="form-select form-control" id="role_id" name="role_id" required>
+                    @forelse ($roles as $item)
+                    <option value="{{ $item->id }}" data-name="{{ $item->name }}">
+                        {{ $item->name }}
+                    </option>
+                    @empty
+                    <option selected>No roles available</option>
+                    @endforelse
+                </select>
+            </div>
             <div class="input-group mb-3">
                 <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}"
                     placeholder="Name" autofocus required>
@@ -28,27 +43,50 @@
                 </div>
                 @endif
             </div>
+        </x-slot>
+        <x-slot name="modalFooter">
+            <button class="btn btn-default mr-auto" type="button" id="changePasswordButton">Change Password</button>
+            <button class="btn btn-success" id="footerButton">Save</button>
+        </x-slot>
+    </x-modal>
+
+    <x-modal id="change-password-modal" formID="changePasswordForm">
+        <x-slot name="modalBody">
+            <input type="hidden" name="id" id="changePasswordID">
+            <div class="alert alert-dark" role="alert">
+                The default password is <code>123456</code>
+            </div>
             <div class="input-group mb-3">
-                <input type="password" name="password" id="password" class="form-control" value="{{ old('password') }}"
-                    placeholder="Password" required>
-                @if($errors->has('password'))
+                <input type="password" name="old_password" id="old_password" class="form-control"
+                    value="{{ old('old_password') }}" placeholder="Old Password" required>
+                @if($errors->has('old_password'))
                 <div class="invalid-feedback">
-                    <strong>{{ $errors->first('password') }}</strong>
+                    <strong>{{ $errors->first('old_password') }}</strong>
                 </div>
                 @endif
             </div>
             <div class="input-group mb-3">
-                <input type="number" name="role_id" id="role_id" class="form-control" value="{{ old('role_id') }}"
-                    placeholder="Role ID" required>
-                @if($errors->has('role_id'))
+                <input type="password" name="new_password" id="new_password" class="form-control"
+                    value="{{ old('new_password') }}" placeholder="New Password" required>
+                @if($errors->has('new_password'))
                 <div class="invalid-feedback">
-                    <strong>{{ $errors->first('role_id') }}</strong>
+                    <strong>{{ $errors->first('new_password') }}</strong>
+                </div>
+                @endif
+            </div>
+            <div class="input-group mb-3">
+                <input type="password" name="new_password_confirmation" id="new_password_confirmation"
+                    class="form-control" value="{{ old('new_password_confirmation') }}" placeholder="Confirm Password"
+                    required>
+                @if($errors->has('new_password_confirmation'))
+                <div class="invalid-feedback">
+                    <strong>{{ $errors->first('new_password_confirmation') }}</strong>
                 </div>
                 @endif
             </div>
         </x-slot>
         <x-slot name="modalFooter">
-            <button class="btn btn-success" id="footerButton">Save</button>
+            <button class="btn btn-primary">Update</button>
         </x-slot>
     </x-modal>
 </div>
@@ -63,7 +101,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Role ID</th>
+                        <th>Role</th>
                         <th>Actions</th>
                     </tr>
                 </x-slot>
@@ -72,14 +110,13 @@
                     <tr>
                         <td>{{ $item->name}}</td>
                         <td>{{ $item->email}}</td>
-                        <td>{{ $item->role_id}}</td>
+                        <td>{{ $item->role->name}}</td>
                         <td>
                             <form action="{{ route('users.destroy', ['id'=> $item->id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-primary" type="button" id="openUpdateModal"
-                                    data-id="{{ $item->id }}" data-name="{{ $item->name }}"
-                                    data-email="{{ $item->email }}" data-password="{{ $item->password }}"
+                                <button class="btn btn-primary openUpdateModal" type="button" data-id="{{ $item->id }}"
+                                    data-name="{{ $item->name }}" data-email="{{ $item->email }}"
                                     data-role_id="{{ $item->role_id }}">Update</button>
                                 <button class="btn btn-danger">Delete</button>
                             </form>
@@ -87,7 +124,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="text-center">
+                        <td colspan="100%" class="text-center">
                             No data available.
                         </td>
                     </tr>
@@ -101,7 +138,7 @@
 @section('js')
 <script>
     $(document).ready(function() {
-        $('#openUpdateModal[data-id]').on('click',function(){
+        $('.openUpdateModal[data-id]').on('click',function(){
             fillUpAndOpenModal(
                 "{{ route('users.update') }}",
                 'Update a User',
@@ -111,7 +148,6 @@
                 $(this).data('id'),
                 $(this).data('name'),
                 $(this).data('email'),
-                $(this).data('password'),
                 $(this).data('role_id'),
             );
         });
@@ -126,6 +162,15 @@
             );
         });
 
+        $('#changePasswordButton').click(function(){
+            $('#crud-modal').modal('hide');
+            $('.modal-title').text('Change Password');
+            var id = $(this).data('id');
+            $('#changePasswordID').val(id);
+            $('#changePasswordForm').attr('action', "{{ route('users.changePassword') }}");
+            $('#change-password-modal').modal('show');
+        });
+
         function fillUpAndOpenModal(
             formRoute,
             modalTitle,
@@ -135,15 +180,18 @@
             id = null,
             name = null,
             email = null,
-            password = null,
             role_id = null,
         ){
             $('#id').val(id);
             $('#name').val(name);
             $('#email').val(email);
-            $('#password').val(password);
-            $('#role_id').val(role_id);
 
+            $('#changePasswordButton').hide();
+            if(role_id){
+                $('#role_id').val(role_id);
+                $('#changePasswordButton').data('id', id);
+                $('#changePasswordButton').show();
+            }
             $('#crudModalForm').attr('action',formRoute);
             $('#modalTitle').text(modalTitle);
             $('#footerButton').text(modalFooter);
