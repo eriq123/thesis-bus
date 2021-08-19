@@ -115,9 +115,9 @@
                             <form action="{{ route('buses.schedules.destroy', ['id'=> $item->id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-primary" type="button" id="openUpdateModal"
-                                    data-id="{{ $item->id }}" data-bus_id="{{ $item->bus_id }}"
-                                    data-user_id="{{ $item->user_id }}" data-bus_route_id="{{ $item->bus_route_id }}"
+                                <button class="btn btn-primary openUpdateModal" type="button" data-id="{{ $item->id }}"
+                                    data-bus_id="{{ $item->bus_id }}" data-user_id="{{ $item->user_id }}"
+                                    data-bus_route_id="{{ $item->bus_route_id }}"
                                     data-schedule_date="{{ $item->schedule_date }}"
                                     data-time_departure="{{ $item->time_departure }}"
                                     data-time_arrival="{{ $item->time_arrival }}">Update</button>
@@ -127,7 +127,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8" class="text-center">
+                        <td colspan="100%" class="text-center">
                             No data available.
                         </td>
                     </tr>
@@ -141,7 +141,7 @@
 @section('js')
 <script>
     $(document).ready(function() {
-        $('#openUpdateModal[data-id]').on('click',function(){
+        $('.openUpdateModal[data-id]').on('click',function(){
             fillUpAndOpenModal(
                 "{{ route('buses.schedules.update') }}",
                 'Update a schedule',

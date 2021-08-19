@@ -3,54 +3,91 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $this->data['users'] = User::all();
-        return view('pages.users.index', $this->data);
+        $this->data['users'] = User::with('role')->get();
+        $this->data['roles'] = Role::orderByDesc('name')->get();
+        return view('admin.user.index', $this->data);
+    }
+
+    public function validateRequest($request)
+    {
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'email' => 'required|max:255|email',
+            'role_id' => 'required',
+        ], [
+            'name.required' => 'Name is required.',
+            'name.max' => 'Maximum length is 255 characters.',
+            'email.required' => 'Email is required.',
+            'email.max' => 'Maximum length is 255 characters.',
+            'role_id.required' => 'Role is required.',
+        ]);
+    }
+    public function saveRequest($users, $request)
+    {
+        $users->name = $request->name;
+        $users->email = $request->email;
+        $users->role_id = $request->role_id;
+        $users->save();
     }
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|max:255',
-            'email' => 'required|max:255',
-            'password' => 'required|min:6|max:255|',
-            'role_name' => 'required|',
-        ], [
-            'name.required' => 'Name is required.',
-            'name.max' => 'Maximum length is 255 characters.',
-            'password.required' => 'Password is required.',
-            'password.min' => 'Password should have minimum of 6 characters.',
-            'password.max' => 'Password should have maximum of 255 characters.',
-
-        ]);
-
+        $this->validateRequest($request);
         $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = $request->password;
-        $user->role_name = $request->role_name;
-
-        if ($request->role_name = "Bus Driver") {
-            $user->roles = 2;
-        } elseif ($request->role_name = "Conductor") {
-            $user->roles = 3;
-        } elseif ($request->role_name = "Admin") {
-            $user->roles = 1;
-        }
-
-        $user->save();
-
-        return redirect('/users')->with('msg', 'Information Added!');
+        $this->saveRequest($user, $request);
+        return redirect()->route('users.index')->with('msg', 'Added Successfully!');
     }
 
-    public function destroy(user $user)
+    public function update(Request $request)
     {
-        $user->delete();
-        return redirect('/users')->with('delete', 'Information Deleted!');
+        $this->validateRequest($request);
+        $this->validate($request, [
+            'id'=>'required',
+        ]);
+        $user = User::find($request->id);
+        $this->saveRequest($user, $request);
+
+        return redirect()->route('users.index')->withSuccess('Updated Successfully!');
+    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+
+    public function destroy($id)
+    {
+        User::destroy($id);
+        return redirect()->route('users.index')->withSuccess('Deleted Successfully!');
+    }
+
+    public function changePassword(Request $request)
+    {
+        $this->validate($request, [
+            'old_password' => 'required',
+            'new_password' => 'required|confirmed|min:6|different:old_password',
+            'new_password_confirmation' => 'required'
+        ]);
+
+        if (Hash::check($request->old_password, Auth::user()->password) == false)
+        {
+            return redirect()->back()->withErrors("Your current password does not matches with the password you provided. Please try again.");
+        }
+
+        $user = Auth::user();
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return redirect()->back()->withSuccess("Password changed successfully!");
     }
 }

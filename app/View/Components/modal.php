@@ -6,13 +6,17 @@ use Illuminate\View\Component;
 
 class modal extends Component
 {
+    public $id;
+    public $formID;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($id = 'crud-modal', $formID = 'crudModalForm')
     {
+        $this->id = $id;
+        $this->formID = $formID;
     }
 
     /**

@@ -1,7 +1,7 @@
-<div class="modal fade" id="crud-modal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+<div class="modal fade" id="{{ $id }}" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="POST" class="mt-1" id="crudModalForm">
+            <form method="POST" class="mt-1" id="{{ $formID }}">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title text-center" id="modalTitle"></h5>

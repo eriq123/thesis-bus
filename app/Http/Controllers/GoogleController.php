@@ -23,13 +23,20 @@ class GoogleController extends Controller
         $user = User::where('google_id', $googleUser->id)->first();
 
         if (!$user) {
-            $user = User::create([
-                'name' => $googleUser->name,
-                'email' => $googleUser->email,
-                'google_id' => $googleUser->id,
-                'password' => Hash::make('123456'),
-                'role_id' => Role::find(1)->id,
-            ]);
+            $user = User::where('email', $googleUser->email)->first();
+
+            if($user){
+                $user->google_id = $googleUser->id;
+                $user->save();
+            } else {
+                $user = User::create([
+                    'name' => $googleUser->name,
+                    'email' => $googleUser->email,
+                    'google_id' => $googleUser->id,
+                    'password' => Hash::make('123456'),
+                    'role_id' => Role::find(1)->id,
+                ]);
+            }
         }
         Auth::login($user);
 
