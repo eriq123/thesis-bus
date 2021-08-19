@@ -28,9 +28,7 @@ class AuthController extends Controller
 
         $user->token = $user->createToken('Access_token')->plainTextToken;
 
-        return response()->json([
-            'user' => $user,
-        ], 200);
+        return response()->json($user, 200);
     }
 
     public function google(Request $request)
@@ -48,9 +46,7 @@ class AuthController extends Controller
 
         $user->token = $user->createToken('Access_token')->plainTextToken;
 
-        return response()->json([
-            'user' => $user,
-        ], 200);
+        return response()->json($user, 200);
     }
 
     public function register(Request $request)
@@ -70,9 +66,7 @@ class AuthController extends Controller
 
         $user->token = $user->createToken('Access_token')->plainTextToken;
 
-        return response()->json([
-            'user' => $user,
-        ], 200);
+        return response()->json($user, 200);
     }
 
     public function logout(Request $request)
