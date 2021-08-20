@@ -181,7 +181,6 @@
                 $(this).data('id'),
                 $(this).data('user_id'),
                 $(this).data('schedule_id'),
-                $(this).data('fare_amount'),
                 $(this).data('quantity'),
                 $(this).data('grand_total'),
                 $(this).data('status'),
