@@ -71,6 +71,8 @@ class AuthController extends Controller
             'role_id' => Role::find(4)->id
         ]);
 
+        $user = User::find($user->id);
+
         $user->token = $user->createToken('Access_token')->plainTextToken;
 
         return response()->json($user, 200);
