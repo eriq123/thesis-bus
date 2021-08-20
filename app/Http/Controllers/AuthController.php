@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    private $user_default_role;
+
+    public function __construct()
+    {
+        $this->user_default_role = env('USER_DEFAULT_ROLE', 4);
+    }
+
     public function login(Request $request)
     {
         $request->validate([
@@ -37,7 +44,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => Role::find(4)->id
+            'role_id' => Role::find($this->user_default_role)->id
         ]);
 
         Auth::login($user);

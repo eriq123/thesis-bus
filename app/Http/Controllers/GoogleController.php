@@ -12,6 +12,15 @@ use Laravel\Socialite\Facades\Socialite;
 
 class GoogleController extends Controller
 {
+    private $user_default_role;
+    private $user_default_password;
+
+    public function __construct()
+    {
+        $this->user_default_role = env('USER_DEFAULT_ROLE', 4);
+        $this->user_default_password = env('USER_DEFAULT_PASSWORD', '123456');
+    }
+
     public function redirectToGoogle()
     {
         return Socialite::driver('google')->redirect();
@@ -33,8 +42,8 @@ class GoogleController extends Controller
                     'name' => $googleUser->name,
                     'email' => $googleUser->email,
                     'google_id' => $googleUser->id,
-                    'password' => Hash::make('123456'),
-                    'role_id' => Role::find(1)->id,
+                    'password' => Hash::make($this->user_default_password),
+                    'role_id' => Role::find($this->user_default_role)->id,
                 ]);
             }
         }
