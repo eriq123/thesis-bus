@@ -91,7 +91,7 @@
             <x-table>
                 <x-slot name="thead">
                     <tr>
-                        <th>ID</th>
+                        
                         <th>Bus</th>
                         <th>Driver</th>
                         <th>Bus Route</th>
@@ -104,10 +104,10 @@
                 <x-slot name="tbody">
                     @forelse ($schedules as $item)
                     <tr>
-                        <td>{{ $item->id}}</td>
+                        
                         <td>{{ $item->bus->plate_number}}</td>
                         <td>{{ $item->user->name}}</td>
-                        <td>{{ $item->bus_route->starting_point}}</td>
+                        <td>{{ $item->bus_route->starting_point}} - {{ $item->bus_route->destination}}</td>
                         <td>{{ $item->schedule_date}}</td>
                         <td>{{ $item->time_departure}}</td>
                         <td>{{ $item->time_arrival}}</td>
