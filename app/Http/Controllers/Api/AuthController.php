@@ -11,6 +11,15 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    private $user_default_role;
+    private $user_default_password;
+
+    public function __construct()
+    {
+        $this->user_default_role = env('USER_DEFAULT_ROLE', 4);
+        $this->user_default_password = env('USER_DEFAULT_PASSWORD', '123456');
+    }
+
     public function login(Request $request)
     {
         $request->validate([
@@ -28,9 +37,7 @@ class AuthController extends Controller
 
         $user->token = $user->createToken('Access_token')->plainTextToken;
 
-        return response()->json([
-            'user' => $user,
-        ], 200);
+        return response()->json($user, 200);
     }
 
     public function google(Request $request)
@@ -47,17 +54,15 @@ class AuthController extends Controller
                     'name' => $request->name,
                     'email' => $request->email,
                     'google_id' => $request->id,
-                    'password' => Hash::make('123456'),
-                    'role_id' => Role::find(1)->id,
+                    'password' => Hash::make($this->user_default_password),
+                    'role_id' => Role::find($this->user_default_role)->id,
                 ]);
             }
         }
 
         $user->token = $user->createToken('Access_token')->plainTextToken;
 
-        return response()->json([
-            'user' => $user,
-        ], 200);
+        return response()->json($user, 200);
     }
 
     public function register(Request $request)
@@ -72,14 +77,14 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => Role::find(4)->id
+            'role_id' => Role::find($this->user_default_role)->id
         ]);
+
+        $user = User::find($user->id);
 
         $user->token = $user->createToken('Access_token')->plainTextToken;
 
-        return response()->json([
-            'user' => $user,
-        ], 200);
+        return response()->json($user, 200);
     }
 
     public function logout(Request $request)
