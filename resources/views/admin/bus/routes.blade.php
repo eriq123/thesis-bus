@@ -11,20 +11,20 @@
         <x-slot name="modalBody">
             <input type="hidden" name="id" id="id">
             <div class="input-group mb-3">
-                <input type="text" name="starting_point" id="starting_point" class="form-control"
-                    value="{{ old('starting_point') }}" placeholder="Starting Point" autofocus required>
-                @if($errors->has('starting_point'))
+                <input type="text" name="bus_route_start_id" id="bus_route_start_id" class="form-control"
+                    value="{{ old('bus_route_start_id') }}" placeholder="Starting Point" autofocus required>
+                @if($errors->has('bus_route_start_id'))
                 <div class="invalid-feedback">
-                    <strong>{{ $errors->first('starting_point') }}</strong>
+                    <strong>{{ $errors->first('bus_route_start_id') }}</strong>
                 </div>
                 @endif
             </div>
             <div class="input-group mb-3">
-                <input type="text" name="destination" id="destination" class="form-control"
-                    value="{{ old('destination') }}" placeholder="Destination" required>
-                @if($errors->has('destination'))
+                <input type="text" name="bus_route_destination_id" id="bus_route_destination_id" class="form-control"
+                    value="{{ old('bus_route_destination_id') }}" placeholder="Destination" required>
+                @if($errors->has('bus_route_destination_id'))
                 <div class="invalid-feedback">
-                    <strong>{{ $errors->first('destination') }}</strong>
+                    <strong>{{ $errors->first('bus_route_destination_id') }}</strong>
                 </div>
                 @endif
             </div>
@@ -63,16 +63,16 @@
                     @forelse ($bus_routes as $item)
                     <tr>
                         <td>{{ $item->id}}</td>
-                        <td>{{ $item->starting_point}}</td>
-                        <td>{{ $item->destination}}</td>
+                        <td>{{ $item->bus_route_start->name}}</td>
+                        <td>{{ $item->bus_route_destination->name}}</td>
                         <td>{{ $item->fare}}</td>
                         <td>
                             <form action="{{ route('buses.routes.destroy', ['id'=> $item->id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-primary openUpdateModal" type="button" data-id="{{ $item->id }}"
-                                    data-starting_point="{{ $item->starting_point }}"
-                                    data-destination="{{ $item->destination }}"
+                                    data-bus_route_start_id="{{ $item->bus_route_start_id }}"
+                                    data-bus_route_destination_id="{{ $item->bus_route_destination_id }}"
                                     data-fare="{{ $item->fare }}">Update</button>
                                 <button class="btn btn-danger">Delete</button>
                             </form>
@@ -102,8 +102,8 @@
                 'btn-success',
                 'btn-primary',
                 $(this).data('id'),
-                $(this).data('starting_point'),
-                $(this).data('destination'),
+                $(this).data('bus_route_start_id'),
+                $(this).data('bus_route_destination_id'),
                 $(this).data('fare'),
             );
         });
@@ -125,13 +125,13 @@
             removeClass,
             addClass,
             id = null,
-            starting_point = null,
-            destination = null,
+            bus_route_start_id = null,
+            bus_route_destination_id = null,
             fare = null,
         ){
             $('#id').val(id);
-            $('#starting_point').val(starting_point);
-            $('#destination').val(destination);
+            $('#bus_route_start_id').val(bus_route_start_id);
+            $('#bus_route_destination_id').val(bus_route_destination_id);
             $('#fare').val(fare);
 
             $('#crudModalForm').attr('action',formRoute);
