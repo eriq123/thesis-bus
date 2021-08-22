@@ -21,16 +21,6 @@ class BusRoute extends Model
         $this->attributes['fare'] = $value * 100;
     }
 
-    public function bus_route_start()
-    {
-        return $this->belongsTo(BusRouteStart::class);
-    }
-
-    public function bus_route_destination()
-    {
-        return $this->belongsTo(BusRouteDestination::class);
-    }
-
     public function schedules()
     {
         return $this->hasMany(Schedule::class);

@@ -9,29 +9,28 @@ class BusRouteController extends Controller
 {
     public function index()
     {
-        $this->data['bus_routes'] = BusRoute::with('bus_route_start')->with('bus_route_destination')->get();
+        $this->data['bus_routes'] = BusRoute::all();
         return view('admin.bus.routes', $this->data);
     }
 
     public function validateRequest($request)
     {
         $this->validate($request, [
-            'bus_route_start_id' => 'required|integer',
-            'bus_route_destination_id' => 'required|integer',
-            'fare' => 'required|integer',
+            'name' => 'required',
+            'isStartingPoint' => 'required|integer',
+            'isDestination' => 'required|integer',
         ], [
-            'bus_route_start_id.required' => 'Starting Point is required.',
-            'bus_route_destination_id.required' => 'Destination is required.',
-            'fare.required' => 'Fare is required.',
-            'fare.integer' => 'Fare must be an integer.',
+            'name.required' => 'Name is required.',
+            'isStartingPoint.required' => 'Starting Point is required.',
+            'isDestination.required' => 'Destination is required.',
         ]);
     }
 
     public function saveRequest($bus_route, $request)
     {
-        $bus_route->bus_route_start_id = $request->bus_route_start_id;
-        $bus_route->bus_route_destination_id = $request->bus_route_destination_id;
-        $bus_route->fare = $request->fare;
+        $bus_route->name = $request->name;
+        $bus_route->isStartingPoint = $request->isStartingPoint;
+        $bus_route->isDestination = $request->isDestination;
         $bus_route->save();
     }
 
