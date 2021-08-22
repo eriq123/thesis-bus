@@ -25,7 +25,8 @@ class ScheduleFactory extends Factory
         return [
             'bus_id' => rand(1, 50),
             'user_id' => rand(1, 50),
-            'bus_route_id' => rand(1, 50),
+            'starting_point_id' => rand(1, 50),
+            'destination_id' => rand(1, 50),
             'schedule_date' => Carbon::now()->format('M d Y'),
             'time_departure' => '5:30PM',
             'time_arrival' => '6:30PM',

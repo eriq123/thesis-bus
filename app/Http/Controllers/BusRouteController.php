@@ -17,20 +17,14 @@ class BusRouteController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'isStartingPoint' => 'required|integer',
-            'isDestination' => 'required|integer',
         ], [
             'name.required' => 'Name is required.',
-            'isStartingPoint.required' => 'Starting Point is required.',
-            'isDestination.required' => 'Destination is required.',
         ]);
     }
 
     public function saveRequest($bus_route, $request)
     {
         $bus_route->name = $request->name;
-        $bus_route->isStartingPoint = $request->isStartingPoint;
-        $bus_route->isDestination = $request->isDestination;
         $bus_route->save();
     }
 

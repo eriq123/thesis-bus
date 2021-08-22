@@ -22,9 +22,7 @@ class BusRouteFactory extends Factory
     public function definition()
     {
         return [
-            'bus_route_start_id' => rand(1, 50),
-            'bus_route_destination_id' => rand(1, 50),
-            'fare' => rand(100, 2000),
+            'name' => $this->faker->city,
         ];
     }
 }
