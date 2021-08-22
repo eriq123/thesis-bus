@@ -19,7 +19,7 @@ class CreateSchedules extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('starting_point_id')->constrained('bus_routes')->onDelete('cascade');
             $table->foreignId('destination_id')->constrained('bus_routes')->onDelete('cascade');
-            $table->integer('fare_amount');
+            $table->integer('fare');
             $table->string('schedule_date');
             $table->string('time_departure');
             $table->string('time_arrival');

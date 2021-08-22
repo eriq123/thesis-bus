@@ -25,14 +25,18 @@ class ScheduleController extends Controller
         $this->validate($request, [
             'bus_id' => 'required',
             'user_id' => 'required',
-            'bus_route_id' => 'required',
+            'starting_point_id' => 'required',
+            'destination_id' => 'required',
+            'fare' => 'required',
             'schedule_date' => 'required',
             'time_departure' => 'required',
             'time_arrival' => 'required',
         ], [
             'bus_id.required' => 'Bus is required',
             'user_id.required' => 'Bus driver is required',
-            'bus_route_id.required' => 'Bus route is required',
+            'starting_point_id.required' => 'Starting Point is required',
+            'destination_id.required' => 'Destination is required',
+            'fare.required' => 'Fare is required',
             'schedule_date.required' => 'Schedule date is required',
             'time_departure.required' => 'Departure time is required',
             'time_arrival.required' => 'Arrival time is required',
@@ -43,7 +47,9 @@ class ScheduleController extends Controller
     {
         $schedule->bus_id = $request->bus_id;
         $schedule->user_id = $request->user_id;
-        $schedule->bus_route_id = $request->bus_route_id;
+        $schedule->starting_point_id = $request->starting_point_id;
+        $schedule->destination_id = $request->destination_id;
+        $schedule->fare = $request->fare;
         $schedule->schedule_date = $request->schedule_date;
         $schedule->time_departure = $request->time_departure;
         $schedule->time_arrival = $request->time_arrival;

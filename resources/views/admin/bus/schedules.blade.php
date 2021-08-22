@@ -35,16 +35,38 @@
                 </select>
             </div>
             <div class="mt-3">
-                <p class="mb-0 ml-1 text-left">Bus Routes :</p>
-                <select class="form-select form-control" id="bus_route_id" name="bus_route_id" required>
+                <p class="mb-0 ml-1 text-left">From :</p>
+                <select class="form-select form-control" id="starting_point_id" name="starting_point_id" required>
                     @forelse ($bus_routes as $item)
                     <option value="{{ $item->id }}">
-                        PHP {{ $item->fare }} ({{ $item->starting_point }} - {{ $item->destination }})
+                        {{ $item->name }}
                     </option>
                     @empty
                     <option selected>No bus routes available</option>
                     @endforelse
                 </select>
+            </div>
+            <div class="mt-3">
+                <p class="mb-0 ml-1 text-left">To :</p>
+                <select class="form-select form-control" id="destination_id" name="destination_id" required>
+                    @forelse ($bus_routes as $item)
+                    <option value="{{ $item->id }}">
+                        {{ $item->name }}
+                    </option>
+                    @empty
+                    <option selected>No bus routes available</option>
+                    @endforelse
+                </select>
+            </div>
+            <div class="my-3">
+                <p class="mb-0 ml-1 text-left">Fare :</p>
+                <input type="text" name="fare" id="fare" class="form-control" value="{{ old('fare') }}"
+                    placeholder="Fare" required>
+                @if($errors->has('fare'))
+                <div class="invalid-feedback">
+                    <strong>{{ $errors->first('fare') }}</strong>
+                </div>
+                @endif
             </div>
             <div class="my-3">
                 <p class="mb-0 ml-1 text-left">Date :</p>
@@ -58,7 +80,7 @@
             </div>
             <div class="my-3">
                 <p class="mb-0 ml-1 text-left">Departure Time :</p>
-                <input type="text" name="time_departure" id="time_departure" class="form-control"
+                <input type="time" name="time_departure" id="time_departure" class="form-control"
                     value="{{ old('time_departure') }}" placeholder="Departure time e.g. 3:30 PM" required>
                 @if($errors->has('time_departure'))
                 <div class="invalid-feedback">
@@ -68,7 +90,7 @@
             </div>
             <div class="my-3">
                 <p class="mb-0 ml-1 text-left">Arrival Time :</p>
-                <input type="text" name="time_arrival" id="time_arrival" class="form-control"
+                <input type="time" name="time_arrival" id="time_arrival" class="form-control"
                     value="{{ old('time_arrival') }}" placeholder="Arrival Time e.g. 3:30 PM" required>
                 @if($errors->has('time_arrival'))
                 <div class="invalid-feedback">
@@ -91,10 +113,11 @@
             <x-table>
                 <x-slot name="thead">
                     <tr>
-                        
                         <th>Bus</th>
                         <th>Driver</th>
-                        <th>Bus Route</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Fare</th>
                         <th>Schedule Date</th>
                         <th>Departure Time</th>
                         <th>Arrival Time</th>
@@ -104,10 +127,11 @@
                 <x-slot name="tbody">
                     @forelse ($schedules as $item)
                     <tr>
-                        
                         <td>{{ $item->bus->plate_number}}</td>
                         <td>{{ $item->user->name}}</td>
-                        <td>{{ $item->bus_route->starting_point}} - {{ $item->bus_route->destination}}</td>
+                        <td>{{ $item->starting_point->name}}</td>
+                        <td>{{ $item->destination->name}}</td>
+                        <td>{{ $item->fare}}</td>
                         <td>{{ $item->schedule_date}}</td>
                         <td>{{ $item->time_departure}}</td>
                         <td>{{ $item->time_arrival}}</td>
@@ -117,7 +141,8 @@
                                 @method('DELETE')
                                 <button class="btn btn-primary openUpdateModal" type="button" data-id="{{ $item->id }}"
                                     data-bus_id="{{ $item->bus_id }}" data-user_id="{{ $item->user_id }}"
-                                    data-bus_route_id="{{ $item->bus_route_id }}"
+                                    data-starting_point_id="{{ $item->starting_point_id }}"
+                                    data-destination_id="{{ $item->destination_id }}" data-fare="{{ $item->fare }}"
                                     data-schedule_date="{{ $item->schedule_date }}"
                                     data-time_departure="{{ $item->time_departure }}"
                                     data-time_arrival="{{ $item->time_arrival }}">Update</button>
@@ -151,7 +176,9 @@
                 $(this).data('id'),
                 $(this).data('bus_id'),
                 $(this).data('user_id'),
-                $(this).data('bus_route_id'),
+                $(this).data('starting_point_id'),
+                $(this).data('destination_id'),
+                $(this).data('fare'),
                 $(this).data('schedule_date'),
                 $(this).data('time_departure'),
                 $(this).data('time_arrival'),
@@ -177,7 +204,9 @@
             id = null,
             bus_id = null,
             user_id = null,
-            bus_route_id = null,
+            starting_point_id = null,
+            destination_id = null,
+            fare = null,
             schedule_date = null,
             time_departure = null,
             time_arrival = null,
@@ -186,8 +215,10 @@
             if(modalFooter == 'Update'){
                 $('#bus_id').val(bus_id);
                 $('#user_id').val(user_id);
-                $('#bus_route_id').val(bus_route_id);
+                $('#starting_point_id').val(starting_point_id);
+                $('#destination_id').val(destination_id);
             }
+            $('#fare').val(fare);
             $('#schedule_date').val(schedule_date);
             $('#time_departure').val(time_departure);
             $('#time_arrival').val(time_arrival);
