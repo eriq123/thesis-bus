@@ -21,9 +21,14 @@ class Schedule extends Model
         return $this->belongsTo(Bus::class);
     }
 
-    public function bus_route()
+    public function starting_point()
     {
-        return $this->belongsTo(BusRoute::class);
+        return $this->belongsTo(BusRoute::class, 'starting_point_id', 'id');
+    }
+
+    public function destination()
+    {
+        return $this->belongsTo(BusRoute::class, 'destination_id', 'id');
     }
 
     public function bookings()
