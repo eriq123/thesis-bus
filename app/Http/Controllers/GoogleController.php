@@ -43,7 +43,7 @@ class GoogleController extends Controller
                     'email' => $googleUser->email,
                     'google_id' => $googleUser->id,
                     'password' => Hash::make($this->user_default_password),
-                    'role_id' => Role::find($this->user_default_role)->id,
+                    'role_id' => $this->user_default_role,
                 ]);
             }
         }

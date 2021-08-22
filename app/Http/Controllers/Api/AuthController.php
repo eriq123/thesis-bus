@@ -46,7 +46,7 @@ class AuthController extends Controller
         if (!$user) {
             $user = User::where('email', $request->email)->first();
 
-            if($user){
+            if ($user) {
                 $user->google_id = $request->id;
                 $user->save();
             } else {
@@ -55,7 +55,7 @@ class AuthController extends Controller
                     'email' => $request->email,
                     'google_id' => $request->id,
                     'password' => Hash::make($this->user_default_password),
-                    'role_id' => Role::find($this->user_default_role)->id,
+                    'role_id' => $this->user_default_role,
                 ]);
             }
         }
@@ -77,7 +77,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => Role::find($this->user_default_role)->id
+            'role_id' => $this->user_default_role,
         ]);
 
         $user = User::find($user->id);
