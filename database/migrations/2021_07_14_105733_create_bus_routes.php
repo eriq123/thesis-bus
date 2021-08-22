@@ -13,25 +13,11 @@ class CreateBusRoutes extends Migration
      */
     public function up()
     {
-        Schema::create('bus_route_starts', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamps();
-            $table->softDeletes();
-        });
-
-        Schema::create('bus_route_destinations', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamps();
-            $table->softDeletes();
-        });
-
         Schema::create('bus_routes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('bus_route_start_id')->constrained()->onDelete('cascade');
-            $table->foreignId('bus_route_destination_id')->constrained()->onDelete('cascade');
-            $table->integer('fare');
+            $table->string('name');
+            $table->boolean('isStartingPoint')->default(false);
+            $table->boolean('isDestination')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -44,8 +30,6 @@ class CreateBusRoutes extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bus_route_starts');
-        Schema::dropIfExists('bus_route_destinations');
         Schema::dropIfExists('bus_routes');
     }
 }
