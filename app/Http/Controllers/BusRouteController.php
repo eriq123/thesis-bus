@@ -3,18 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\BusRoute;
+use App\Repositories\BusRouteRepository;
 use Illuminate\Http\Request;
 
 class BusRouteController extends Controller
 {
-    public function index()
+    private $busRouteRepository;
+
+    public function __construct(BusRouteRepository $busRouteRepository)
     {
-        $this->data['bus_routes'] = BusRoute::all();
-        return view('admin.bus.routes', $this->data);
+        $this->busRouteRepository = $busRouteRepository;
     }
 
-    public function validateRequest($request)
+    public function validateRequest($request, $isUpdate = false)
     {
+        if($isUpdate) {
+            $this->validate($request, [
+                'id'=>'required',
+            ]);
+        }
+
         $this->validate($request, [
             'name' => 'required',
         ], [
@@ -22,35 +30,28 @@ class BusRouteController extends Controller
         ]);
     }
 
-    public function saveRequest($bus_route, $request)
+    public function index()
     {
-        $bus_route->name = $request->name;
-        $bus_route->save();
+        return view('admin.bus.routes', $this->busRouteRepository->index());
     }
 
     public function store(Request $request)
     {
         $this->validateRequest($request);
-        $bus_route = new BusRoute();
-        $this->saveRequest($bus_route, $request);
+        $this->busRouteRepository->store($request);
         return redirect()->route('buses.routes.index')->withSuccess('Added Successfully!');
     }
 
     public function update(Request $request)
     {
-        $this->validateRequest($request);
-        $this->validate($request, [
-            'id'=>'required',
-        ]);
-        $bus_route = BusRoute::find($request->id);
-        $this->saveRequest($bus_route, $request);
-
+        $this->validateRequest($request, true);
+        $this->busRouteRepository->update($request);
         return redirect()->route('buses.routes.index')->withSuccess('Updated Successfully!');
     }
 
     public function destroy($id)
     {
-        BusRoute::destroy($id);
+        $this->busRouteRepository->destroy($id);
         return redirect()->route('buses.routes.index')->withSuccess('Deleted Successfully!');
     }
 

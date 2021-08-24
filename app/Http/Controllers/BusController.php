@@ -2,24 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bus;
+use App\Repositories\BusRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class BusController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    private $busRepository;
+
+    public function __construct(BusRepository $busRepository)
     {
-        $this->data['buses'] = Bus::all();
-        return view('admin.bus.index', $this->data);
+        $this->busRepository = $busRepository;
     }
 
-    public function validateRequest($request)
+    public function validateRequest($request, $isUpdate = false)
     {
+        if ($isUpdate) {
+            $this->validate($request, [
+                'id' => 'required',
+            ]);
+        }
+
         $this->validate($request, [
             'plate_number' => 'required|max:255',
             'type' => 'required|max:255',
@@ -32,12 +35,14 @@ class BusController extends Controller
         ]);
     }
 
-    public function saveRequest($bus, $request)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
-        $bus->plate_number = $request->plate_number;
-        $bus->type = $request->type;
-        $bus->capacity = $request->capacity;
-        $bus->save();
+        return view('admin.bus.index', $this->busRepository->index());
     }
 
     /**
@@ -49,9 +54,8 @@ class BusController extends Controller
     public function store(Request $request)
     {
         $this->validateRequest($request);
-        $bus = new Bus();
-        $this->saveRequest($bus, $request);
-        return redirect()->route('buses.index')->withSuccess('Added Successfully!');
+        $this->busRepository->store($request);
+        return Redirect::route('buses.index')->withSuccess('Added Successfully!');
     }
 
     /**
@@ -63,14 +67,9 @@ class BusController extends Controller
      */
     public function update(Request $request)
     {
-        $this->validateRequest($request);
-        $this->validate($request, [
-            'id'=>'required',
-        ]);
-        $bus = Bus::find($request->id);
-        $this->saveRequest($bus, $request);
-
-        return redirect()->route('buses.index')->withSuccess('Updated Successfully!');
+        $this->validateRequest($request, true);
+        $this->busRepository->update($request);
+        return Redirect::route('buses.index')->withSuccess('Updated Successfully!');
     }
 
     /**
@@ -81,7 +80,7 @@ class BusController extends Controller
      */
     public function destroy($id)
     {
-        Bus::destroy($id);
-        return redirect()->route('buses.index')->withSuccess('Deleted Successfully!');
+        $this->busRepository->destroy($id);
+        return Redirect::route('buses.index')->withSuccess('Deleted Successfully!');
     }
 }
