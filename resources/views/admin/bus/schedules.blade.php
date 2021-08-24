@@ -115,12 +115,11 @@
                     <tr>
                         <th>Bus</th>
                         <th>Driver</th>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>Fare</th>
+                        <th>Routes</th>
                         <th>Schedule Date</th>
                         <th>Departure Time</th>
                         <th>Arrival Time</th>
+                        <th>Fare</th>
                         <th>Actions</th>
                     </tr>
                 </x-slot>
@@ -129,12 +128,11 @@
                     <tr>
                         <td>{{ $item->bus->plate_number}}</td>
                         <td>{{ $item->user->name}}</td>
-                        <td>{{ $item->starting_point->name}}</td>
-                        <td>{{ $item->destination->name}}</td>
-                        <td>{{ $item->fare}}</td>
+                        <td>{{ $item->starting_point->name}} - {{ $item->destination->name}}</td>
                         <td>{{ $item->schedule_date}}</td>
                         <td>{{ $item->time_departure}}</td>
                         <td>{{ $item->time_arrival}}</td>
+                        <td>{{ $item->fare}}</td>
                         <td>
                             <form action="{{ route('buses.schedules.destroy', ['id'=> $item->id]) }}" method="POST">
                                 @csrf
