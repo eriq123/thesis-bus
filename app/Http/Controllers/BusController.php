@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class BusController extends Controller
 {
+    private $DEFAULT_REDIRECT_ROUTE = 'buses.index';
     private $busRepository;
 
     public function __construct(BusRepository $busRepository)
@@ -34,7 +35,7 @@ class BusController extends Controller
     public function store(Request $request)
     {
         $this->busRepository->store($request);
-        return Redirect::route('buses.index')->withSuccess('Added Successfully!');
+        return Redirect::route($this->DEFAULT_REDIRECT_ROUTE)->withSuccess('Added Successfully!');
     }
 
     /**
@@ -47,7 +48,7 @@ class BusController extends Controller
     public function update(Request $request)
     {
         $this->busRepository->update($request);
-        return Redirect::route('buses.index')->withSuccess('Updated Successfully!');
+        return Redirect::route($this->DEFAULT_REDIRECT_ROUTE)->withSuccess('Updated Successfully!');
     }
 
     /**
@@ -59,6 +60,6 @@ class BusController extends Controller
     public function destroy($id)
     {
         $this->busRepository->destroy($id);
-        return Redirect::route('buses.index')->withSuccess('Deleted Successfully!');
+        return Redirect::route($this->DEFAULT_REDIRECT_ROUTE)->withSuccess('Deleted Successfully!');
     }
 }
