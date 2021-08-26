@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
-use App\Models\User;
+use App\Repositories\AuthRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
-    private $user_default_role;
+    private $authRepository;
 
-    public function __construct()
+    public function __construct(AuthRepository $authRepository)
     {
-        $this->user_default_role = env('USER_DEFAULT_ROLE', 4);
+        $this->authRepository = $authRepository;
     }
 
     public function login(Request $request)
@@ -34,21 +33,23 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed',
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role_id' => $this->user_default_role,
-        ]);
-
+        $user = $this->authRepository->register($request);
         Auth::login($user);
 
         return redirect("/")->withSuccess('Sign up successful!');
+    }
+
+    public function googleRedirect()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function googleCallback()
+    {
+        $googleUser = Socialite::driver('google')->stateless()->user();
+        $user = $this->authRepository->google($googleUser);
+        Auth::login($user);
+
+        return redirect('/');
     }
 }

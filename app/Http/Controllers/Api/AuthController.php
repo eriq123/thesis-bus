@@ -5,19 +5,18 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
+use App\Repositories\AuthRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    private $user_default_role;
-    private $user_default_password;
+    private $authRepository;
 
-    public function __construct()
+    public function __construct(AuthRepository $authRepository)
     {
-        $this->user_default_role = env('USER_DEFAULT_ROLE', 4);
-        $this->user_default_password = env('USER_DEFAULT_PASSWORD', '123456');
+        $this->authRepository = $authRepository;
     }
 
     public function login(Request $request)
@@ -40,48 +39,18 @@ class AuthController extends Controller
         return response()->json($user, 200);
     }
 
-    public function google(Request $request)
+    public function register(Request $request)
     {
-        $user = User::where('google_id', $request->id)->first();
-        if (!$user) {
-            $user = User::where('email', $request->email)->first();
-
-            if ($user) {
-                $user->google_id = $request->id;
-                $user->save();
-            } else {
-                $user = User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'google_id' => $request->id,
-                    'password' => Hash::make($this->user_default_password),
-                    'role_id' => $this->user_default_role,
-                ]);
-            }
-        }
-
+        $user = $this->authRepository->register($request);
+        $user = User::find($user->id);
         $user->token = $user->createToken('Access_token')->plainTextToken;
 
         return response()->json($user, 200);
     }
 
-    public function register(Request $request)
+    public function google(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed',
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role_id' => $this->user_default_role,
-        ]);
-
-        $user = User::find($user->id);
-
+        $user = $this->authRepository->google($request);
         $user->token = $user->createToken('Access_token')->plainTextToken;
 
         return response()->json($user, 200);

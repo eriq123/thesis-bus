@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BusRoute;
 use App\Repositories\BusRouteRepository;
 use Illuminate\Http\Request;
 
@@ -38,5 +37,4 @@ class BusRouteController extends Controller
         $this->busRouteRepository->destroy($id);
         return redirect()->route($this->DEFAULT_REDIRECT_ROUTE)->withSuccess('Deleted Successfully!');
     }
-
 }

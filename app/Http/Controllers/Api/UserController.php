@@ -8,9 +8,10 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         return response()->json([
             'user' => Auth::user(),
-        ],200);
+        ], 200);
     }
 }

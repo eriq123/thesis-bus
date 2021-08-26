@@ -4,13 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\BusRoute;
+use App\Repositories\BusRouteRepository;
 use Illuminate\Http\Request;
 
 class BusRouteController extends Controller
 {
-    public function all()
+    private $busRouteRepository;
+
+    public function __construct(BusRouteRepository $busRouteRepository)
     {
-        $this->data['bus_routes'] = BusRoute::all();
-        return response()->json($this->data, 200);
+        $this->busRouteRepository = $busRouteRepository;
+    }
+
+    public function index()
+    {
+        return response()->json($this->busRouteRepository->index(), 200);
     }
 }

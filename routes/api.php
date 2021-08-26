@@ -16,12 +16,19 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
-Route::post('google', [AuthController::class, 'google']);
 
-Route::middleware('auth:sanctum')->group( function () {
-    Route::get('user', [UserController::class, 'index']);
-    Route::get('bus/route/all', [BusRouteController::class, 'all']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/google', [AuthController::class, 'google']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', [UserController::class, 'index']);
+
+    Route::prefix('buses')->name('buses.')->group(function () {
+        Route::prefix('routes')->name('routes.')->group(function () {
+            Route::get('/', [BusRouteController::class, 'all']);
+        });
+    });
+
     Route::post('logout', [AuthController::class, 'logout']);
 });

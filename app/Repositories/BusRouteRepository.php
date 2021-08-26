@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Models\Bus;
 use App\Models\BusRoute;
 use Illuminate\Support\Facades\Validator;
 
@@ -30,22 +29,22 @@ class BusRouteRepository
             'name.required' => 'Name is required.',
         ];
 
-        if($isUpdate) $rules['id'] = 'required';
+        if ($isUpdate) $rules['id'] = 'required';
 
         Validator::make($request->all(), $rules, $errorMessages)->validate();
     }
 
     public function store($request)
     {
-        $bus_route = new BusRoute();
         $this->validateRequest($request);
+        $bus_route = new BusRoute();
         $this->saveRequest($bus_route, $request);
     }
 
     public function update($request)
     {
-        $bus_route = BusRoute::find($request->id);
         $this->validateRequest($request, true);
+        $bus_route = BusRoute::find($request->id);
         $this->saveRequest($bus_route, $request);
     }
 
