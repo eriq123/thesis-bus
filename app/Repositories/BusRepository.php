@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Bus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class BusRepository
 {
@@ -26,6 +27,26 @@ class BusRepository
         $bus->save();
     }
 
+    private function validateRequest($request, $isUpdate = false)
+    {
+        $rules = [
+            'plate_number' => 'required|max:255',
+            'type' => 'required|max:255',
+            'capacity' => 'required|numeric',
+        ];
+
+        $errorMessages = [
+            'plate_number.required' => 'Plate number field is required.',
+            'type.required' => 'Bus route field is required.',
+            'capacity.required' => 'Total seats field is required.',
+            'capacity.numeric' => 'Total seats field must be a number.'
+        ];
+
+        if($isUpdate) $rules['id'] = 'required';
+
+        Validator::make($request->all(), $rules, $errorMessages)->validate();
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -35,6 +56,7 @@ class BusRepository
     public function store($request)
     {
         $bus = new Bus();
+        $this->validateRequest($request);
         $this->saveRequest($bus, $request);
     }
 
@@ -48,6 +70,7 @@ class BusRepository
     public function update($request)
     {
         $bus = Bus::find($request->id);
+        $this->validateRequest($request, true);
         $this->saveRequest($bus, $request);
     }
 

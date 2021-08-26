@@ -15,26 +15,6 @@ class BusController extends Controller
         $this->busRepository = $busRepository;
     }
 
-    public function validateRequest($request, $isUpdate = false)
-    {
-        if ($isUpdate) {
-            $this->validate($request, [
-                'id' => 'required',
-            ]);
-        }
-
-        $this->validate($request, [
-            'plate_number' => 'required|max:255',
-            'type' => 'required|max:255',
-            'capacity' => 'required|numeric',
-        ], [
-            'plate_number.required' => 'Plate Number is required.',
-            'type.required' => 'Bus Route is required.',
-            'capacity.required' => 'Total Seats is required.',
-            'capacity.numeric' => 'Total Seats must be a number.'
-        ]);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -53,7 +33,6 @@ class BusController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validateRequest($request);
         $this->busRepository->store($request);
         return Redirect::route('buses.index')->withSuccess('Added Successfully!');
     }
@@ -67,7 +46,6 @@ class BusController extends Controller
      */
     public function update(Request $request)
     {
-        $this->validateRequest($request, true);
         $this->busRepository->update($request);
         return Redirect::route('buses.index')->withSuccess('Updated Successfully!');
     }
