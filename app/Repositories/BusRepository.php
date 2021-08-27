@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Bus;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class BusRepository
@@ -42,7 +41,7 @@ class BusRepository
             'capacity.numeric' => 'Total seats field must be a number.'
         ];
 
-        if($isUpdate) $rules['id'] = 'required';
+        if ($isUpdate) $rules['id'] = 'required';
 
         Validator::make($request->all(), $rules, $errorMessages)->validate();
     }
@@ -55,8 +54,8 @@ class BusRepository
      */
     public function store($request)
     {
-        $bus = new Bus();
         $this->validateRequest($request);
+        $bus = new Bus();
         $this->saveRequest($bus, $request);
     }
 
@@ -69,8 +68,8 @@ class BusRepository
      */
     public function update($request)
     {
-        $bus = Bus::find($request->id);
         $this->validateRequest($request, true);
+        $bus = Bus::find($request->id);
         $this->saveRequest($bus, $request);
     }
 
