@@ -57,7 +57,7 @@
                                 <div class="my-3">
                                     <p class="mb-0 ml-1 text-left">Date :</p>
                                     <input type="date" name="schedule_date" id="schedule_date" class="form-control"
-                                        value="{{ old('schedule_date') }}" placeholder="Date" required>
+                                        value="{{ Carbon\Carbon::now()->format('Y-m-d') }}" placeholder="Date" required>
                                     @if($errors->has('schedule_date'))
                                     <div class="invalid-feedback">
                                         <strong>{{ $errors->first('schedule_date') }}</strong>

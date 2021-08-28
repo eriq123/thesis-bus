@@ -21,8 +21,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <p class="mb-0 ml-1 text-left">Enter quantity :</p>
-                                    <input type="text" name="quantity" id="quantity" class="form-control"
-                                        value="{{ old('quantity') }}" placeholder="Enter quantity" required>
+                                    <input type="text" name="quantity" id="quantity" class="form-control" value="1"
+                                        placeholder="Enter quantity" required>
                                     @if($errors->has('quantity'))
                                     <div class="invalid-feedback">
                                         <strong>{{ $errors->first('quantity') }}</strong>
