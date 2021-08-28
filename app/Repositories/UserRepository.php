@@ -89,7 +89,7 @@ class UserRepository
     public function changePassword($request)
     {
         $user = Auth::user();
-        $user->password = Hash::make($request->password);
+        $user->password = Hash::make($request->new_password);
         $user->save();
 
         return $user;

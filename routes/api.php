@@ -23,6 +23,8 @@ Route::post('/google', [AuthController::class, 'google']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [UserController::class, 'index']);
+    Route::get('/user/update', [UserController::class, 'update']);
+    Route::get('/update_password', [UserController::class, 'changePassword']);
 
     Route::prefix('buses')->name('buses.')->group(function () {
         Route::prefix('routes')->name('routes.')->group(function () {
