@@ -30,10 +30,11 @@ class AuthRepository
 
     public function createUser($request, $isGoogle = false)
     {
-        $password = $request->password;
         if ($isGoogle) {
             $user['google_id'] = $request->id;
             $password = $this->user_default_password;
+        } else {
+            $password = $request->password;
         }
 
         $user = [
@@ -43,7 +44,7 @@ class AuthRepository
             'role_id' => $this->user_default_role,
         ];
 
-        return User::create($user);
+        return  User::create($user);
     }
 
     public function register($request)
@@ -63,7 +64,7 @@ class AuthRepository
                 $user->google_id = $request->id;
                 $user->save();
             } else {
-                $this->createUser($request, true);
+                $user = $this->createUser($request, true);
             }
         }
 
