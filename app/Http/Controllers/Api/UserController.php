@@ -28,9 +28,7 @@ class UserController extends Controller
     {
         $this->userRepository->update($request, Auth::user());
 
-        return response()->json([
-            'user' => Auth::user(),
-        ], 200);
+        return response()->json(Auth::user(), 200);
     }
 
     public function changePassword(Request $request)
@@ -45,8 +43,6 @@ class UserController extends Controller
 
         $this->userRepository->changePassword($request);
 
-        return response()->json([
-            'user' => $this->userRepository->changePassword($request),
-        ], 200);
+        return response()->json($this->userRepository->changePassword($request), 200);
     }
 }
