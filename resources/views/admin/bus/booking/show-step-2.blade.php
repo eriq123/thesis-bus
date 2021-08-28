@@ -12,6 +12,9 @@
                         <input type="hidden" name="time_departure" id="time_departure">
                         <input type="hidden" name="time_arrival" id="time_arrival">
 
+                        <a class="text-left mb-0 text-muted" href="{{ route('buses.bookings.show.step.one') }}">
+                            <span class="fa fa-angle-left"></span> Back
+                        </a>
                         <h1 class="text-center">Book a seat</h1>
                         <div class="card outlined">
                             <div class="card-body">
