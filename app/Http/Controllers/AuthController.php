@@ -48,6 +48,7 @@ class AuthController extends Controller
     {
         $googleUser = Socialite::driver('google')->stateless()->user();
         $user = $this->authRepository->google($googleUser);
+
         Auth::login($user);
 
         return redirect('/');

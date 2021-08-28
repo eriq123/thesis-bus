@@ -24,6 +24,12 @@
         border-color: #c3e6cb;
     }
 
+    .alert-info {
+        color: #0c5460;
+        background-color: #d1ecf1;
+        border-color: #bee5eb;
+    }
+
     .fade-in {
         opacity: 1;
         animation-name: fadeInOpacity;

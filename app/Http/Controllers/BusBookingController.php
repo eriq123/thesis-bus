@@ -10,6 +10,89 @@ use Illuminate\Http\Request;
 
 class BusBookingController extends Controller
 {
+    public function showStepOne()
+    {
+        $this->data['bus_routes'] = BusRoute::all();
+        $this->data['passengers'] = User::where('role_id', 4)->orderBy('name')->get();
+
+        return view('admin.bus.booking.show-step-1', $this->data);
+    }
+
+    public function submitStepOne(Request $request)
+    {
+        $this->validate($request, [
+            'user_id' => 'required',
+            'starting_point_id' => 'required',
+            'destination_id' => 'required',
+            'schedule_date' => 'required',
+        ]);
+
+        session([
+            'user_id' => $request->user_id,
+            'starting_point_id' => $request->starting_point_id,
+            'destination_id' => $request->destination_id,
+            'schedule_date' => $request->schedule_date,
+        ]);
+        return redirect()->route('buses.bookings.show.step.two');
+    }
+
+    public function showStepTwo()
+    {
+        $starting_point_id = session('starting_point_id');
+        $destination_id = session('destination_id');
+        $schedule_date = session('schedule_date');
+        $this->data['schedules'] = Schedule::where('starting_point_id', $starting_point_id)
+            ->where('destination_id', $destination_id)
+            ->where('schedule_date', $schedule_date)
+            ->get();
+
+        $this->data['from'] = BusRoute::find($starting_point_id);
+        $this->data['to'] = BusRoute::find($destination_id);
+        $this->data['date'] = date('M d, Y', strtotime($schedule_date));
+        // $this->data['schedules'] = Schedule::all();
+
+        // $this->data['schedules'] = Schedule::where('starting_point_id', 1)
+        //     ->where('destination_id', 2)
+        //     ->where('schedule_date', 'Aug 29 2021')
+        //     ->get();
+
+
+        return view('admin.bus.booking.show-step-2', $this->data);
+    }
+
+    public function submitStepTwo(Request $request)
+    {
+        $this->validate($request, [
+            'quantity' => 'required|integer',
+            'time_arrival' => 'required',
+            'time_departure' => 'required',
+        ],[
+            'time_arrival.required'
+        ]);
+
+        $starting_point_id = session('starting_point_id');
+        $destination_id = session('destination_id');
+        $schedule_date = session('schedule_date');
+
+        $schedule = Schedule::where('starting_point_id', $starting_point_id)
+            ->where('destination_id', $destination_id)
+            ->where('schedule_date', $schedule_date)
+            ->where('time_arrival', $request->time_arrival)
+            ->where('time_departure', $request->time_departure)
+            ->first();
+
+        $booking = new Booking();
+        $booking->user_id = session('user_id');
+        $booking->schedule_id = $schedule->id;
+        $booking->fare_amount = $schedule->fare;
+        $booking->quantity = $request->quantity;
+        $booking->grand_total = $request->quantity * $schedule->fare;
+        $booking->status = 'Open';
+        $booking->save();
+
+        return redirect()->route('buses.bookings.index')->withSuccess('Added Successfully!');
+    }
+
     public function index()
     {
         $this->data['schedules'] = Schedule::all();
@@ -18,63 +101,6 @@ class BusBookingController extends Controller
         $this->data['passengers'] = User::where('role_id', 4)->get();
 
         return view('admin.bus.bookings', $this->data);
-    }
-
-    public function scheduleByRouteID(Request $request)
-    {
-        $schedule = Schedule::where('bus_route_id', $request->id)->get();
-
-        return response()->json($schedule);
-    }
-
-    public function validateRequest($request)
-    {
-        $this->validate($request, [
-            'user_id' => 'required',
-            'schedule_id' => 'required',
-            'fare_amount' => 'required|integer',
-            'quantity' => 'required|integer',
-            'grand_total' => 'required|integer',
-        ], [
-            'user_id.required' => 'Passenger ID is required',
-            'schedule_id.required' => 'Schedule ID is required',
-            'fare_amount.required' => 'Fare amount is required',
-            'fare_amount.integer' => 'Fare amount must be an integer',
-            'quantity.required' => 'Quantity is required',
-            'quantity.integer' => 'Quantity must be an integer',
-            'grand_total.required' => 'Grand total is required',
-            'grand_total.integer' => 'Grand total must be an integer',
-        ]);
-    }
-
-    public function saveRequest($schedule, $request)
-    {
-        $schedule->user_id = $request->user_id;
-        $schedule->schedule_id = $request->schedule_id;
-        $schedule->fare_amount = $request->fare_amount;
-        $schedule->quantity = $request->quantity;
-        $schedule->grand_total = $request->grand_total;
-        $schedule->save();
-    }
-
-    public function store(Request $request)
-    {
-        $this->validateRequest($request);
-        $schedule = new Booking();
-        $this->saveRequest($schedule, $request);
-        return redirect()->route('buses.bookings.index')->withSuccess('Added Successfully!');
-    }
-
-    public function update(Request $request)
-    {
-        $this->validateRequest($request);
-        $this->validate($request, [
-            'id'=>'required',
-        ]);
-        $schedule = Booking::find($request->id);
-        $this->saveRequest($schedule, $request);
-
-        return redirect()->route('buses.bookings.index')->withSuccess('Updated Successfully!');
     }
 
     public function destroy($id)

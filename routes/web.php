@@ -49,10 +49,13 @@ Route::middleware(['web','auth'])->group(function () {
 
             Route::prefix('bookings')->name('bookings.')->group(function () {
                 Route::get('/', [BusBookingController::class, 'index'])->name('index');
-                Route::post('/store', [BusBookingController::class, 'store'])->name('store');
-                Route::post('/update', [BusBookingController::class, 'update'])->name('update');
                 Route::delete('/{id}', [BusBookingController::class, 'destroy'])->name('destroy');
-                Route::post('/scheduleByRouteID', [BusBookingController::class, 'scheduleByRouteID'])->name('scheduleByRouteID');
+
+                Route::get('/process/step/one', [BusBookingController::class, 'showStepOne'])->name('show.step.one');
+                Route::post('/process/step/one', [BusBookingController::class, 'submitStepOne'])->name('submit.step.one');
+
+                Route::get('/process/step/two', [BusBookingController::class, 'showStepTwo'])->name('show.step.two');
+                Route::post('/process/step/two', [BusBookingController::class, 'submitStepTwo'])->name('submit.step.two');
             });
 
 
@@ -70,15 +73,17 @@ Route::middleware(['web','auth'])->group(function () {
             Route::post('/update', [UserController::class, 'update'])->name('update');
             Route::post('/changePassword', [UserController::class, 'changePassword'])->name('changePassword');
             Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
+            Route::post('/searchByName', [UserController::class, 'searchByName'])->name('searchByName');
         });
 
     });
-        Route::prefix('mybookings')->name('mybookings.')->group(function () {
-            Route::get('/', [UserBookingController::class, 'index'])->name('index');
-            Route::post('/store', [UserBookingController::class, 'store'])->name('store');
-            Route::post('/update', [UserBookingController::class, 'update'])->name('update');
-            Route::delete('/{id}', [UserBookingController::class, 'destroy'])->name('destroy');
-            Route::post('/scheduleByRouteID', [UserBookingController::class, 'scheduleByRouteID'])->name('scheduleByRouteID');
-        });
+
+    Route::prefix('mybookings')->name('mybookings.')->group(function () {
+        Route::get('/', [UserBookingController::class, 'index'])->name('index');
+        Route::post('/store', [UserBookingController::class, 'store'])->name('store');
+        Route::post('/update', [UserBookingController::class, 'update'])->name('update');
+        Route::delete('/{id}', [UserBookingController::class, 'destroy'])->name('destroy');
+        Route::post('/scheduleByRouteID', [UserBookingController::class, 'scheduleByRouteID'])->name('scheduleByRouteID');
+    });
 
 });

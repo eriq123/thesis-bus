@@ -38,12 +38,6 @@ class UserController extends Controller
         $this->userRepository->update($request, $user);
         return redirect()->route($this->DEFAULT_REDIRECT_ROUTE)->withSuccess('Updated Successfully!');
     }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
 
     public function destroy($id)
     {
@@ -62,5 +56,15 @@ class UserController extends Controller
         $this->userRepository->changePassword($request);
 
         return redirect()->back()->withSuccess("Password changed successfully!");
+    }
+
+    public function searchByName(Request $request)
+    {
+        $user = User::where('name', 'LIKE', $request->name.'%')
+                ->where('role_id', 4)
+                ->orderBy('name')
+                ->get();
+
+        return response()->json($user);
     }
 }
