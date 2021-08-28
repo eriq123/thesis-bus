@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
         DB::table('roles')->insert(
             [
 
@@ -47,7 +48,20 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->count(50)->create();
         Bus::factory()->count(50)->create();
-        BusRoute::factory()->count(50)->create();
-        // Schedule::factory()->count(50)->create();
+
+        BusRoute::factory()->count(10)->create();
+
+        $busRoutes = BusRoute::all();
+
+        foreach($busRoutes as $start) {
+            foreach($busRoutes as $destination) {
+                if($start->id !== $destination->id) {
+                    Schedule::factory()->count(10)->create([
+                        'starting_point_id' => $start->id,
+                        'destination_id' => $destination->id,
+                    ]);
+                }
+            }
+        }
     }
 }

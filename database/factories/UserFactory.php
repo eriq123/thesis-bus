@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
@@ -28,7 +29,7 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => Hash::make(env('USER_DEFAULT_PASSWORD','123456')),
-            'role_id' => Arr::random([1,2,3,4]),
+            'role_id' => $this->faker->randomElement(Role::pluck('id')->toArray()),
         ];
     }
 
