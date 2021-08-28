@@ -49,13 +49,6 @@ class BusBookingController extends Controller
         $this->data['from'] = BusRoute::find($starting_point_id);
         $this->data['to'] = BusRoute::find($destination_id);
         $this->data['date'] = date('M d, Y', strtotime($schedule_date));
-        // $this->data['schedules'] = Schedule::all();
-
-        // $this->data['schedules'] = Schedule::where('starting_point_id', 1)
-        //     ->where('destination_id', 2)
-        //     ->where('schedule_date', 'Aug 29 2021')
-        //     ->get();
-
 
         return view('admin.bus.booking.show-step-2', $this->data);
     }
@@ -65,9 +58,8 @@ class BusBookingController extends Controller
         $this->validate($request, [
             'quantity' => 'required|integer',
             'time_arrival' => 'required',
-            'time_departure' => 'required',
         ],[
-            'time_arrival.required'
+            'time_arrival.required' => 'Please select a schedule.',
         ]);
 
         $starting_point_id = session('starting_point_id');
@@ -89,6 +81,13 @@ class BusBookingController extends Controller
         $booking->grand_total = $request->quantity * $schedule->fare;
         $booking->status = 'Open';
         $booking->save();
+
+        $request->session()->forget([
+            'user_id',
+            'starting_point_id',
+            'destination_id',
+            'schedule_date',
+        ]);
 
         return redirect()->route('buses.bookings.index')->withSuccess('Added Successfully!');
     }
