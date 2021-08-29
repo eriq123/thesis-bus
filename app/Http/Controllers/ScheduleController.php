@@ -81,5 +81,4 @@ class ScheduleController extends Controller
         Schedule::destroy($id);
         return redirect()->route('buses.schedules.index')->withSuccess('Deleted Successfully!');
     }
-
 }

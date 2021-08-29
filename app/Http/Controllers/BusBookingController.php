@@ -10,6 +10,33 @@ use Illuminate\Http\Request;
 
 class BusBookingController extends Controller
 {
+    public function process()
+    {
+        $this->data['bus_routes'] = BusRoute::all();
+        $this->data['passengers'] = User::where('role_id', 4)->orderBy('name')->get();
+        $this->data['schedules'] = [];
+
+        return view('admin.bus.booking.add-update', $this->data);
+    }
+    public function submitProcess(Request $request)
+    {
+
+    }
+
+    public function findScheduleByRouteIDs(Request $request)
+    {
+        $schedule = Schedule::when($request->starting_point_id, function($q) use ($request){
+            return $q->where('starting_point_id', $request->starting_point_id);
+        })
+        ->when($request->destination_id, function($q) use ($request){
+            return $q->where('destination_id', $request->destination_id);
+        })
+        ->with('bus')
+        ->get();
+
+        return response()->json($schedule);
+    }
+
     public function showStepOne()
     {
         $this->data['bus_routes'] = BusRoute::all();

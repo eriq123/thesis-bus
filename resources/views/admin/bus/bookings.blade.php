@@ -3,7 +3,7 @@
 
 @section('content_header')
 <div class="text-center">
-    <a href="{{ route('buses.bookings.show.step.one') }}" class="btn btn-outline-success" type="button">
+    <a href="{{ route('buses.bookings.process') }}" class="btn btn-outline-success" type="button">
         <i class="fas fa-book-open"></i>
         Book a seat
     </a>

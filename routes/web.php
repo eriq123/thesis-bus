@@ -51,6 +51,10 @@ Route::middleware(['web','auth'])->group(function () {
                 Route::get('/', [BusBookingController::class, 'index'])->name('index');
                 Route::delete('/{id}', [BusBookingController::class, 'destroy'])->name('destroy');
 
+                Route::get('/process', [BusBookingController::class, 'process'])->name('process');
+                Route::post('/process', [BusBookingController::class, 'submitProcess'])->name('submit.process');
+                Route::post('/findScheduleByRouteIDs', [BusBookingController::class, 'findScheduleByRouteIDs'])->name('findScheduleByRouteIDs');
+
                 Route::get('/process/step/one', [BusBookingController::class, 'showStepOne'])->name('show.step.one');
                 Route::post('/process/step/one', [BusBookingController::class, 'submitStepOne'])->name('submit.step.one');
 
