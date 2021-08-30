@@ -13,8 +13,8 @@ class BusBookingController extends Controller
 {
     public function stepOne()
     {
-        $this->data['bus_routes'] = BusRoute::all();
-        return response()->json($this->busBookingRepository->index(), 200);
+        $bus_routes = BusRoute::all();
+        return response()->json($bus_routes, 200);
     }
 
     public function stepTwo(Request $request)
