@@ -30,6 +30,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('routes')->name('routes.')->group(function () {
             Route::get('/', [BusRouteController::class, 'all']);
         });
+
+        Route::prefix('bookings')->name('bookings.')->group(function () {
+            Route::get('/', [BusBookingController::class, 'index']);
+        });
     });
 
     Route::post('logout', [AuthController::class, 'logout']);

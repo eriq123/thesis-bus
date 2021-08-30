@@ -6,6 +6,7 @@ use App\Models\Booking;
 use App\Models\BusRoute;
 use App\Models\Schedule;
 use App\Models\User;
+use App\Repositories\BusBookingRepository;
 use Illuminate\Http\Request;
 
 class BusBookingController extends Controller
@@ -119,14 +120,15 @@ class BusBookingController extends Controller
         return redirect()->route('buses.bookings.index')->withSuccess('Added Successfully!');
     }
 
+    private $busBookingRepository;
+    public function __construct(BusBookingRepository $busBookingRepository)
+    {
+        $this->busBookingRepository = $busBookingRepository;
+    }
+
     public function index()
     {
-        $this->data['schedules'] = Schedule::all();
-        $this->data['bus_routes'] = BusRoute::all();
-        $this->data['bookings'] = Booking::all();
-        $this->data['passengers'] = User::where('role_id', 4)->get();
-
-        return view('admin.bus.bookings', $this->data);
+        return view('admin.bus.bookings', $this->busBookingRepository->index());
     }
 
     public function destroy($id)
