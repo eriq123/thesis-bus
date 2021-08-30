@@ -13,8 +13,8 @@ class BusBookingController extends Controller
 {
     public function stepOne()
     {
-        $bus_routes = BusRoute::all();
-        return response()->json($bus_routes, 200);
+        $this->data['routes'] = BusRoute::all();
+        return response()->json($this->data, 200);
     }
 
     public function stepTwo(Request $request)
@@ -25,13 +25,13 @@ class BusBookingController extends Controller
             'schedule_date' => 'required',
         ]);
 
-        $schedule = Schedule::where('starting_point_id', $request->starting_point_id)
+        $this->data['schedule'] = Schedule::where('starting_point_id', $request->starting_point_id)
             ->where('destination_id', $request->destination_id)
             ->where('schedule_date', $request->schedule_date)
             ->with('bus')
             ->get();
 
-        return response()->json($schedule, 200);
+        return response()->json($this->data, 200);
     }
 
     public function confirm(Request $request)
@@ -43,14 +43,15 @@ class BusBookingController extends Controller
 
         $schedule = Schedule::find($request->schedule_id);
 
-        $booking = new Booking();
-        $booking->user_id = Auth::user()->id;
-        $booking->schedule_id = $request->schedule_id;
-        $booking->fare_amount = $schedule->fare;
-        $booking->quantity = $request->quantity;
-        $booking->grand_total = $request->quantity * $schedule->fare;
-        $booking->status = 'Open';
-        $booking->save();
+        $this->data['booking'] = new Booking();
+        $this->data['booking']->user_id = Auth::user()->id;
+        $this->data['booking']->schedule_id = $request->schedule_id;
+        $this->data['booking']->fare_amount = $schedule->fare;
+        $this->data['booking']->quantity = $request->quantity;
+        $this->data['booking']->grand_total = $request->quantity * $schedule->fare;
+        $this->data['booking']->status = 'Open';
+        $this->data['booking']->save();
 
+        return response()->json($this->data, 200);
     }
 }
