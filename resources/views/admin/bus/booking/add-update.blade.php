@@ -9,8 +9,7 @@
                 <div class="card-body">
                     <form action="{{ route('buses.bookings.submit.process') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="time_departure" id="time_departure">
-                        <input type="hidden" name="time_arrival" id="time_arrival">
+                        <input type="hidden" name="schedule_id" id="schedule_id">
 
                         <h1 class="text-center">Book a seat</h1>
 
@@ -91,8 +90,7 @@
 
                         <div id="step-two-wrapper">
                             @forelse ($schedules as $item)
-                            <div class="card" data-time_departure="{{ $item->time_departure }}"
-                                data-time_arrival="{{ $item->time_arrival }}">
+                            <div class="card" data-schedule_id="{{ $item->id }}">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
                                         <h4>
@@ -196,8 +194,7 @@
         $("#step-two-wrapper").on("click", '.card',function(){
             $('#step-two-wrapper .card').removeClass('active');
             $(this).toggleClass('active');
-            $('#time_departure').val($(this).data('time_departure'));
-            $('#time_arrival').val($(this).data('time_arrival'));
+            $('#schedule_id').val($(this).data('schedule_id'));
         });
 
         function searchScheduleByRouteIDs(startingPointID, destinationID){
@@ -213,7 +210,7 @@
                     if(data.length > 0) {
                         data.forEach(function(item){
                             $('#step-two-wrapper').append(`
-                            <div class="card" data-time_departure="${item.time_departure}" data-time_arrival="${item.time_arrival}">
+                            <div class="card" data-schedule_id="${item.id}">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
                                         <h4>

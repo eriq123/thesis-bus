@@ -6,11 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\BusRoute;
 use App\Models\Schedule;
+use App\Repositories\BusBookingRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class BusBookingController extends Controller
 {
+    private $busBookingRepository;
+
+    public function __construct(BusBookingRepository $busBookingRepository)
+    {
+        $this->busBookingRepository = $busBookingRepository;
+    }
+
     public function stepOne()
     {
         $this->data['routes'] = BusRoute::all();
@@ -36,22 +44,13 @@ class BusBookingController extends Controller
 
     public function confirm(Request $request)
     {
-        $this->validate($request, [
-            'schedule_id' => 'required',
-            'quantity' => 'required',
+        $request->merge([
+            "user_id" => Auth::user()->id
         ]);
+        $this->busBookingRepository->processBooking($request);
 
-        $schedule = Schedule::find($request->schedule_id);
-
-        $this->data['booking'] = new Booking();
-        $this->data['booking']->user_id = Auth::user()->id;
-        $this->data['booking']->schedule_id = $request->schedule_id;
-        $this->data['booking']->fare_amount = $schedule->fare;
-        $this->data['booking']->quantity = $request->quantity;
-        $this->data['booking']->grand_total = $request->quantity * $schedule->fare;
-        $this->data['booking']->status = 'Open';
-        $this->data['booking']->save();
-
-        return response()->json($this->data, 200);
+        return response()->json([
+            'success' => true,
+        ], 200);
     }
 }

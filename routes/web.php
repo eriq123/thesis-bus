@@ -54,12 +54,6 @@ Route::middleware(['web','auth'])->group(function () {
                 Route::get('/process', [BusBookingController::class, 'process'])->name('process');
                 Route::post('/process', [BusBookingController::class, 'submitProcess'])->name('submit.process');
                 Route::post('/findScheduleByRouteIDs', [BusBookingController::class, 'findScheduleByRouteIDs'])->name('findScheduleByRouteIDs');
-
-                Route::get('/process/step/one', [BusBookingController::class, 'showStepOne'])->name('show.step.one');
-                Route::post('/process/step/one', [BusBookingController::class, 'submitStepOne'])->name('submit.step.one');
-
-                Route::get('/process/step/two', [BusBookingController::class, 'showStepTwo'])->name('show.step.two');
-                Route::post('/process/step/two', [BusBookingController::class, 'submitStepTwo'])->name('submit.step.two');
             });
 
 
