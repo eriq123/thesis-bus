@@ -45,8 +45,7 @@ class BusBookingController extends Controller
 
     public function submitProcess(Request $request)
     {
-        $this->busBookingRepository->processBooking($request);
-        return redirect()->route('buses.bookings.index')->withSuccess('Added Successfully!');
+        return $this->busBookingRepository->processBooking($request);
     }
 
     public function findScheduleByRouteIDs(Request $request)

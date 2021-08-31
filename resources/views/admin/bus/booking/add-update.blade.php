@@ -9,6 +9,7 @@
                 <div class="card-body">
                     <form action="{{ route('buses.bookings.submit.process') }}" method="POST">
                         @csrf
+                        <input type="hidden" name="id" id="id" value="{{$booking->id ?? 0}}">
                         <input type="hidden" name="schedule_id" id="schedule_id"
                             value="{{$booking->schedule_id ?? ''}}">
 
@@ -263,6 +264,14 @@
             searchScheduleByRouteIDs(
                 $('#starting_point_id').val(),
                 $('#destination_id').val()
+            )
+        });
+
+
+        $('#schedule_date').change(function() {
+            searchScheduleByRouteIDs(
+                $('#starting_point_id').val(),
+                $('#schedule_date').val()
             )
         });
     });

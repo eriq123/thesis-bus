@@ -31,7 +31,7 @@ class BusBookingRepository
         Booking::destroy($id);
     }
 
-    private function validateBooking($request){
+    private function validateBooking($request, $isUpdate = false){
         $rules = [
             'user_id' => 'required',
             'schedule_id' => 'required',
@@ -45,15 +45,24 @@ class BusBookingRepository
             'quantity.integer' => 'Quantity should be an integer.',
         ];
 
+        if ($isUpdate) $rules['id'] = 'required';
+
         Validator::make($request->all(), $rules, $errorMessages)->validate();
     }
 
     public function processBooking($request)
     {
-        $this->validateBooking($request);
+        $this->validateBooking($request, true);
         $schedule = Schedule::findOrFail($request->schedule_id);
 
-        $booking = new Booking();
+        if($request->id == 0) {
+            $booking = new Booking();
+            $successMessage = 'Added Successfully!';
+        } else {
+            $booking = Booking::find($request->id);
+            $successMessage = 'Updated Successfully!';
+        }
+
         $booking->user_id = $request->user_id;
         $booking->schedule_id = $schedule->id;
         $booking->fare_amount = $schedule->fare;
@@ -62,6 +71,6 @@ class BusBookingRepository
         $booking->status = 'Open';
         $booking->save();
 
-        return $booking;
+        return redirect()->route('buses.bookings.index')->withSuccess($successMessage);
     }
 }
