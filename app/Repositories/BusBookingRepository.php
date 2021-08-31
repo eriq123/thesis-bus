@@ -12,7 +12,18 @@ class BusBookingRepository
 {
     public function index()
     {
-        return Booking::with('user')->with('schedule')->get();
+        $this->data['bookings'] = Booking::with('user')->with('schedule')->get();
+        $this->data['passengers'] = User::where('role_id', 4)->orderBy('name')->get();
+        return $this->data;
+    }
+
+    public function edit()
+    {
+        $this->data['bus_routes'] = BusRoute::all();
+        $this->data['passengers'] = User::where('role_id', 4)->orderBy('name')->get();
+        $this->data['schedules'] = [];
+
+        return $this->data;
     }
 
     public function destroy($id)

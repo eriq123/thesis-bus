@@ -3,7 +3,7 @@
 
 @section('content_header')
 <div class="text-center">
-    <a href="{{ route('buses.bookings.process') }}" class="btn btn-outline-success" type="button">
+    <a href="{{ route('buses.bookings.add') }}" class="btn btn-outline-success" type="button">
         <i class="fas fa-book-open"></i>
         Book a seat
     </a>
@@ -40,10 +40,8 @@
                             <form action="{{ route('buses.bookings.destroy', ['id'=> $item->id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-primary openUpdateModal" type="button" data-id="{{ $item->id }}"
-                                    data-user_id="{{ $item->user_id }}" data-schedule_id="{{ $item->schedule_id }}"
-                                    data-quantity="{{ $item->quantity }}" data-grand_total="{{ $item->grand_total }}"
-                                    data-status="{{ $item->status }}">Update</button>
+                                <a href="{{ route('buses.bookings.edit', ['id' => $item->id]) }}" role="button"
+                                    class="btn btn-primary">Update</a>
                                 <button class="btn btn-danger">Delete</button>
                             </form>
                         </td>

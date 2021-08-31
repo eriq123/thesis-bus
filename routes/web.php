@@ -49,9 +49,10 @@ Route::middleware(['web','auth'])->group(function () {
 
             Route::prefix('bookings')->name('bookings.')->group(function () {
                 Route::get('/', [BusBookingController::class, 'index'])->name('index');
+                Route::get('/add', [BusBookingController::class, 'add'])->name('add');
+                Route::get('/edit/{id}', [BusBookingController::class, 'edit'])->name('edit');
                 Route::delete('/{id}', [BusBookingController::class, 'destroy'])->name('destroy');
 
-                Route::get('/process', [BusBookingController::class, 'process'])->name('process');
                 Route::post('/process', [BusBookingController::class, 'submitProcess'])->name('submit.process');
                 Route::post('/findScheduleByRouteIDs', [BusBookingController::class, 'findScheduleByRouteIDs'])->name('findScheduleByRouteIDs');
             });

@@ -9,7 +9,8 @@
                 <div class="card-body">
                     <form action="{{ route('buses.bookings.submit.process') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="schedule_id" id="schedule_id">
+                        <input type="hidden" name="schedule_id" id="schedule_id"
+                            value="{{$booking->schedule_id ?? ''}}">
 
                         <h1 class="text-center">Book a seat</h1>
 
@@ -21,10 +22,12 @@
                                         <span class="text-danger">*</span>
                                     </p>
                                     <input type="text" name="search_user" id="search_user" class="form-control mb-3"
-                                        value="{{ old('search_user') }}" placeholder="Search a passenger">
+                                        placeholder="Search a passenger">
                                     <select class="form-control form-select" name="user_id" id="user_id" required>
                                         @foreach ($passengers as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        <option value="{{ $item->id }}"
+                                            {{ ($booking->user_id ?? 0) == $item->id ? 'selected' : '' }}>
+                                            {{ $item->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -38,7 +41,8 @@
                                     <select class="form-select form-control" id="starting_point_id"
                                         name="starting_point_id" required>
                                         @forelse ($bus_routes as $item)
-                                        <option value="{{ $item->id }}">
+                                        <option value="{{ $item->id }}"
+                                            {{ ($booking->schedule->starting_point_id ?? 0) == $item->id ? 'selected' : '' }}>
                                             {{ $item->name }}
                                         </option>
                                         @empty
@@ -51,7 +55,8 @@
                                     <select class="form-select form-control" id="destination_id" name="destination_id"
                                         required>
                                         @forelse ($bus_routes as $item)
-                                        <option value="{{ $item->id }}">
+                                        <option value="{{ $item->id }}"
+                                            {{ ($booking->schedule->destination_id ?? 0) == $item->id ? 'selected' : '' }}>
                                             {{ $item->name }}
                                         </option>
                                         @empty
@@ -65,7 +70,8 @@
                                         <span class="text-danger">*</span>
                                     </p>
                                     <input type="date" name="schedule_date" id="schedule_date" class="form-control"
-                                        value="{{ Carbon\Carbon::now()->format('Y-m-d') }}" placeholder="Date" required>
+                                        value="{{ $booking->schedule->schedule_date ?? Carbon\Carbon::now()->format('Y-m-d') }}"
+                                        placeholder="Date" required>
                                     @if($errors->has('schedule_date'))
                                     <div class="invalid-feedback">
                                         <strong>{{ $errors->first('schedule_date') }}</strong>
@@ -77,8 +83,8 @@
                                         Enter quantity :
                                         <span class="text-danger">*</span>
                                     </p>
-                                    <input type="text" name="quantity" id="quantity" class="form-control" value="1"
-                                        placeholder="Enter quantity" required>
+                                    <input type="text" name="quantity" id="quantity" class="form-control"
+                                        value="{{ $booking->quantity ?? 1 }}" placeholder="Enter quantity" required>
                                     @if($errors->has('quantity'))
                                     <div class="invalid-feedback">
                                         <strong>{{ $errors->first('quantity') }}</strong>
@@ -90,7 +96,8 @@
 
                         <div id="step-two-wrapper">
                             @forelse ($schedules as $item)
-                            <div class="card" data-schedule_id="{{ $item->id }}">
+                            <div class="card {{ $booking->schedule_id == $item->id ? 'active' : '' }}"
+                                data-schedule_id="{{ $item->id }}">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
                                         <h4>
@@ -164,6 +171,7 @@
 @section('js')
 <script>
     $( document ).ready(function() {
+        var BOOKING_SCHEDULE_ID = '{{ $booking->schedule_id ?? 0 }}';
         var debounce;
         $('#search_user').on('input',function (e) {
             clearTimeout(debounce);
@@ -210,7 +218,7 @@
                     if(data.length > 0) {
                         data.forEach(function(item){
                             $('#step-two-wrapper').append(`
-                            <div class="card" data-schedule_id="${item.id}">
+                            <div class="card ${BOOKING_SCHEDULE_ID == item.id ? 'active' : ''}" data-schedule_id="${item.id}">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
                                         <h4>

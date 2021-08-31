@@ -23,19 +23,24 @@ class BusBookingController extends Controller
         return view('admin.bus.bookings', $this->busBookingRepository->index());
     }
 
+    public function add()
+    {
+        $this->data = $this->busBookingRepository->edit();
+        $this->data['booking'] = [];
+        return view('admin.bus.booking.add-update', $this->data);
+    }
+
+    public function edit($id)
+    {
+        $this->data = $this->busBookingRepository->edit();
+        $this->data['booking'] = Booking::find($id);
+        return view('admin.bus.booking.add-update', $this->data);
+    }
+
     public function destroy($id)
     {
         $this->busBookingRepository->destroy($id);
         return redirect()->route('buses.bookings.index')->withSuccess('Deleted Successfully!');
-    }
-
-    public function process()
-    {
-        $this->data['bus_routes'] = BusRoute::all();
-        $this->data['passengers'] = User::where('role_id', 4)->orderBy('name')->get();
-        $this->data['schedules'] = [];
-
-        return view('admin.bus.booking.add-update', $this->data);
     }
 
     public function submitProcess(Request $request)
