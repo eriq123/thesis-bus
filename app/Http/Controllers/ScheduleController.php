@@ -12,7 +12,7 @@ class ScheduleController extends Controller
 {
     public function index()
     {
-        $this->data['schedules'] = Schedule::all();
+        $this->data['schedules'] = Schedule::with('user')->with('bus')->with('starting_point')->with('destination')->get();
         $this->data['buses'] = Bus::all();
         $this->data['drivers'] = User::where('role_id', 2)->get();
         $this->data['bus_routes'] = BusRoute::all();
