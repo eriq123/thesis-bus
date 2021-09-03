@@ -56,6 +56,9 @@ class BusBookingController extends Controller
         ->when($request->destination_id, function($q) use ($request){
             return $q->where('destination_id', $request->destination_id);
         })
+        ->when($request->schedule_date, function($q) use ($request){
+            return $q->where('schedule_date', $request->schedule_date);
+        })
         ->with('bus')
         ->get();
 
