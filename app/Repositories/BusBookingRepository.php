@@ -6,14 +6,16 @@ use App\Models\Booking;
 use App\Models\BusRoute;
 use App\Models\Schedule;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class BusBookingRepository
 {
     public function index()
     {
-        $this->data['bookings'] = Booking::with('user')->with('schedule')->get();
-        $this->data['passengers'] = User::where('role_id', 4)->orderBy('name')->get();
+        $this->data['bookings'] = Booking::with('user')->with('schedule')->when(Auth::user()->role_id == 4, function($q) {
+            return $q->where('user_id', Auth::id());
+        })->get();
         return $this->data;
     }
 

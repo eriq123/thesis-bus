@@ -46,10 +46,6 @@ Route::middleware(['web','auth'])->group(function () {
                 Route::post('/update', [ScheduleController::class, 'update'])->name('update');
                 Route::delete('/{id}', [ScheduleController::class, 'destroy'])->name('destroy');
             });
-
-            Route::prefix('bookings')->name('bookings.')->group(function () {
-                Route::get('/', [BusBookingController::class, 'index'])->name('index');
-            });
         });
 
         Route::prefix('roles')->name('roles.')->group(function () {
@@ -71,6 +67,7 @@ Route::middleware(['web','auth'])->group(function () {
 
     Route::prefix('buses')->name('buses.')->group(function () {
         Route::prefix('bookings')->name('bookings.')->group(function () {
+            Route::get('/', [BusBookingController::class, 'index'])->name('index');
             Route::get('/add', [BusBookingController::class, 'add'])->name('add');
             Route::get('/edit/{id}', [BusBookingController::class, 'edit'])->name('edit');
             Route::delete('/{id}', [BusBookingController::class, 'destroy'])->name('destroy');

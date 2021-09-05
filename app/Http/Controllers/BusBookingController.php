@@ -20,7 +20,7 @@ class BusBookingController extends Controller
 
     public function index()
     {
-        return view('admin.bus.bookings', $this->busBookingRepository->index());
+        return view('admin.bus.booking.index', $this->busBookingRepository->index());
     }
 
     public function add()

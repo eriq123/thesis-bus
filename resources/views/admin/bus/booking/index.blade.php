@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 @section('contents')
 
+@if (Auth::user()->role_id == 1)
 @section('content_header')
 <div class="text-center">
     <a href="{{ route('buses.bookings.add') }}" class="btn btn-outline-success" type="button">
@@ -9,7 +10,7 @@
     </a>
 </div>
 @stop
-
+@endif
 @section('content')
 <div class="container-fluid">
     <div class="row">
