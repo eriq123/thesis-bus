@@ -56,16 +56,16 @@ class BusBookingRepository
 
     public function processBooking($request)
     {
-        $this->validateBooking($request, true);
-        $schedule = Schedule::findOrFail($request->schedule_id);
-
         if($request->id == 0) {
             $booking = new Booking();
             $successMessage = 'Added Successfully!';
+            $this->validateBooking($request, false);
         } else {
             $booking = Booking::find($request->id);
             $successMessage = 'Updated Successfully!';
+            $this->validateBooking($request, true);
         }
+        $schedule = Schedule::findOrFail($request->schedule_id);
 
         $booking->user_id = $request->user_id;
         $booking->bus_id = $schedule->bus_id;
