@@ -17,85 +17,24 @@
 
                 {{-- Configured sidebar links --}}
                 {{-- @each('adminlte::partials.sidebar.menu-item', $adminlte->menu('sidebar'), 'item') --}}
-                @if(Auth::user()->role_id==1)
-                <li class="nav-item">
-                    <a href="{{ route('buses.index') }}" class="nav-link">
-                        <i class="fas fa-bus"></i>
-                        <p class="ml-1">Bus</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('buses.routes.index') }}" class="nav-link">
-                        <i class="fas fa-route"></i>
-                        <p class="ml-1">Bus Routes</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('buses.schedules.index') }}" class="nav-link">
-                        <i class="far fa-calendar-alt"></i>
-                        <p class="ml-1">Bus Schedules</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('buses.bookings.index') }}" class="nav-link">
-                        <i class="fas fa-book-open"></i>
-                        <p class="ml-1">Bus Bookings</p>
-                    </a>
-                </li>
-                <li>
-                    <hr>
-                </li>
-                <li class="nav-item">
-                    <a href="{{route('roles.index')}}" class="nav-link">
-                        <i class="fas fa-users-cog"></i>
-                        <p class="ml-1">Roles</p>
-                    </a>
-                </li>
-                <li>
-
-                <li class="nav-item">
-                    <a href="{{route('users.index')}}" class="nav-link">
-                        <i class="fas fa-users"></i>
-                        <p class="ml-1">Users</p>
-                    </a>
-                </li>
-                <li>
-                
-                    <hr>
-                </li>
-                <li class="nav-item">
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <a href="javascript:void()" onclick="document.getElementById('logout-form').submit();"
-                            class="nav-link">
-                            <i class="fas fa-power-off"></i>
-                            <p class="ml-1">Logout</p>
-                        </a>
-                    </form>
-                </li>
-                @else
-                <li class="nav-item">
-                    <a href="{{ route('mybookings.index') }}" class="nav-link">
-                        <i class="fas fa-book-open"></i>
-                        <p class="ml-1">Book a Seat</p>
-                    </a>
-                </li>
-                <li>
-                
-                    <hr>
-                </li>
-                <li class="nav-item">
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <a href="javascript:void()" onclick="document.getElementById('logout-form').submit();"
-                            class="nav-link">
-                            <i class="fas fa-power-off"></i>
-                            <p class="ml-1">Logout</p>
-                        </a>
-                    </form>
-                </li>
-                
+                @if(Auth::user()->role_id == 1)
+                @include('adminlte::partials.sidebar.left-sidebar-admin')
+                @elseif(Auth::user()->role_id == 4)
+                @include('adminlte::partials.sidebar.left-sidebar-passenger')
                 @endif
+                <li>
+                    <hr>
+                </li>
+                <li class="nav-item">
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <a href="javascript:void()" onclick="document.getElementById('logout-form').submit();"
+                            class="nav-link">
+                            <i class="fas fa-power-off"></i>
+                            <p class="ml-1">Logout</p>
+                        </a>
+                    </form>
+                </li>
             </ul>
         </nav>
     </div>
