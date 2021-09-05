@@ -14,8 +14,10 @@ class MainController extends Controller
             return view('admin.index');
             break;
         case 2:
+            return view('driver.index');
             break;
         case 3:
+            return view('conductor.index');
             break;
         case 4:
             return view('passenger.index');
