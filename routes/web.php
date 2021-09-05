@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusBookingController;
 use App\Http\Controllers\BusController;
 use App\Http\Controllers\BusRouteController;
+use App\Http\Controllers\MainController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\UserController;
@@ -24,7 +25,7 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['web','auth'])->group(function () {
-    Route::view('/','index');
+    Route::get('/', [MainController::class,'index']);
 
     Route::middleware('isAdmin')->group(function () {
         Route::prefix('buses')->name('buses.')->group(function () {
@@ -76,13 +77,4 @@ Route::middleware(['web','auth'])->group(function () {
         });
 
     });
-
-    Route::prefix('mybookings')->name('mybookings.')->group(function () {
-        Route::get('/', [UserBookingController::class, 'index'])->name('index');
-        Route::post('/store', [UserBookingController::class, 'store'])->name('store');
-        Route::post('/update', [UserBookingController::class, 'update'])->name('update');
-        Route::delete('/{id}', [UserBookingController::class, 'destroy'])->name('destroy');
-        Route::post('/scheduleByRouteID', [UserBookingController::class, 'scheduleByRouteID'])->name('scheduleByRouteID');
-    });
-
 });
