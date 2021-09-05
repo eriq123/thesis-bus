@@ -10,7 +10,6 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserBookingController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -50,15 +49,7 @@ Route::middleware(['web','auth'])->group(function () {
 
             Route::prefix('bookings')->name('bookings.')->group(function () {
                 Route::get('/', [BusBookingController::class, 'index'])->name('index');
-                Route::get('/add', [BusBookingController::class, 'add'])->name('add');
-                Route::get('/edit/{id}', [BusBookingController::class, 'edit'])->name('edit');
-                Route::delete('/{id}', [BusBookingController::class, 'destroy'])->name('destroy');
-
-                Route::post('/process', [BusBookingController::class, 'submitProcess'])->name('submit.process');
-                Route::post('/findScheduleByRouteIDs', [BusBookingController::class, 'findScheduleByRouteIDs'])->name('findScheduleByRouteIDs');
             });
-
-
         });
 
         Route::prefix('roles')->name('roles.')->group(function () {
@@ -75,6 +66,21 @@ Route::middleware(['web','auth'])->group(function () {
             Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
             Route::post('/searchByName', [UserController::class, 'searchByName'])->name('searchByName');
         });
+
+    });
+
+    Route::prefix('buses')->name('buses.')->group(function () {
+        Route::prefix('bookings')->name('bookings.')->group(function () {
+            Route::get('/add', [BusBookingController::class, 'add'])->name('add');
+            Route::get('/edit/{id}', [BusBookingController::class, 'edit'])->name('edit');
+            Route::delete('/{id}', [BusBookingController::class, 'destroy'])->name('destroy');
+
+            Route::post('/process', [BusBookingController::class, 'submitProcess'])->name('submit.process');
+            Route::post('/findScheduleByRouteIDs', [BusBookingController::class, 'findScheduleByRouteIDs'])->name('findScheduleByRouteIDs');
+        });
+    });
+
+    Route::middleware('isPassenger')->group(function () {
 
     });
 });

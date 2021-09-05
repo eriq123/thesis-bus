@@ -15,6 +15,7 @@
 
                         <h1 class="text-center">Book a seat</h1>
 
+                        @if(Auth::user()->role_id == 1)
                         <div class="mt-3">
                             <div class="card outlined">
                                 <div class="card-body">
@@ -34,6 +35,9 @@
                                 </div>
                             </div>
                         </div>
+                        @elseif(Auth::user()->role_id == 4)
+                        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                        @endif
 
                         <div class="card outlined">
                             <div class="card-body">
