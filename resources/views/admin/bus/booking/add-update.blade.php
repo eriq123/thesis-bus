@@ -126,9 +126,9 @@
                             <button class="btn btn-primary">
                                 Save
                             </button>
-                            <button class="btn btn-secondary">
+                            <a class="btn btn-secondary" href="/" role="button">
                                 Cancel
-                            </button>
+                            </a>
                         </div>
                     </form>
                 </div>
