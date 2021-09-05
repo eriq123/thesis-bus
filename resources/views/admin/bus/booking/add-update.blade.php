@@ -234,7 +234,7 @@
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <p class="mb-0">${item.bus.plate_number}</p>
-                                        <p class="mb-0">${item.bus.capacity} seats</p>
+                                        <p class="mb-0">${item.seats_available} seats available</p>
                                     </div>
                                 </div>
                             </div>

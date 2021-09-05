@@ -17,6 +17,7 @@ class CreateBookings extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('schedule_id')->constrained()->onDelete('cascade');
+            $table->foreignId('bus_id')->constrained()->onDelete('cascade');
             $table->integer('fare_amount');
             $table->integer('quantity');
             $table->integer('grand_total');

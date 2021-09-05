@@ -13,9 +13,11 @@ class BusBookingRepository
 {
     public function index()
     {
-        $this->data['bookings'] = Booking::with('user')->with('schedule')->when(Auth::user()->role_id == 4, function($q) {
-            return $q->where('user_id', Auth::id());
-        })->get();
+        $this->data['bookings'] = Booking::with('user')
+            ->when(Auth::user()->role_id == 4, function($q) {
+                return $q->where('user_id', Auth::id());
+            })
+            ->get();
         return $this->data;
     }
 
@@ -66,6 +68,7 @@ class BusBookingRepository
         }
 
         $booking->user_id = $request->user_id;
+        $booking->bus_id = $schedule->bus_id;
         $booking->schedule_id = $schedule->id;
         $booking->fare_amount = $schedule->fare;
         $booking->quantity = $request->quantity;

@@ -62,6 +62,12 @@ class BusBookingController extends Controller
         ->with('bus')
         ->get();
 
+        $schedule->map(function($schedule) {
+            $seats_taken = Booking::where('bus_id', $schedule->bus->id)->where('status', 'Open')->count();
+            $schedule->available_seats = $schedule->bus->capacity - $seats_taken;
+            return $schedule;
+        });
+
         return response()->json($schedule);
     }
 
