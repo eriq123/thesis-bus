@@ -47,10 +47,6 @@ class BusBookingController extends Controller
         $request->merge([
             "user_id" => Auth::user()->id
         ]);
-        $this->busBookingRepository->processBooking($request, true);
-
-        return response()->json([
-            'success' => true,
-        ], 200);
+        return response()->json($this->busBookingRepository->processBooking($request, true), 200);
     }
 }
