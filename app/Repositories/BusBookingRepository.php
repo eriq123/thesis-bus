@@ -54,7 +54,7 @@ class BusBookingRepository
         Validator::make($request->all(), $rules, $errorMessages)->validate();
     }
 
-    public function processBooking($request)
+    public function processBooking($request, $isApi = false)
     {
         if($request->id == 0) {
             $booking = new Booking();
@@ -75,6 +75,8 @@ class BusBookingRepository
         $booking->grand_total = $request->quantity * $schedule->fare;
         $booking->status = 'Open';
         $booking->save();
+
+        if($isApi) return $booking;
 
         return redirect()->route('buses.bookings.index')->withSuccess($successMessage);
     }
