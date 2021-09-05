@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class isAdmin
+class isPassenger
 {
     /**
      * Handle an incoming request.
@@ -17,7 +17,7 @@ class isAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()->role_id !== 1) return redirect('/');
+        if(Auth::user()->role_id !== 4) return redirect('/');
 
         return $next($request);
     }
