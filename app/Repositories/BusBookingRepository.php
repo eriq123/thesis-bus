@@ -29,7 +29,7 @@ class BusBookingRepository
 
     public function edit()
     {
-        $this->data['bus_routes'] = BusRoute::all();
+        $this->data['bus_routes'] = BusRoute::orderBy('name')->get();
         $this->data['passengers'] = User::where('role_id', 4)->orderBy('name')->get();
         $this->data['schedules'] = [];
 
