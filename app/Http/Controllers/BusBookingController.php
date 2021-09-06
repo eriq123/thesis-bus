@@ -37,6 +37,15 @@ class BusBookingController extends Controller
         return view('admin.bus.booking.add-update', $this->data);
     }
 
+    public function updateStatus(Request $request)
+    {
+        $booking = Booking::find($request->id);
+        $booking->status = $request->status;
+        $booking->save();
+
+        return redirect()->back()->withSuccess('Status has been updated');
+    }
+
     public function destroy($id)
     {
         $this->busBookingRepository->destroy($id);

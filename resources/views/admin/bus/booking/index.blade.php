@@ -42,6 +42,22 @@
                         <td>{{ $item->quantity}}</td>
                         <td>{{ $item->grand_total}}</td>
                         <td>
+                            @if (Auth::user()->role_id == 3)
+                            <div class="d-flex">
+                                <form action="{{ route('buses.bookings.update.status') }}" class="mr-1" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{ $item->id }}">
+                                    <input type="hidden" name="status" value="Verified">
+                                    <button class="btn btn-primary">Verify</button>
+                                </form>
+                                <form action="{{ route('buses.bookings.update.status') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{ $item->id }}">
+                                    <input type="hidden" name="status" value="Closed">
+                                    <button class="btn btn-danger">Leave</button>
+                                </form>
+                            </div>
+                            @else
                             <form action="{{ route('buses.bookings.destroy', ['id'=> $item->id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
@@ -49,6 +65,7 @@
                                     class="btn btn-primary">Update</a>
                                 <button class="btn btn-danger">Delete</button>
                             </form>
+                            @endif
                         </td>
                     </tr>
                     @empty
