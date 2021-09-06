@@ -12,10 +12,11 @@ class ScheduleController extends Controller
 {
     public function index()
     {
-        $this->data['schedules'] = Schedule::with('user')->with('bus')->with('starting_point')->with('destination')->get();
-        $this->data['buses'] = Bus::all();
-        $this->data['drivers'] = User::where('role_id', 2)->get();
-        $this->data['bus_routes'] = BusRoute::all();
+        $this->data['schedules'] = Schedule::with('driver')->with('conductor')->with('bus')->with('starting_point')->with('destination')->get();
+        $this->data['buses'] = Bus::orderBy('plate_number')->get();
+        $this->data['drivers'] = User::orderBy('name')->where('role_id', 2)->get();
+        $this->data['conductors'] = User::orderBy('name')->where('role_id', 3)->get();
+        $this->data['bus_routes'] = BusRoute::orderBy('name')->get();
 
         return view('admin.bus.schedules', $this->data);
     }
@@ -24,7 +25,8 @@ class ScheduleController extends Controller
     {
         $this->validate($request, [
             'bus_id' => 'required',
-            'user_id' => 'required',
+            'driver_id' => 'required',
+            'conductor_id' => 'required',
             'starting_point_id' => 'required',
             'destination_id' => 'required',
             'fare' => 'required',
@@ -33,7 +35,8 @@ class ScheduleController extends Controller
             'time_arrival' => 'required',
         ], [
             'bus_id.required' => 'Bus is required',
-            'user_id.required' => 'Bus driver is required',
+            'driver_id.required' => 'Bus driver is required',
+            'conductor_id.required' => 'Bus conductor is required',
             'starting_point_id.required' => 'Starting Point is required',
             'destination_id.required' => 'Destination is required',
             'fare.required' => 'Fare is required',
@@ -46,7 +49,8 @@ class ScheduleController extends Controller
     public function saveRequest($schedule, $request)
     {
         $schedule->bus_id = $request->bus_id;
-        $schedule->user_id = $request->user_id;
+        $schedule->driver_id = $request->driver_id;
+        $schedule->conductor_id = $request->conductor_id;
         $schedule->starting_point_id = $request->starting_point_id;
         $schedule->destination_id = $request->destination_id;
         $schedule->fare = $request->fare;

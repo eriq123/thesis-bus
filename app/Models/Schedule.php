@@ -11,9 +11,14 @@ class Schedule extends Model
     use HasFactory;
     use SoftDeletes;
 
-    public function user()
+    public function driver()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'driver_id', 'id');
+    }
+
+    public function conductor()
+    {
+        return $this->belongsTo(User::class, 'conductor_id', 'id');
     }
 
     public function bus()

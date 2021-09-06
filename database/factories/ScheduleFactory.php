@@ -49,8 +49,8 @@ class ScheduleFactory extends Factory
 
         return [
             'bus_id' => $this->faker->randomElement(Bus::pluck('id')->toArray()),
-            'driver_id' => $this->faker->randomElement(User::pluck('id')->toArray()),
-            'conductor_id' => $this->faker->randomElement(User::pluck('id')->toArray()),
+            'driver_id' => $this->faker->randomElement(User::where('role_id', 2)->pluck('id')->toArray()),
+            'conductor_id' => $this->faker->randomElement(User::where('role_id', 3)->pluck('id')->toArray()),
             'starting_point_id' => 1,
             'destination_id' => 1,
             'fare'=> rand(200, 999),

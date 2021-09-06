@@ -24,13 +24,25 @@
             </div>
             <div class="mt-3">
                 <p class="mb-0 ml-1 text-left">Bus Drivers :</p>
-                <select class="form-select form-control" id="user_id" name="user_id" required>
+                <select class="form-select form-control" id="driver_id" name="driver_id" required>
                     @forelse ($drivers as $item)
                     <option value="{{ $item->id }}">
                         {{ $item->name }}
                     </option>
                     @empty
                     <option selected>No drivers available</option>
+                    @endforelse
+                </select>
+            </div>
+            <div class="mt-3">
+                <p class="mb-0 ml-1 text-left">Bus Conductor :</p>
+                <select class="form-select form-control" id="conductor_id" name="conductor_id" required>
+                    @forelse ($conductors as $item)
+                    <option value="{{ $item->id }}">
+                        {{ $item->name }}
+                    </option>
+                    @empty
+                    <option selected>No conductors available</option>
                     @endforelse
                 </select>
             </div>
@@ -80,7 +92,7 @@
             </div>
             <div class="my-3">
                 <p class="mb-0 ml-1 text-left">Departure Time :</p>
-                <input type="time" name="time_departure" id="time_departure" class="form-control"
+                <input type="text" name="time_departure" id="time_departure" class="form-control"
                     value="{{ old('time_departure') }}" placeholder="Departure time e.g. 3:30 PM" required>
                 @if($errors->has('time_departure'))
                 <div class="invalid-feedback">
@@ -90,7 +102,7 @@
             </div>
             <div class="my-3">
                 <p class="mb-0 ml-1 text-left">Arrival Time :</p>
-                <input type="time" name="time_arrival" id="time_arrival" class="form-control"
+                <input type="text" name="time_arrival" id="time_arrival" class="form-control"
                     value="{{ old('time_arrival') }}" placeholder="Arrival Time e.g. 3:30 PM" required>
                 @if($errors->has('time_arrival'))
                 <div class="invalid-feedback">
@@ -115,6 +127,7 @@
                     <tr>
                         <th>Bus</th>
                         <th>Driver</th>
+                        <th>Conductor</th>
                         <th>Routes</th>
                         <th>Schedule Date</th>
                         <th>Departure Time</th>
@@ -127,7 +140,8 @@
                     @forelse ($schedules as $item)
                     <tr>
                         <td>{{ $item->bus->plate_number}}</td>
-                        <td>{{ $item->user->name}}</td>
+                        <td>{{ $item->driver->name}}</td>
+                        <td>{{ $item->conductor->name}}</td>
                         <td>{{ $item->starting_point->name}} - {{ $item->destination->name}}</td>
                         <td>{{ $item->schedule_date}}</td>
                         <td>{{ $item->time_departure}}</td>
@@ -138,7 +152,8 @@
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-primary openUpdateModal" type="button" data-id="{{ $item->id }}"
-                                    data-bus_id="{{ $item->bus_id }}" data-user_id="{{ $item->user_id }}"
+                                    data-bus_id="{{ $item->bus_id }}" data-driver_id="{{ $item->driver_id }}"
+                                    data-conductor_id="{{ $item->conductor_id }}"
                                     data-starting_point_id="{{ $item->starting_point_id }}"
                                     data-destination_id="{{ $item->destination_id }}" data-fare="{{ $item->fare }}"
                                     data-schedule_date="{{ $item->schedule_date }}"
@@ -173,7 +188,8 @@
                 'btn-primary',
                 $(this).data('id'),
                 $(this).data('bus_id'),
-                $(this).data('user_id'),
+                $(this).data('driver_id'),
+                $(this).data('conductor_id'),
                 $(this).data('starting_point_id'),
                 $(this).data('destination_id'),
                 $(this).data('fare'),
@@ -201,7 +217,8 @@
             addClass,
             id = null,
             bus_id = null,
-            user_id = null,
+            driver_id = null,
+            conductor_id = null,
             starting_point_id = null,
             destination_id = null,
             fare = null,
@@ -212,7 +229,8 @@
             $('#id').val(id);
             if(modalFooter == 'Update'){
                 $('#bus_id').val(bus_id);
-                $('#user_id').val(user_id);
+                $('#driver_id').val(driver_id);
+                $('#conductor_id').val(conductor_id);
                 $('#starting_point_id').val(starting_point_id);
                 $('#destination_id').val(destination_id);
             }
