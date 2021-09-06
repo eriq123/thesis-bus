@@ -17,9 +17,17 @@
 
                 {{-- Configured sidebar links --}}
                 {{-- @each('adminlte::partials.sidebar.menu-item', $adminlte->menu('sidebar'), 'item') --}}
+
                 @if(Auth::user()->role_id == 1)
+                {{-- Admin --}}
                 @include('adminlte::partials.sidebar.left-sidebar-admin')
+                @elseif(Auth::user()->role_id == 2)
+                {{-- Driver --}}
+                @elseif(Auth::user()->role_id == 3)
+                {{-- Conductor --}}
+                @include('adminlte::partials.sidebar.left-sidebar-conductor')
                 @elseif(Auth::user()->role_id == 4)
+                {{-- Passenger --}}
                 @include('adminlte::partials.sidebar.left-sidebar-passenger')
                 @endif
                 <li>
