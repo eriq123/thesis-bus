@@ -19,7 +19,9 @@
                 <x-slot name="thead">
                     <tr>
                         <th>ID</th>
+                        <th>Status</th>
                         <th>Passenger Name</th>
+                        <th>Route</th>
                         <th>Schedule</th>
                         <th>Fare</th>
                         <th>Quantity</th>
@@ -31,7 +33,9 @@
                     @forelse ($bookings as $item)
                     <tr>
                         <td>{{ $item->id }}</td>
+                        <td>{{ $item->status }}</td>
                         <td>{{ $item->user->name }}</td>
+                        <td>{{ $item->schedule->starting_point->name }} - {{ $item->schedule->destination->name }}</td>
                         <td>{{ $item->schedule->schedule_date }} ({{ $item->schedule->time_departure }} -
                             {{ $item->schedule->time_arrival }})</td>
                         <td>{{ $item->fare_amount}}</td>
