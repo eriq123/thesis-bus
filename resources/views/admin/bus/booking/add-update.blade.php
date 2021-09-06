@@ -23,7 +23,7 @@
                                         Choose a passenger :
                                         <span class="text-danger">*</span>
                                     </p>
-                                    <input type="text" name="search_user" id="search_user" class="form-control mb-3"
+                                    <input type="text" id="search_user" class="form-control mb-3"
                                         placeholder="Search a passenger">
                                     <select class="form-control form-select" name="user_id" id="user_id" required>
                                         @foreach ($passengers as $item)
