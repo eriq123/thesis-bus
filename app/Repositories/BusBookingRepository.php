@@ -14,6 +14,12 @@ class BusBookingRepository
     public function index()
     {
         $this->data['bookings'] = Booking::with('user')
+            ->with([
+                'schedule' => function($q) {
+                    $q->with('starting_point')->with('destination');
+                }
+            ])
+            ->with('bus')
             ->when(Auth::user()->role_id == 4, function($q) {
                 return $q->where('user_id', Auth::id());
             })
