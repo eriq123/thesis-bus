@@ -60,18 +60,31 @@ class BusBookingRepository
         Validator::make($request->all(), $rules, $errorMessages)->validate();
     }
 
+    public function checkAvailableSeats($request, $schedule)
+    {
+        $capacity = $schedule->bus->capacity;
+        $bookingCount = Booking::where('status', 'Open')
+            ->where('schedule_id', $request->schedule_id)
+            ->count();
+
+        $bookingCount += $request->quantity;
+        return $bookingCount > $capacity;
+    }
+
     public function processBooking($request, $isApi = false)
     {
+        $isUpdate = $request->id == 0 ? false : true;
+        $this->validateBooking($request, $isUpdate);
+        $schedule = Schedule::with('bus')->findOrFail($request->schedule_id);
+        if($this->checkAvailableSeats($request, $schedule)) return redirect()->back()->withErrors('There are no seats available left for this bus.');
+
         if($request->id == 0) {
             $booking = new Booking();
             $successMessage = 'Added Successfully!';
-            $this->validateBooking($request, false);
         } else {
             $booking = Booking::find($request->id);
             $successMessage = 'Updated Successfully!';
-            $this->validateBooking($request, true);
         }
-        $schedule = Schedule::findOrFail($request->schedule_id);
 
         $booking->user_id = $request->user_id;
         $booking->bus_id = $schedule->bus_id;
