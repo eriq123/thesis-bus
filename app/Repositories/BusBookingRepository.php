@@ -82,7 +82,11 @@ class BusBookingRepository
         $isUpdate = $request->id == 0 ? false : true;
         $this->validateBooking($request, $isUpdate);
         $schedule = Schedule::with('bus')->findOrFail($request->schedule_id);
-        if($this->checkAvailableSeats($request, $schedule)) return redirect()->back()->withErrors('The remaining seats are insufficient to fulfill the transaction.');
+        if($this->checkAvailableSeats($request, $schedule)) {
+            $errorMessage = 'The remaining seats are insufficient to fulfill the transaction.';
+            if($isApi) return response()->json($errorMessage, 403);
+            return redirect()->back()->withErrors($errorMessage);
+        }
 
         if($request->id == 0) {
             $booking = new Booking();
