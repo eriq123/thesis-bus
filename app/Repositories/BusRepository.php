@@ -7,11 +7,6 @@ use Illuminate\Support\Facades\Validator;
 
 class BusRepository
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $this->data['buses'] = Bus::all();
@@ -46,12 +41,6 @@ class BusRepository
         Validator::make($request->all(), $rules, $errorMessages)->validate();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store($request)
     {
         $this->validateRequest($request);
@@ -59,13 +48,6 @@ class BusRepository
         $this->saveRequest($bus, $request);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update($request)
     {
         $this->validateRequest($request, true);
@@ -73,12 +55,6 @@ class BusRepository
         $this->saveRequest($bus, $request);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         Bus::destroy($id);

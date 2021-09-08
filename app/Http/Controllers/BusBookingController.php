@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
-use App\Models\BusRoute;
-use App\Models\Schedule;
-use App\Models\User;
 use App\Repositories\BusBookingRepository;
 use Illuminate\Http\Request;
 
