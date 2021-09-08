@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Booking;
 use App\Models\Bus;
 use App\Models\BusRoute;
 use App\Models\Schedule;
@@ -63,5 +64,7 @@ class DatabaseSeeder extends Seeder
                 }
             }
         }
+
+        Booking::factory()->count(20)->create();
     }
 }
