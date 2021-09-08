@@ -23,6 +23,7 @@
                 @include('adminlte::partials.sidebar.left-sidebar-admin')
                 @elseif(Auth::user()->role_id == 2)
                 {{-- Driver --}}
+                @include('adminlte::partials.sidebar.left-sidebar-driver')
                 @elseif(Auth::user()->role_id == 3)
                 {{-- Conductor --}}
                 @include('adminlte::partials.sidebar.left-sidebar-conductor')
