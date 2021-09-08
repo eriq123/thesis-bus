@@ -69,7 +69,7 @@
                                 <form action="{{ route('buses.bookings.update.status') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $item->id }}">
-                                    <input type="hidden" name="status_id" value="4">
+                                    <input type="text" name="status_id" value="{{ $item->status->following_id }}">
                                     <button class="btn btn-secondary">Leave</button>
                                 </form>
                                 @endif
