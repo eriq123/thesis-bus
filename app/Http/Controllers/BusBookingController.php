@@ -36,11 +36,8 @@ class BusBookingController extends Controller
 
     public function updateStatus(Request $request)
     {
-        $booking = Booking::find($request->id);
-        $booking->status = $request->status;
-        $booking->save();
-
-        return redirect()->back()->withSuccess('Status has been updated');
+        $this->busBookingRepository->updateStatus($request);
+        return redirect()->route('buses.bookings.index')->withSuccess('Status updated Successfully!');
     }
 
     public function destroy($id)

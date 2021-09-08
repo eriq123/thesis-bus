@@ -86,6 +86,15 @@ class BusBookingRepository
         return $this->data;
     }
 
+    public function updateStatus($request)
+    {
+        $booking = Booking::find($request->id);
+        $booking->status_id = $request->status_id;
+        $booking->save();
+
+        return $booking;
+    }
+
     public function destroy($id)
     {
         Booking::destroy($id);

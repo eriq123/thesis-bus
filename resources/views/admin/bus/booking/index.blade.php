@@ -58,18 +58,21 @@
                         <td>
                             @if (Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
                             <div class="d-flex">
+                                @if ($item->status_id == 1 || $item->status_id == 2)
                                 <form action="{{ route('buses.bookings.update.status') }}" class="mr-1" method="POST">
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $item->id }}">
-                                    <input type="hidden" name="status" value="Verified">
-                                    <button class="btn btn-primary">Verify</button>
+                                    <input type="hidden" name="status_id" value="3">
+                                    <button class="btn btn-success">Verify</button>
                                 </form>
+                                @elseif ($item->status_id == 3)
                                 <form action="{{ route('buses.bookings.update.status') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $item->id }}">
-                                    <input type="hidden" name="status" value="Closed">
-                                    <button class="btn btn-danger">Leave</button>
+                                    <input type="hidden" name="status_id" value="4">
+                                    <button class="btn btn-secondary">Leave</button>
                                 </form>
+                                @endif
                             </div>
                             @else
                             <form action="{{ route('buses.bookings.destroy', ['id'=> $item->id]) }}" method="POST">
