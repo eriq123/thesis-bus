@@ -37,7 +37,7 @@ class BookingFactory extends Factory
             'fare_amount' => $schedule->fare,
             'quantity' => $quantity,
             'grand_total' => $quantity * $schedule->fare,
-            'status' => 1,
+            'status_id' => 1,
         ];
     }
 }
