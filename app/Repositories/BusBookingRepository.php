@@ -20,6 +20,9 @@ class BusBookingRepository
                     $q->with('starting_point')->with('destination');
                 }
             ])
+            ->when(Auth::user()->role_id == 2, function($q) {
+                return $q->where('driver_id', Auth::id());
+            })
             ->when(Auth::user()->role_id == 3, function($q) {
                 return $q->where('conductor_id', Auth::id());
             })
@@ -98,6 +101,7 @@ class BusBookingRepository
 
         $booking->user_id = $request->user_id;
         $booking->bus_id = $schedule->bus_id;
+        $booking->driver_id = $schedule->driver_id;
         $booking->conductor_id = $schedule->conductor_id;
         $booking->schedule_id = $schedule->id;
         $booking->fare_amount = $schedule->fare;
