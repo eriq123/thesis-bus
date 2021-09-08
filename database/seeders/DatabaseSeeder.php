@@ -90,7 +90,7 @@ class DatabaseSeeder extends Seeder
 
         foreach(range(1, 3) as $iteration) {
             Status::find($iteration)->update([
-                'following_id' => $iteration++
+                'following_id' => ++$iteration
             ]);
         }
 
