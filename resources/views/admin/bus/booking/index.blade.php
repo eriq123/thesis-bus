@@ -23,9 +23,13 @@
                         <th>Passenger Name</th>
                         <th>Route</th>
                         <th>Schedule</th>
+                        @unless(Auth::user()->role_id == 3 || Auth::user()->role_id == 2)
                         <th>Fare</th>
                         <th>Quantity</th>
                         <th>Grand Total</th>
+                        @else
+                        <th>Seats available</th>
+                        @endunless
                         <th>Actions</th>
                     </tr>
                 </x-slot>
@@ -42,11 +46,17 @@
                         <td>{{ $item->schedule->starting_point->name }} - {{ $item->schedule->destination->name }}</td>
                         <td>{{ $item->schedule->schedule_date }} ({{ $item->schedule->time_departure }} -
                             {{ $item->schedule->time_arrival }})</td>
+
+                        @unless(Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
                         <td>{{ $item->fare_amount}}</td>
                         <td>{{ $item->quantity}}</td>
                         <td>{{ $item->grand_total}}</td>
+                        @else
+                        <td>{{ $item->schedule->seats_available }}</td>
+                        @endunless
+
                         <td>
-                            @if (Auth::user()->role_id == 3)
+                            @if (Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
                             <div class="d-flex">
                                 <form action="{{ route('buses.bookings.update.status') }}" class="mr-1" method="POST">
                                     @csrf

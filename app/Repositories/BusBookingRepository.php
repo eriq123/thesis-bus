@@ -11,43 +11,6 @@ use Illuminate\Support\Facades\Validator;
 
 class BusBookingRepository
 {
-    public function index()
-    {
-        $this->data['bookings'] = Booking::with('user')
-            ->with('bus')
-            ->with('status')
-            ->with([
-                'schedule' => function($q) {
-                    $q->with('starting_point')->with('destination');
-                }
-            ])
-            ->when(Auth::user()->role_id == 2, function($q) {
-                return $q->where('driver_id', Auth::id());
-            })
-            ->when(Auth::user()->role_id == 3, function($q) {
-                return $q->where('conductor_id', Auth::id());
-            })
-            ->when(Auth::user()->role_id == 4, function($q) {
-                return $q->where('user_id', Auth::id());
-            })
-            ->get();
-        return $this->data;
-    }
-
-    public function edit()
-    {
-        $this->data['bus_routes'] = BusRoute::orderBy('name')->get();
-        $this->data['passengers'] = User::where('role_id', 4)->orderBy('name')->get();
-        $this->data['schedules'] = [];
-
-        return $this->data;
-    }
-
-    public function destroy($id)
-    {
-        Booking::destroy($id);
-    }
-
     private function validateBooking($request, $isUpdate = false){
         $rules = [
             'user_id' => 'required',
@@ -67,18 +30,65 @@ class BusBookingRepository
         Validator::make($request->all(), $rules, $errorMessages)->validate();
     }
 
-    private function openBookingTotalQuantity($scheduleId){
-        return Booking::where('schedule_id', $scheduleId)->where('status_id', 1)->sum('quantity');
+    private function getAvailableSeats($capacity, $seats_taken)
+    {
+        return $capacity - $seats_taken;
+    }
+
+    private function openBookingTotalQuantity($scheduleId, $additionalQuantity = 0){
+        $seats_taken = Booking::where('schedule_id', $scheduleId)->where('status_id', 1)->sum('quantity');
+        return $seats_taken += $additionalQuantity;
     }
 
     private function checkAvailableSeats($request, $schedule)
     {
-        $capacity = $schedule->bus->capacity;
-        $seats_taken = $this->openBookingTotalQuantity($request->schedule_id);
+        $seats_taken = $this->openBookingTotalQuantity($request->schedule_id, $request->quantity);
+        return $seats_taken > $this->getAvailableSeats($schedule->bus->capacity, $seats_taken);
+    }
 
-        $seats_ramaining = $capacity - $seats_taken;
-        $seats_taken += $request->quantity;
-        return $seats_taken > $seats_ramaining;
+    public function index()
+    {
+        $this->data['bookings'] = Booking::with('user')
+            ->with('bus')
+            ->with('status')
+            ->with([
+                'schedule' => function($q) {
+                    $q->with('starting_point')->with('destination');
+                }
+            ])
+            ->when(Auth::user()->role_id == 2, function($q) {
+                return $q->where('driver_id', Auth::id());
+            })
+            ->when(Auth::user()->role_id == 3, function($q) {
+                return $q->where('conductor_id', Auth::id());
+            })
+            ->when(Auth::user()->role_id == 4, function($q) {
+                return $q->where('user_id', Auth::id());
+            })
+            ->get()
+            ->map(function($booking) {
+                $booking->schedule->seats_available = $this->getAvailableSeats(
+                    $booking->schedule->bus->capacity,
+                    $this->openBookingTotalQuantity($booking->schedule->id)
+                );
+                return $booking;
+            });
+
+        return $this->data;
+    }
+
+    public function edit()
+    {
+        $this->data['bus_routes'] = BusRoute::orderBy('name')->get();
+        $this->data['passengers'] = User::where('role_id', 4)->orderBy('name')->get();
+        $this->data['schedules'] = [];
+
+        return $this->data;
+    }
+
+    public function destroy($id)
+    {
+        Booking::destroy($id);
     }
 
     public function processBooking($request, $isApi = false)
@@ -112,7 +122,6 @@ class BusBookingRepository
         $booking->save();
 
         if($isApi) return $booking;
-
         return redirect()->route('buses.bookings.index')->withSuccess($successMessage);
     }
 
@@ -131,8 +140,7 @@ class BusBookingRepository
         ->get();
 
         return $schedule->map(function($schedule) {
-            $seats_taken = $this->openBookingTotalQuantity($schedule->id);
-            $schedule->available_seats = $schedule->bus->capacity - $seats_taken;
+            $schedule->seats_available = $this->getAvailableSeats($schedule->bus->capacity, $this->openBookingTotalQuantity($schedule->id));
             return $schedule;
         });
     }
