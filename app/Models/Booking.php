@@ -35,4 +35,9 @@ class Booking extends Model
     {
         return $this->belongsTo(User::class, 'conductor_id', 'id');
     }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'status_id', 'id');
+    }
 }

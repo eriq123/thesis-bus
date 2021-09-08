@@ -16,4 +16,9 @@ class Status extends Model
         'following_id',
     ];
 
+    public function following()
+    {
+        return $this->belongsTo(Status::class, 'following_id', 'id');
+    }
+
 }
