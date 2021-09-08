@@ -127,7 +127,7 @@ class BusBookingRepository
         $booking->fare_amount = $schedule->fare;
         $booking->quantity = $request->quantity;
         $booking->grand_total = $request->quantity * $schedule->fare;
-        $booking->status_id = 1;
+        $booking->status_id = Auth::user()->role_id == 1 ? 2 : 1;
         $booking->save();
 
         if($isApi) return $booking;
