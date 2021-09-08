@@ -21,4 +21,8 @@ class Status extends Model
         return $this->belongsTo(Status::class, 'following_id', 'id');
     }
 
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

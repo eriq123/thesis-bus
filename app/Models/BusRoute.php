@@ -11,16 +11,6 @@ class BusRoute extends Model
     use HasFactory;
     use SoftDeletes;
 
-    public function getQuantityAttribute($value)
-    {
-        return $value / 100;
-    }
-
-    public function setQuantityAttribute($value)
-    {
-        $this->attributes['fare'] = $value * 100;
-    }
-
     public function schedules()
     {
         return $this->hasMany(Schedule::class);
