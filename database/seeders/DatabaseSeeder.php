@@ -6,6 +6,7 @@ use App\Models\Booking;
 use App\Models\Bus;
 use App\Models\BusRoute;
 use App\Models\Schedule;
+use App\Models\Status;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -46,6 +47,52 @@ class DatabaseSeeder extends Seeder
                 ],
             ]
         );
+
+        DB::table('status')->insert(
+            [
+                [
+                    'title' => 'Open',
+                    'class' => 'info',
+                    'following_id' => NULL,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ],
+                [
+                    'title' => 'Paid',
+                    'class' => 'primary',
+                    'following_id' => NULL,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ],
+                [
+                    'title' => 'Verified',
+                    'class' => 'success',
+                    'following_id' => NULL,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ],
+                [
+                    'title' => 'Closed',
+                    'class' => 'secondary',
+                    'following_id' => NULL,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ],
+                [
+                    'title' => 'Cancelled',
+                    'class' => 'secondary',
+                    'following_id' => NULL,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ],
+            ]
+        );
+
+        foreach(range(1, 3) as $iteration) {
+            Status::find($iteration)->update([
+                'following_id' => $iteration++
+            ]);
+        }
 
         User::factory()->count(50)->create();
         Bus::factory()->count(50)->create();
