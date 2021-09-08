@@ -33,7 +33,11 @@
                     @forelse ($bookings as $item)
                     <tr>
                         <td>{{ $item->id }}</td>
-                        <td>{{ $item->status }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-{{ $item->status->class }}">
+                                {{ $item->status->title }}
+                            </button>
+                        </td>
                         <td>{{ $item->user->name }}</td>
                         <td>{{ $item->schedule->starting_point->name }} - {{ $item->schedule->destination->name }}</td>
                         <td>{{ $item->schedule->schedule_date }} ({{ $item->schedule->time_departure }} -

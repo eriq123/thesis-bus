@@ -15,6 +15,7 @@ class BusBookingRepository
     {
         $this->data['bookings'] = Booking::with('user')
             ->with('bus')
+            ->with('status')
             ->with([
                 'schedule' => function($q) {
                     $q->with('starting_point')->with('destination');
@@ -67,7 +68,7 @@ class BusBookingRepository
     }
 
     private function openBookingTotalQuantity($scheduleId){
-        return Booking::where('schedule_id', $scheduleId)->where('status', 'Open')->sum('quantity');
+        return Booking::where('schedule_id', $scheduleId)->where('status_id', 1)->sum('quantity');
     }
 
     private function checkAvailableSeats($request, $schedule)
@@ -107,7 +108,7 @@ class BusBookingRepository
         $booking->fare_amount = $schedule->fare;
         $booking->quantity = $request->quantity;
         $booking->grand_total = $request->quantity * $schedule->fare;
-        $booking->status = 'Open';
+        $booking->status_id = 1;
         $booking->save();
 
         if($isApi) return $booking;
