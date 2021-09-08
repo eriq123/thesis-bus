@@ -32,6 +32,7 @@ class BookingFactory extends Factory
             'user_id' => $this->faker->randomElement(User::where('role_id', 4)->pluck('id')->toArray()),
             'schedule_id' => $schedule_id,
             'bus_id' => $this->faker->randomElement(Bus::pluck('id')->toArray()),
+            'driver_id' => $this->faker->randomElement(User::where('role_id', 2)->pluck('id')->toArray()),
             'conductor_id' => $this->faker->randomElement(User::where('role_id', 3)->pluck('id')->toArray()),
             'fare_amount' => $schedule->fare,
             'quantity' => $quantity,
