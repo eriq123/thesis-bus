@@ -48,6 +48,7 @@ class UserRepository
     {
         $this->validateRequest($request);
         $user = new User();
+        $user->password = bcrypt(env('USER_DEFAULT_PASSWORD'));
         $this->saveRequest($user, $request);
     }
 
