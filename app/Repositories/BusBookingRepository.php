@@ -63,15 +63,18 @@ class BusBookingRepository
         Validator::make($request->all(), $rules, $errorMessages)->validate();
     }
 
-    public function checkAvailableSeats($request, $schedule)
+    private function openBookingTotalQuantity($scheduleId){
+        return Booking::where('schedule_id', $scheduleId)->where('status', 'Open')->sum('quantity');
+    }
+
+    private function checkAvailableSeats($request, $schedule)
     {
         $capacity = $schedule->bus->capacity;
-        $bookingCount = Booking::where('status', 'Open')
-            ->where('schedule_id', $request->schedule_id)
-            ->count();
+        $seats_taken = $this->openBookingTotalQuantity($request->schedule_id);
 
-        $bookingCount += $request->quantity;
-        return $bookingCount > $capacity;
+        $seats_ramaining = $capacity - $seats_taken;
+        $seats_taken += $request->quantity;
+        return $seats_taken > $seats_ramaining;
     }
 
     public function processBooking($request, $isApi = false)
@@ -79,7 +82,7 @@ class BusBookingRepository
         $isUpdate = $request->id == 0 ? false : true;
         $this->validateBooking($request, $isUpdate);
         $schedule = Schedule::with('bus')->findOrFail($request->schedule_id);
-        if($this->checkAvailableSeats($request, $schedule)) return redirect()->back()->withErrors('There are no seats available left for this bus.');
+        if($this->checkAvailableSeats($request, $schedule)) return redirect()->back()->withErrors('The remaining seats are insufficient to fulfill the transaction.');
 
         if($request->id == 0) {
             $booking = new Booking();
@@ -102,5 +105,26 @@ class BusBookingRepository
         if($isApi) return $booking;
 
         return redirect()->route('buses.bookings.index')->withSuccess($successMessage);
+    }
+
+    public function scheduleByBookingDetails($request)
+    {
+        $schedule = Schedule::when($request->starting_point_id, function($q) use ($request){
+            return $q->where('starting_point_id', $request->starting_point_id);
+        })
+        ->when($request->destination_id, function($q) use ($request){
+            return $q->where('destination_id', $request->destination_id);
+        })
+        ->when($request->schedule_date, function($q) use ($request){
+            return $q->where('schedule_date', $request->schedule_date);
+        })
+        ->with('bus')
+        ->get();
+
+        return $schedule->map(function($schedule) {
+            $seats_taken = $this->openBookingTotalQuantity($schedule->id);
+            $schedule->available_seats = $schedule->bus->capacity - $seats_taken;
+            return $schedule;
+        });
     }
 }

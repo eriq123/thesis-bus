@@ -57,27 +57,9 @@ class BusBookingController extends Controller
         return $this->busBookingRepository->processBooking($request);
     }
 
-    public function findScheduleByRouteIDs(Request $request)
+    public function scheduleByBookingDetails(Request $request)
     {
-        $schedule = Schedule::when($request->starting_point_id, function($q) use ($request){
-            return $q->where('starting_point_id', $request->starting_point_id);
-        })
-        ->when($request->destination_id, function($q) use ($request){
-            return $q->where('destination_id', $request->destination_id);
-        })
-        ->when($request->schedule_date, function($q) use ($request){
-            return $q->where('schedule_date', $request->schedule_date);
-        })
-        ->with('bus')
-        ->get();
-
-        $schedule->map(function($schedule) {
-            $seats_taken = Booking::where('bus_id', $schedule->bus->id)->where('status', 'Open')->count();
-            $schedule->available_seats = $schedule->bus->capacity - $seats_taken;
-            return $schedule;
-        });
-
-        return response()->json($schedule);
+        return response()->json($this->busBookingRepository->scheduleByBookingDetails($request));
     }
 
 }

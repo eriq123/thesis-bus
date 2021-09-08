@@ -213,7 +213,7 @@
         function searchScheduleByRouteIDs(startingPointID, destinationID, scheduleDate){
             $.ajax({
                 type: 'POST',
-                url: "{{ route('buses.bookings.findScheduleByRouteIDs') }}",
+                url: "{{ route('buses.bookings.scheduleByBookingDetails') }}",
                 data: {
                     starting_point_id: startingPointID,
                     destination_id: destinationID,

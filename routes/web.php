@@ -74,7 +74,7 @@ Route::middleware(['web','auth'])->group(function () {
             Route::delete('/{id}', [BusBookingController::class, 'destroy'])->name('destroy');
 
             Route::post('/process', [BusBookingController::class, 'submitProcess'])->name('submit.process');
-            Route::post('/findScheduleByRouteIDs', [BusBookingController::class, 'findScheduleByRouteIDs'])->name('findScheduleByRouteIDs');
+            Route::post('/scheduleByBookingDetails', [BusBookingController::class, 'scheduleByBookingDetails'])->name('scheduleByBookingDetails');
         });
     });
 
