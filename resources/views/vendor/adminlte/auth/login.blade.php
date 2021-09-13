@@ -24,6 +24,7 @@
 @section('auth_body')
 <form action="{{ $login_url }}" method="post" class="mt-3">
     @csrf
+    @include('partials.alerts')
 
     {{-- Email field --}}
     <div class="input-group mb-3">

@@ -28,7 +28,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $remember)) return redirect('/')->withSuccess('Sign in successful!');
 
-        return redirect("login")->withErrors('Email or password is not valid.');
+        return redirect()->back()->withErrors('Email or password is incorrect.');
     }
 
     public function register(Request $request)
