@@ -36,20 +36,14 @@ class BusBookingRepository
     }
 
     private function openBookingTotalQuantity($scheduleId, $additionalQuantity = 0){
-        $seats_taken = Booking::where('schedule_id', $scheduleId)->where('status_id', 1)->sum('quantity');
+        $seats_taken = Booking::where('schedule_id', $scheduleId)->whereIn('status_id', [1,2])->sum('quantity');
         return $seats_taken += $additionalQuantity;
-
-        # 1 seats taken = 0 quantity + 1 entered
-        # 4 seats taken = 1 quantity + 3 entered
     }
 
     private function checkAvailableSeats($request, $schedule)
     {
         $seats_taken = $this->openBookingTotalQuantity($request->schedule_id, $request->quantity);
         return $schedule->bus->capacity > $seats_taken;
-        // return $seats_taken > $this->getAvailableSeats($schedule->bus->capacity, $seats_taken);
-        # 1 seats taken > 4 capacity - 1 seats taken = 1 > -3 = false
-        # 4 seats taken > 4 capacity - 4 seats taken = 4 > 0 = true
     }
 
     public function index()
@@ -154,9 +148,9 @@ class BusBookingRepository
         ->with('bus')
         ->get();
 
-        return $schedule->map(function($schedule) {
-            $schedule->seats_available = $this->getAvailableSeats($schedule->bus->capacity, $this->openBookingTotalQuantity($schedule->id));
-            return $schedule;
+        return $schedule->map(function($item) {
+            $item->seats_available = $this->getAvailableSeats($item->bus->capacity, $this->openBookingTotalQuantity($item->id));
+            return $item;
         });
     }
 }
