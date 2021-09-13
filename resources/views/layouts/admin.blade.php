@@ -1,7 +1,5 @@
 @extends('adminlte::page')
 
-@section('title', 'Admin')
-
 @yield('contents')
 
 @section('css')
