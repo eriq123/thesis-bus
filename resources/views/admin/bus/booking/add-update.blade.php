@@ -229,7 +229,10 @@
             $('#schedule_id').val($(this).data('schedule_id'));
         });
 
-        function searchScheduleByRouteIDs(startingPointID, destinationID, scheduleDate){
+        function searchScheduleByRouteIDs(){
+            var startingPointID = $('#starting_point_id').val();
+            var destinationID = $('#destination_id').val();
+            var scheduleDate = $('#schedule_date').val();
             $.ajax({
                 type: "POST",
                 url: "{{ route('buses.bookings.scheduleByBookingDetails') }}",
@@ -272,35 +275,19 @@
 
         }
 
-        searchScheduleByRouteIDs(
-            $('#starting_point_id').val(),
-            $('#destination_id').val(),
-            $('#schedule_date').val()
-        )
+        searchScheduleByRouteIDs()
 
         $('#starting_point_id').change(function() {
-            searchScheduleByRouteIDs(
-                $('#starting_point_id').val(),
-                $('#destination_id').val(),
-                $('#schedule_date').val()
-            )
+            searchScheduleByRouteIDs()
         });
 
         $('#destination_id').change(function() {
-            searchScheduleByRouteIDs(
-                $('#starting_point_id').val(),
-                $('#destination_id').val(),
-                $('#schedule_date').val()
-            )
+            searchScheduleByRouteIDs()
         });
 
 
         $('#schedule_date').change(function() {
-            searchScheduleByRouteIDs(
-                $('#starting_point_id').val(),
-                $('#destination_id').val(),
-                $('#schedule_date').val()
-            )
+            searchScheduleByRouteIDs()
         });
 
         $('#radioExisting').click(function(){
