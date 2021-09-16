@@ -9,7 +9,7 @@
                 <div class="card-body">
                     <form action="{{ route('buses.bookings.submit.process') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="id" id="id" value="{{$booking->id ?? 0}}">
+                        <input type="hidden" name="id" id="id" value="{{$booking->id ?? -1}}">
                         <input type="hidden" name="schedule_id" id="schedule_id"
                             value="{{$booking->schedule_id ?? ''}}">
 
@@ -19,19 +19,38 @@
                         <div class="mt-3">
                             <div class="card outlined">
                                 <div class="card-body">
-                                    <p class="mb-0 ml-1 text-left">
-                                        Choose a passenger :
-                                        <span class="text-danger">*</span>
-                                    </p>
-                                    <input type="text" id="search_user" class="form-control mb-3"
-                                        placeholder="Search a passenger">
-                                    <select class="form-control form-select" name="user_id" id="user_id" required>
-                                        @foreach ($passengers as $item)
-                                        <option value="{{ $item->id }}"
-                                            {{ ($booking->user_id ?? 0) == $item->id ? 'selected' : '' }}>
-                                            {{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                            <label class="btn btn-secondary active">
+                                                <input type="radio" name="user_status" value="existing"
+                                                    id="radioExisting">
+                                                Existing
+                                            </label>
+                                            <label class="btn btn-secondary">
+                                                <input type="radio" name="user_status" value="unregistered"
+                                                    id="radioUnregistered">
+                                                Unregistered
+                                            </label>
+                                        </div>
+                                        <a class="btn btn-outline-success" role="button"
+                                            href="{{route('users.index')}}">
+                                            Add new passenger
+                                        </a>
+                                    </div>
+                                    <div class="wrapper-existing">
+                                        <input type="text" id="search_user" class="form-control mb-3"
+                                            placeholder="Search a passenger">
+                                        <select class="form-control form-select" name="user_id" id="user_id">
+                                            @foreach ($passengers as $item)
+                                            <option value="{{ $item->id }}"
+                                                {{ ($booking->user_id ?? 0) == $item->id ? 'selected' : '' }}>
+                                                {{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="wrapper-unregistered d-none">
+                                        <input type="text" name="name" class="form-control" placeholder="Name">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -283,6 +302,35 @@
                 $('#schedule_date').val()
             )
         });
+
+        $('#radioExisting').click(function(){
+            if($('#radioExisting').is(':checked')) {
+                $('.wrapper-existing').removeClass('d-none');
+                $('.wrapper-unregistered').addClass('d-none');
+            }
+        });
+
+        $('#radioUnregistered').click(function(){
+            if($('#radioUnregistered').is(':checked')) {
+                $('.wrapper-unregistered').removeClass('d-none');
+                $('.wrapper-existing').addClass('d-none');
+            }
+        });
+
+
+        if($('#id').val() == 0) {
+            // unregistered
+            $('#radioUnregistered').prop('checked', true);
+            $('#radioExisting').prop('checked', false);
+            $('.wrapper-unregistered').removeClass('d-none');
+            $('.wrapper-existing').addClass('d-none');
+        } else {
+            // existing
+            $('#radioExisting').prop('checked', true);
+            $('#radioUnregistered').prop('checked', false);
+            $('.wrapper-existing').removeClass('d-none');
+            $('.wrapper-unregistered').addClass('d-none');
+        }
     });
 </script>
 @endsection

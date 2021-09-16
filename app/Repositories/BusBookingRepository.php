@@ -26,6 +26,7 @@ class BusBookingRepository
         ];
 
         if ($isUpdate) $rules['id'] = 'required';
+        if($request->user_status == 'unregistered') $rules['name'] = 'required';
 
         Validator::make($request->all(), $rules, $errorMessages)->validate();
     }
@@ -119,7 +120,13 @@ class BusBookingRepository
             $successMessage = 'Updated Successfully!';
         }
 
-        $booking->user_id = $request->user_id;
+        if($request->user_status == 'existing') {
+            $booking->user_name = User::find($request->user_id)->name;
+            $booking->user_id = $request->user_id;
+        } else {
+            $booking->user_name = $request->name;
+            $booking->user_id = 0;
+        }
         $booking->bus_id = $schedule->bus_id;
         $booking->driver_id = $schedule->driver_id;
         $booking->conductor_id = $schedule->conductor_id;

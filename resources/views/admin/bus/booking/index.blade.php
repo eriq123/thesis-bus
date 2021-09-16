@@ -42,7 +42,7 @@
                                 {{ $item->status->title }}
                             </button>
                         </td>
-                        <td>{{ $item->user->name }}</td>
+                        <td>{{ $item->user_name }}</td>
                         <td>{{ $item->schedule->starting_point->name }} - {{ $item->schedule->destination->name }}</td>
                         <td>{{ $item->schedule->schedule_date }} ({{ $item->schedule->time_departure }} -
                             {{ $item->schedule->time_arrival }})</td>
