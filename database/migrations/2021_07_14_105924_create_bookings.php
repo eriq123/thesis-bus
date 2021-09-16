@@ -15,11 +15,12 @@ class CreateBookings extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade')->nullable()->default(0);
             $table->foreignId('schedule_id')->constrained()->onDelete('cascade');
             $table->foreignId('bus_id')->constrained()->onDelete('cascade');
             $table->foreignId('driver_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('conductor_id')->constrained('users')->onDelete('cascade');
+            $table->string('user_name');
             $table->integer('fare_amount');
             $table->integer('quantity');
             $table->integer('grand_total');

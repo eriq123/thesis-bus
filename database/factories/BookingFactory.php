@@ -27,9 +27,11 @@ class BookingFactory extends Factory
         $schedule_id = $this->faker->randomElement(Schedule::pluck('id')->toArray());
         $schedule = Schedule::find($schedule_id);
         $quantity = rand(1, 5);
+        $user_id = $this->faker->randomElement(User::where('role_id', 4)->pluck('id')->toArray());
 
         return [
-            'user_id' => $this->faker->randomElement(User::where('role_id', 4)->pluck('id')->toArray()),
+            'user_id' => $user_id,
+            'user_name' => User::find($user_id)->name,
             'schedule_id' => $schedule_id,
             'bus_id' => $this->faker->randomElement(Bus::pluck('id')->toArray()),
             'driver_id' => $this->faker->randomElement(User::where('role_id', 2)->pluck('id')->toArray()),
