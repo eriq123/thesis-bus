@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 
 class BusBookingRepository
 {
+    private $defaultBusBookingId = -1;
     private function validateBooking($request, $isUpdate = false){
         $rules = [
             'user_id' => 'required',
@@ -103,7 +104,7 @@ class BusBookingRepository
 
     public function processBooking($request, $isApi = false)
     {
-        $isUpdate = $request->id == 0 ? false : true;
+        $isUpdate = $request->id == $this->defaultBusBookingId ? false : true;
         $this->validateBooking($request, $isUpdate);
         $schedule = Schedule::with('bus')->findOrFail($request->schedule_id);
         if($this->checkAvailableSeats($request, $schedule)) {
@@ -112,7 +113,7 @@ class BusBookingRepository
             return redirect()->back()->withErrors($errorMessage);
         }
 
-        if($request->id == 0) {
+        if($request->id == $this->defaultBusBookingId) {
             $booking = new Booking();
             $successMessage = 'Added Successfully!';
         } else {
