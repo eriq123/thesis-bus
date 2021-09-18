@@ -42,10 +42,10 @@ class BusBookingRepository
         return $seats_taken += $additionalQuantity;
     }
 
-    private function checkAvailableSeats($request, $schedule)
+    private function checkIfNoSeatsAvailable($request, $schedule)
     {
         $seats_taken = $this->openBookingTotalQuantity($request->schedule_id, $request->quantity);
-        return $schedule->bus->capacity > $seats_taken;
+        return $schedule->bus->capacity < $seats_taken;
     }
 
     public function index()
@@ -107,7 +107,7 @@ class BusBookingRepository
         $isUpdate = $request->id == $this->defaultBusBookingId ? false : true;
         $this->validateBooking($request, $isUpdate);
         $schedule = Schedule::with('bus')->findOrFail($request->schedule_id);
-        if($this->checkAvailableSeats($request, $schedule)) {
+        if($this->checkIfNoSeatsAvailable($request, $schedule)) {
             $errorMessage = 'The remaining seats are insufficient to fulfill the transaction.';
             if($isApi) return response()->json($errorMessage, 403);
             return redirect()->back()->withErrors($errorMessage);
