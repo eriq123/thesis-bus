@@ -10,6 +10,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\paymentController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -77,6 +78,12 @@ Route::middleware(['web','auth'])->group(function () {
             Route::post('/scheduleByBookingDetails', [BusBookingController::class, 'scheduleByBookingDetails'])->name('scheduleByBookingDetails');
         });
     });
+
+    Route::prefix('payments')->name('payments.')->group(function () {
+        Route::post('gcash/{id}', [paymentController::class, 'source'])->name('gcash.source');
+        Route::get('success/{id}', [paymentController::class, 'success'])->name('gcash.success');
+        Route::get('fail', [paymentController::class, 'fail'])->name('gcash.fail');
+    }); 
 
     Route::middleware('isPassenger')->group(function () {
 

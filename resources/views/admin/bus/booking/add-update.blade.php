@@ -12,6 +12,7 @@
                         <input type="hidden" name="id" id="id" value="{{$booking->id ?? -1}}">
                         <input type="hidden" name="schedule_id" id="schedule_id"
                             value="{{$booking->schedule_id ?? ''}}">
+                           
 
                         <h1 class="text-center">Book a seat</h1>
 
@@ -54,8 +55,11 @@
                                 </div>
                             </div>
                         </div>
-                        @elseif(Auth::user()->role_id == 4)
+                        @elseif(Auth::user()->role_id == 4) 
+                        @foreach ($passengers as $item)
+                        <input type="hidden" name="user_name" id="name" value="{{$item->name}}">
                         <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                        @endforeach
                         @endif
 
                         <div class="card outlined">

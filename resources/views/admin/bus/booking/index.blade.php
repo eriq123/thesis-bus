@@ -38,9 +38,12 @@
                     <tr>
                         <td>{{ $item->id }}</td>
                         <td>
-                            <button class="btn btn-sm btn-{{ $item->status->class }}">
+                        <form action="{{ route('payments.gcash.source', $item->id) }}" class="mr-1" method="POST">
+                            @csrf
+                            <button class="btn btn-sm btn-{{ $item->status->class }}" {{ $item->status_id == 2 ? 'disabled' : '' }}>
                                 {{ $item->status->title }}
                             </button>
+                        </form>
                         </td>
                         <td>{{ $item->user_name }}</td>
                         <td>{{ $item->schedule->starting_point->name }} - {{ $item->schedule->destination->name }}</td>

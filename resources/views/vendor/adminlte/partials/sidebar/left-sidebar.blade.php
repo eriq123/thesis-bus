@@ -35,6 +35,20 @@
                     <hr>
                 </li>
                 <li class="nav-item">
+                    <form id="#">
+                        @csrf
+                        <a href="#"
+                            class="nav-link">
+                            <i class="fa fa-user-circle"></i>
+                            <p class="ml-1">Update My Information</p>
+                        </a>
+                    </form>
+
+                </li>
+                <li>
+                    <hr>
+                </li>
+                <li class="nav-item">
                     <form id="logout-form" action="{{ route('logout') }}" method="POST">
                         @csrf
                         <a href="javascript:void()" onclick="document.getElementById('logout-form').submit();"
@@ -45,7 +59,18 @@
                     </form>
                 </li>
             </ul>
+            
+                <!-- <div class="copyright">
+                    &copy; BTIT Class of 2020 - 2019 <p> MARIANNE CLAIRE ARIÑO</p>
+                    <p> ELISHA FELIPE </p> <p> LESTER SORIANO </p>
+                </div>
+                <div class="version">
+                    <b>Version: </b> 1.0.0
+                </div> -->
+        
+        
         </nav>
+        
     </div>
 
 </aside>

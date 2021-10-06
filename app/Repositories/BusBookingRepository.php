@@ -103,43 +103,57 @@ class BusBookingRepository
     }
 
     public function processBooking($request, $isApi = false)
-    {
-        $isUpdate = $request->id == $this->defaultBusBookingId ? false : true;
-        $this->validateBooking($request, $isUpdate);
-        $schedule = Schedule::with('bus')->findOrFail($request->schedule_id);
-        if($this->checkIfNoSeatsAvailable($request, $schedule)) {
-            $errorMessage = 'The remaining seats are insufficient to fulfill the transaction.';
-            if($isApi) return response()->json($errorMessage, 403);
-            return redirect()->back()->withErrors($errorMessage);
+    { 
+        try{
+
+            $userName = User::find($request->user_id)->name;
+            $isUpdate = $request->id == $this->defaultBusBookingId ? false : true;
+
+            $this->validateBooking($request, $isUpdate);
+
+            $schedule = Schedule::with('bus')->findOrFail($request->schedule_id);
+           
+            if($this->checkIfNoSeatsAvailable($request, $schedule)) {
+                $errorMessage = 'The remaining seats are insufficient to fulfill the transaction.';
+                if($isApi) return response()->json($errorMessage, 403);
+                return redirect()->back()->withErrors($errorMessage);
+            }
+
+
+            if($request->id == $this->defaultBusBookingId) {
+                $booking = new Booking();
+                $successMessage = 'Added Successfully!';
+
+            } else {
+                  $booking = Booking::find($request->id);
+                $successMessage = 'Updated Successfully!';
+            }
+                                
+            if($request->user_status == 'existing') {
+
+                $booking->user_name = User::find($request->user_id)->name;
+                $booking->user_id = $request->user_id;
+            } else {
+                $booking->user_name = $userName;
+                $booking->user_id = $request->user_id;
+            }
+            $booking->bus_id = $schedule->bus_id;
+            $booking->driver_id = $schedule->driver_id;
+            $booking->conductor_id = $schedule->conductor_id;
+            $booking->schedule_id = $schedule->id;
+            $booking->fare_amount = $schedule->fare;
+            $booking->quantity = $request->quantity;
+            $booking->grand_total = $request->quantity * $schedule->fare;
+            $booking->status_id = Auth::user()->role_id == 1 ? 2 : 1;
+            $booking->save();
+
+            if($isApi) return $booking;
+            return redirect()->route('buses.bookings.index')->withSuccess($successMessage);
+
+        }catch(Exception $e){
+            return redirect()->route('buses.bookings.index')->withSuccess($successMessage);
         }
 
-        if($request->id == $this->defaultBusBookingId) {
-            $booking = new Booking();
-            $successMessage = 'Added Successfully!';
-        } else {
-            $booking = Booking::find($request->id);
-            $successMessage = 'Updated Successfully!';
-        }
-
-        if($request->user_status == 'existing') {
-            $booking->user_name = User::find($request->user_id)->name;
-            $booking->user_id = $request->user_id;
-        } else {
-            $booking->user_name = $request->name;
-            $booking->user_id = 0;
-        }
-        $booking->bus_id = $schedule->bus_id;
-        $booking->driver_id = $schedule->driver_id;
-        $booking->conductor_id = $schedule->conductor_id;
-        $booking->schedule_id = $schedule->id;
-        $booking->fare_amount = $schedule->fare;
-        $booking->quantity = $request->quantity;
-        $booking->grand_total = $request->quantity * $schedule->fare;
-        $booking->status_id = Auth::user()->role_id == 1 ? 2 : 1;
-        $booking->save();
-
-        if($isApi) return $booking;
-        return redirect()->route('buses.bookings.index')->withSuccess($successMessage);
     }
 
     public function scheduleByBookingDetails($request)

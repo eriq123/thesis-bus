@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/confirm', [BusBookingController::class, 'confirm']);
         });
     });
-
+    
     Route::post('logout', [AuthController::class, 'logout']);
+    
 });
