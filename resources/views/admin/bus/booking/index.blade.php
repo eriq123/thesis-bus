@@ -15,7 +15,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            
+
             <x-table>
                 <x-slot name="thead">
                     <tr>
@@ -53,8 +53,10 @@
                             {{ $item->schedule->time_arrival }})</td>
 
                         @unless(Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
+
                         <td><input type="hidden" id="fare-{{ $item->id }}" value="{{ $item->fare_amount }}">{{ $item->fare_amount}}</td>
                         <td><input type="hidden" id="qty-{{ $item->id }}" value="{{ $item->quantity }}">{{ $item->quantity}}</td>
+
                         <td>{{ $item->grand_total}}</td>
                         @else
                         <td>{{ $item->schedule->seats_available }}</td>
@@ -84,6 +86,7 @@
                             <form action="{{ route('buses.bookings.destroy', ['id'=> $item->id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
+
                                <!--  <a href="{{ route('buses.bookings.edit', ['id' => $item->id]) }}" role="button"
                                     class="btn btn-primary">Update</a> -->
                                 <input type="hidden" name="id-{{ $item->id}}" value="{{ $item->id }}">
@@ -108,6 +111,7 @@
                 </x-slot>
             </x-table>
         </div>
+
         <!-- Modal -->
         <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModal" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -228,6 +232,5 @@
 </div>
 @section('scripts')
 @parent
-@endsection
 @stop
 @stop

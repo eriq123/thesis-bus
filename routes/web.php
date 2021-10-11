@@ -71,9 +71,11 @@ Route::middleware(['web','auth'])->group(function () {
             Route::get('/add', [BusBookingController::class, 'add'])->name('add');
             Route::get('/edit/{id}', [BusBookingController::class, 'edit'])->name('edit');
             Route::post('/update', [BusBookingController::class, 'updateStatus'])->name('update.status');
+
             Route::get('/updateBookingSuccess/{id}', [BusBookingController::class, 'updateStatusBookingSuccess'])->name('update.status.booking.success');
             Route::get('/updateBookingFail/{id}', [BusBookingController::class, 'updateStatusBookingFail'])->name('update.status.booking.fail');
             Route::post('/payment', [BusBookingController::class, 'payingBooking'])->name('paying.booking');
+
             Route::delete('/{id}', [BusBookingController::class, 'destroy'])->name('destroy');
 
             Route::post('/process', [BusBookingController::class, 'submitProcess'])->name('submit.process');

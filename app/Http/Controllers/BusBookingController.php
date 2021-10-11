@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Luigel\Paymongo\Facades\Paymongo;
 
 
-
 class BusBookingController extends Controller
 {
     private $busBookingRepository;
@@ -99,6 +98,7 @@ class BusBookingController extends Controller
        
         return redirect()->route('buses.bookings.index')->withSuccess('Ticket paying get an error. Please try again !');
     }
+
     public function destroy($id)
     {
         $this->busBookingRepository->destroy($id);
@@ -107,7 +107,7 @@ class BusBookingController extends Controller
 
     public function submitProcess(Request $request)
     {
-        
+
         return $this->busBookingRepository->processBooking($request);
     }
 
@@ -115,7 +115,6 @@ class BusBookingController extends Controller
     {
         return response()->json($this->busBookingRepository->scheduleByBookingDetails($request));
     }
-
  
     public function payingBooking(Request $request)
     {

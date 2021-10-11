@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
     "content-hash": "ae620a9e890e2f6c1e71ea06b78d5f57",
+
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -1884,6 +1885,7 @@
             "time": "2021-08-15T23:05:49+00:00"
         },
         {
+
             "name": "luigel/laravel-paymongo",
             "version": "v1.3.4",
             "source": {
@@ -8240,5 +8242,7 @@
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
+
     "plugin-api-version": "2.1.0"
+
 }

@@ -90,14 +90,14 @@ class BusBookingRepository
 
     public function updateStatus($request)
     {
-        echo "<pre>";print_r($request->all());echo "</pre>";
-        die("I am here.. LA ALA LALALA A");
+
         $booking = Booking::find($request->id);
         $booking->status_id = $request->status_id;
         $booking->save();
 
         return $booking;
     }
+
     public function updateStatusBooking($id)
     {
        
