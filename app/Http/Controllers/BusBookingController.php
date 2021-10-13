@@ -58,6 +58,7 @@ class BusBookingController extends Controller
     }
     public function updateStatusBookingSuccess($id)
     {  
+        
         $booking     = Booking::find($id);
         $user_number = User::find($booking->user_id)->phone_number;
         $payment     = Paymongo::payment()->create([

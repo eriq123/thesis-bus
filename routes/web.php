@@ -10,6 +10,9 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\AjaxController;
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -61,6 +64,14 @@ Route::middleware(['web','auth'])->group(function () {
             Route::post('/changePassword', [UserController::class, 'changePassword'])->name('changePassword');
             Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
             Route::post('/searchByName', [UserController::class, 'searchByName'])->name('searchByName');
+        });
+         Route::prefix('report')->name('report.')->group(function () {
+            Route::get('/', [ReportController::class, 'index'])->name('index');
+           
+        });
+        Route::prefix('ajax')->name('ajax.')->group(function () {
+            Route::post('/fetch', [AjaxController::class, 'fetchData'])->name('fetching');
+           
         });
 
     });
