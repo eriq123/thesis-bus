@@ -120,7 +120,7 @@ class BusBookingController extends Controller
     public function payingBooking(Request $request)
     {
         $id = $request->itemId;
-        $amount  = $request->fare;
+        $amount  = $request->grand_total;
         $userId  = $request->userId;
         $phone   = $request->gcashInput;
 

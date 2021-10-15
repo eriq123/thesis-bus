@@ -57,7 +57,7 @@
                         <td><input type="hidden" id="fare-{{ $item->id }}" value="{{ $item->fare_amount }}">{{ $item->fare_amount}}</td>
                         <td><input type="hidden" id="qty-{{ $item->id }}" value="{{ $item->quantity }}">{{ $item->quantity}}</td>
 
-                        <td>{{ $item->grand_total}}</td>
+                        <td><input type="hidden" id="grand_total-{{ $item->id }}" value="{{ $item->grand_total }}">{{ $item->grand_total}}</td>
                         @else
                         <td>{{ $item->schedule->seats_available }}</td>
                         @endunless
@@ -170,6 +170,17 @@
                                     <input id="qtyInput" type="text" class="form-control" name="qtyInput" autocomplete="quantity" readonly="">
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label for="GrandTotalInput" class="col-md-4 col-form-label text-md-right">{{ __('Grand Total') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="GrandTotalInput" type="text" class="form-control" name="grand_total" value="{{ old('email') }}" required autocomplete="fare" readonly="">
+
+                                    <span class="invalid-feedback" role="alert" id="emailError">
+                                        <strong></strong>
+                                    </span>
+                                </div>
+                            </div>
                              <div class="form-group row">
                                 <label for="statusInput" class="col-md-4 col-form-label text-md-right">{{ __('Status ') }}</label>
 
@@ -212,6 +223,7 @@
         var qty   = $("#qty-"+itemId).val();
         var status= $("#status-"+itemId).val();
         var userId= $("#userId-"+itemId).val();
+        var GrandTotal= $("#grand_total-"+itemId).val();
        
         $("#nameInput").val(name);
         $("#fareInput").val(fare);
@@ -219,7 +231,10 @@
         $("#qtyInput").val(qty);
         $("#statusInputId").val(status);
         $("#userId").val(userId);
+        $("#GrandTotalInput").val(GrandTotal);
+        
         if(status == 1){
+            
             $("#statusInput").val("Open");
         }
         $('#paymentModal').modal('show');
