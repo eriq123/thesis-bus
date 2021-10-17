@@ -87,8 +87,8 @@
                                 @csrf
                                 @method('DELETE')
 
-                                <a href="{{ route('buses.bookings.edit', ['id' => $item->id]) }}" role="button"
-                                    class="btn btn-primary">Update</a>
+                                <!-- <a href="{{ route('buses.bookings.edit', ['id' => $item->id]) }}" role="button"
+                                    class="btn btn-primary">Update</a> -->
                                 <input type="hidden" name="id-{{ $item->id}}" value="{{ $item->id }}">
     
                                  @if ($item->status_id == 1)

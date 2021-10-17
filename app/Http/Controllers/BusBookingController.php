@@ -75,7 +75,7 @@ class BusBookingController extends Controller
          $booking->status_id = 2;
          $booking->save();
   
-         $message = "You have Successfully paid for Bus route : ".$booking->user_name.'-'.$booking->schedule->starting_point->name;
+         $message = "You have Successfully paid for Bus route : ".$booking->schedule->starting_point->name.'-'.$booking->schedule->destination->name;
          $result = $this->itexmo($user_number,$message,$_ENV['API_CODE'], $_ENV['API_PASSWORD']);
 
     

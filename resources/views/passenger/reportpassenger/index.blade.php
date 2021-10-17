@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('contents')
 
-@if (Auth::user()->role_id == 1)
+@if (Auth::user()->role_id == 4)
 @section('content_header')
 <!-- <div class="text-center">
     <a href="{{ route('buses.bookings.add') }}" class="btn btn-outline-success" type="button">
@@ -78,7 +78,7 @@
                         <td><input type="hidden" id="qty-{{ $item->id }}" value="{{ $item->quantity }}">{{ $item->quantity}}</td>
 
                         <td><input type="hidden" id="total-{{$count}}" value="{{$item->grand_total}}">
-                            ₱{{ $item->grand_total}} </td>
+                        ₱{{ $item->grand_total}} </td>
 
                         @else
                         <td>{{ $item->schedule->seats_available }}</td>
@@ -151,7 +151,7 @@
                 total = total + parseInt($("#total-"+i).val());
                 
             }
-            $("tbody").append("<tr style='background-color:#e8eaec;color:black;'> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td style='font-weight: bold;'>Total </td>-<td style='font-weight: bold;'>₱"+total+" </td> <td></td> </tr>");
+            $("tbody").append("<tr style='background-color:#e8eaec;color:black;'> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td style='font-weight: bold;'>Total </td>-<td style='font-weight: bold;'>"+total+" ₱</td> <td></td> </tr>");
 
         }
 
@@ -209,7 +209,7 @@
                                       }
                                       $("tbody").empty();
                                       $("tbody").append(dataAppend);
-                                      $("tbody").append("<tr style='background-color:#e8eaec;color:black;'> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td style='font-weight: bold;'>Total </td>-<td style='font-weight: bold;'>₱"+total+" </td> <td></td> </tr>");
+                                      $("tbody").append("<tr style='background-color:#e8eaec;color:black;'> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td style='font-weight: bold;'>Total </td>-<td style='font-weight: bold;'>"+total+" ₱</td> <td></td> </tr>");
 
 
                                   
