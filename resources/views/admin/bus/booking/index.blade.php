@@ -200,11 +200,51 @@
             </div>
         </div>
 
+
+
+
+        <div class="modal fade" id="requirementModal" tabindex="-1" role="dialog" aria-labelledby="requirementModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="requirementModal">{{ __('Requirements For Travel') }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+                        <div class="clearfix top20"></div>
+                        <div id="notification_details1">
+                            <p></p>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <strong class="strong">IMPORTANT NOTICE!</strong><br>
+                                    <b>For Ilocos Norte Travel Advisory</b><br>
+                                    Before proceeding, please be informed of the latest travel advisory and requirements to Ilocos Norte:<br><b>Travelling from Manila to Laoag</b><br>1. NEGATIVE RT-PCR test taken 60 hours or NEVATIVE ANTIGEN text taken within 24 hours of arrival at the border of Ilocos Norte<br>2. Acceptance by the Mayor if traveller if ROF/LSI<br>3. Certificate of Employent/Travel Order by employer if APOR <br><br><b>Ilocos Norte Travel Information</b><br><a href="20210201_131359.pdf" target="_blank">Click HERE to view guidelines</a><br><br><b>NOTICE:</b><br>The operator requires a minimum of 10 passengers for a trip to proceed. Please note that there is a possibility of transfer if the minimum is not met. <b>Please take the antigen test only 24 hours before the confirmed trip. Thank you for your understanding. </b><br>
+                                </div>
+                            </div>
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="pull-right">
+                            <input style="display:none;" type="checkbox" id="chknotification1" name="chknotification1" value="I ACCEPT">
+                            <label style="display:none;" id="lblchknotification1" for="chknotification1">I Accept</label>
+                            <a style="" href="#" class="btn btn-primary" id="btnnotification1accept">I Accept</a>
+                            <a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 <script type="text/javascript">
 
     function openModal(itemId)
     {
    
+   $('#requirementModal').modal('show');
         $("#itemId").val(itemId);
         var name  = $("#username-"+itemId).val();
         var fare  = $("#fare-"+itemId).val();
@@ -222,7 +262,7 @@
         if(status == 1){
             $("#statusInput").val("Open");
         }
-        $('#paymentModal').modal('show');
+     //   $('#paymentModal').modal('show');
 
     }
 
