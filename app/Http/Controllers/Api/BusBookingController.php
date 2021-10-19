@@ -54,4 +54,12 @@ class BusBookingController extends Controller
         ]);
         return response()->json($this->busBookingRepository->processBooking($request, true), 200);
     }
+
+    public function upload(Request $request){
+
+         $result = $request->all();
+
+         echo "<pre>";print_r($result);echo "</pre>";
+         die("I am here.. LA ALA LALALA A");
+    }
 }

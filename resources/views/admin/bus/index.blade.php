@@ -37,6 +37,15 @@
                 </div>
                 @endif
             </div>
+             <div class="input-group mb-3">
+                <input type="number" name="gcash_number" id="gcash_number" class="form-control" value="{{ old('gcash_number') }}"
+                    placeholder="Bus Gcash Number" required>
+                @if($errors->has('gcash_number'))
+                <div class="invalid-feedback">
+                    <strong>{{ $errors->first('gcash_number') }}</strong>
+                </div>
+                @endif
+            </div>
         </x-slot>
         <x-slot name="modalFooter">
             <button class="btn btn-success" id="footerButton">Save</button>
@@ -56,6 +65,7 @@
                         <th>Plate Number</th>
                         <th>Type</th>
                         <th>Capacity</th>
+                        <th>Gcash Number</th>
                         <th>Actions</th>
                     </tr>
                 </x-slot>
@@ -66,13 +76,14 @@
                         <td>{{ $item->plate_number}}</td>
                         <td>{{ $item->type}}</td>
                         <td>{{ $item->capacity}}</td>
+                        <td>{{ $item->gcash_number}}</td>
                         <td>
                             <form action="{{ route('buses.destroy', ['id'=> $item->id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-primary openUpdateModal" type="button" data-id="{{ $item->id }}"
                                     data-plate_number="{{ $item->plate_number }}" data-type="{{ $item->type }}"
-                                    data-capacity="{{ $item->capacity }}">Update</button>
+                                    data-capacity="{{ $item->capacity }}" data-gcash_number="{{ $item->gcash_number }}">Update</button>
                                 <button class="btn btn-danger">Delete</button>
                             </form>
                         </td>
@@ -103,7 +114,8 @@
                 $(this).data('id'),
                 $(this).data('plate_number'),
                 $(this).data('type'),
-                $(this).data('capacity')
+                $(this).data('capacity'),
+                $(this).data('gcash_number')
             );
         });
 
@@ -126,12 +138,14 @@
             id = null,
             plate_number = null,
             type = null,
-            capacity = null
+            capacity = null,
+            gcash_number = null
         ){
             $('#id').val(id);
             $('#plate_number').val(plate_number);
             $('#type').val(type);
             $('#capacity').val(capacity);
+            $('#gcash_number').val(gcash_number);
 
             $('#crudModalForm').attr('action',formRoute);
             $('#modalTitle').text(modalTitle);

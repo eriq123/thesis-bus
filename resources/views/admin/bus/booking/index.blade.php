@@ -94,7 +94,10 @@
                                  @if ($item->status_id == 1)
                                 <a href="{{ route('buses.bookings.edit', ['id' => $item->id]) }}" role="button"
                                     class="btn btn-primary">Update</a>
-                                <a href="#" role="button" class="btn btn-secondary" onclick="openModal('{{ $item->id }}')">Pay Now</a>
+                               <!--  <a href="#" role="button" class="btn btn-secondary" onclick="openModal('{{ $item->id }}')">Pay Now</a> -->
+                                <a href="#" role="button" class="btn" onclick="openModal('{{ $item->id }}')">
+                                    <img alt="Gcash" src="http://127.0.0.1:8000/images/GCash.png" width="70" height="38" style="border-radius: 16%;">
+                                </a>
                                  @endif
                                 <button class="btn btn-danger">Delete</button>
                             </form>
@@ -214,25 +217,32 @@
                     </div>
                     <div class="modal-body">
                         <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
-                        <div class="clearfix top20"></div>
-                        <div id="notification_details1">
-                            <p></p>
-                            <div class="row">
+                      <strong class="strong">IMPORTANT REMINDER FOR COVID-19 TRAVEL RESTRICTIONS</strong>
+                       
+                            <div class="row" >
                                 <div class="col-md-10">
-                                    <strong class="strong">IMPORTANT NOTICE!</strong><br>
-                                    <b>For Ilocos Norte Travel Advisory</b><br>
-                                    Before proceeding, please be informed of the latest travel advisory and requirements to Ilocos Norte:<br><b>Travelling from Manila to Laoag</b><br>1. NEGATIVE RT-PCR test taken 60 hours or NEVATIVE ANTIGEN text taken within 24 hours of arrival at the border of Ilocos Norte<br>2. Acceptance by the Mayor if traveller if ROF/LSI<br>3. Certificate of Employent/Travel Order by employer if APOR <br><br><b>Ilocos Norte Travel Information</b><br><a href="20210201_131359.pdf" target="_blank">Click HERE to view guidelines</a><br><br><b>NOTICE:</b><br>The operator requires a minimum of 10 passengers for a trip to proceed. Please note that there is a possibility of transfer if the minimum is not met. <b>Please take the antigen test only 24 hours before the confirmed trip. Thank you for your understanding. </b><br>
+                                    <div class="row"style="margin-right: -15px; margin-left: -15px;justify-content: center; padding: 20px; "> 
+                                      <h5>Please check the most updated travel regulations of the area you travel to and from. While we do our best to update information, the customer is responsible for checking information thoroughly from authorized sources and obtaining requirements prior to travelling. <br><br>Thank you for your cooperation and please stay safe and healthy!</h5></div>
                                 </div>
                             </div>
-                            <p></p>
-                        </div>
+
+
+                        
                     </div>
                     <div class="modal-footer">
+                       
                         <div class="pull-right">
-                            <input style="display:none;" type="checkbox" id="chknotification1" name="chknotification1" value="I ACCEPT">
-                            <label style="display:none;" id="lblchknotification1" for="chknotification1">I Accept</label>
-                            <a style="" href="#" class="btn btn-primary" id="btnnotification1accept">I Accept</a>
-                            <a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+                           <form method="POST" action="{{route('buses.payments.payment.view')}}" id="paymentFormSubmit">
+                            @csrf
+                            <input type="hidden" id="bookingItemId" name="bookingItemId" value="">
+                            <!-- <a style=""  class="btn btn-success" id="btnnotification1accept">I Accept</a> -->
+
+                             <button type="submit" class="btn btn-success">
+                                        {{ __('I Accept') }}
+                            </button>
+                       
+                             <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                             </form>
                         </div>
                     </div>
                 </div>
@@ -243,9 +253,14 @@
 
     function openModal(itemId)
     {
-   
-   $('#requirementModal').modal('show');
-        $("#itemId").val(itemId);
+        
+        $('#requirementModal').modal('show');
+        console.log(itemId);
+        $('#bookingItemId').val(itemId);
+      
+        // $("#itemId").val(itemId);
+        // window.location.href = "{{URL::to('/buses/payment/paymentView/"+22+"')}}";
+        
         var name  = $("#username-"+itemId).val();
         var fare  = $("#fare-"+itemId).val();
         var route = $("#route-"+itemId).val();

@@ -39,6 +39,28 @@ class AuthController extends Controller
         return response()->json($user, 200);
     }
 
+    public function logins(Request $request)
+    {
+        echo "<pre>";print_r("hi");echo "</pre>";
+        die("I am here.. LA ALA LALALA A");
+        // $request->validate([
+        //     'email' => 'required|email',
+        //     'password' => 'required',
+        // ]);
+
+        // $user = User::where('email', $request->email)->first();
+
+        // if (!$user || !Hash::check($request->password, $user->password)) {
+        //     throw ValidationException::withMessages([
+        //         'email' => ['The provided credentials are incorrect.'],
+        //     ]);
+        // }
+
+        // $user->token = $user->createToken('Access_token')->plainTextToken;
+
+        // return response()->json($user, 200);
+    }
+
     public function register(Request $request)
     {
         $user = $this->authRepository->register($request);
