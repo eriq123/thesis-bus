@@ -41,24 +41,23 @@ class AuthController extends Controller
 
     public function logins(Request $request)
     {
-        echo "<pre>";print_r("hi");echo "</pre>";
-        die("I am here.. LA ALA LALALA A");
-        // $request->validate([
-        //     'email' => 'required|email',
-        //     'password' => 'required',
-        // ]);
+       
 
-        // $user = User::where('email', $request->email)->first();
+        $encodedImage = $request->EN_IMAGE;
+        if($encodedImage !=""){
+            // $path = $request->file('EN_IMAGE')->storeAs('public',"test.png");
+            $result["status"] = TRUE;
+            $result["remarks"] = "Image Uploaded Successfully";
+        }else{
+            $result["status"] = FALSE;
+        $result["remarks"] = "Image Uploading Failed";
+        }
+        $imageTitle = "myImage";
+        $imageLocation = "images/$imageTitle.jpg";
 
-        // if (!$user || !Hash::check($request->password, $user->password)) {
-        //     throw ValidationException::withMessages([
-        //         'email' => ['The provided credentials are incorrect.'],
-        //     ]);
-        // }
-
-        // $user->token = $user->createToken('Access_token')->plainTextToken;
-
-        // return response()->json($user, 200);
+         return response()->json($result, 200);
+      
+     
     }
 
     public function register(Request $request)
