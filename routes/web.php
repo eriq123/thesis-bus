@@ -92,6 +92,12 @@ Route::middleware(['web','auth'])->group(function () {
             Route::post('/process', [BusBookingController::class, 'submitProcess'])->name('submit.process');
             Route::post('/scheduleByBookingDetails', [BusBookingController::class, 'scheduleByBookingDetails'])->name('scheduleByBookingDetails');
         });
+
+        Route::prefix('payments')->name('payments.')->group(function () {
+            Route::post('/', [BusBookingController::class, 'payment'])->name('payment.view');
+            Route::post('/paymentProcess', [BusBookingController::class, 'paymentProcessing'])->name('payment.processing');
+            
+        });
     });
 
     Route::middleware('isPassenger')->group(function () {
