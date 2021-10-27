@@ -11,6 +11,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReportPassengerController;
 use App\Http\Controllers\AjaxController;
 
 use Illuminate\Support\Facades\Route;
@@ -67,8 +68,11 @@ Route::middleware(['web','auth'])->group(function () {
         });
          Route::prefix('report')->name('report.')->group(function () {
             Route::get('/', [ReportController::class, 'index'])->name('index');
+            
+
            
         });
+        
         Route::prefix('ajax')->name('ajax.')->group(function () {
             Route::post('/fetch', [AjaxController::class, 'fetchData'])->name('fetching');
            
@@ -100,7 +104,13 @@ Route::middleware(['web','auth'])->group(function () {
         });
     });
 
-    Route::middleware('isPassenger')->group(function () {
+    
+        Route::prefix('report')->name('report.')->group(function () {
+            Route::get('/passenger', [ReportController::class, 'indexpassenger'])->name('indexpassenger');
+            Route::get('/download', [ReportController::class, 'download'])->name('download');
 
-    });
+           
+        });
+        
+    
 });

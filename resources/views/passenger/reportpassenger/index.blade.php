@@ -133,6 +133,7 @@
                     @endforelse
                 </x-slot>
             </x-table>
+            <input type="button" class="btn btn-primary" value="Download as PDF" onclick="window.location='/report/download'" >
         </div>
 
        

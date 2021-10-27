@@ -28,6 +28,7 @@
         <br>
         <input type="button" class="btn btn-primary" value="Search" onclick="getData()">
     </div>
+    
 </div>
 @stop
 @endif
@@ -134,6 +135,11 @@
                 </x-slot>
             </x-table>
         </div>
+        <div class="col-md-2">
+        <label>&nbsp;</label>
+        <br>
+        <input type="button" class="btn btn-primary" value="Download as PDF" onclick="window.location='/report/download'" >
+    </div>
 
        
 <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -141,6 +147,8 @@
 <script type="text/javascript">
 
   setTimeout(function(){ updateTotalAmount(); }, 500);
+
+        
 
         function updateTotalAmount(){
 
