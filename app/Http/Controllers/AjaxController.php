@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Booking;
+use App\Models\Bus;
 use App\Models\User;
 use App\Repositories\ReportRepository;
 use Illuminate\Support\Facades\DB;
@@ -30,6 +31,25 @@ class AjaxController extends Controller
         }
 
         return response()->json(['success'=>$bookings]);
+    }
+
+
+    public function getLocation(Request $request)
+    {
+        $data = $request->all();
+
+        $bus = DB::table('buses')->where('id',$request->bus_id)->get();
+       
+        $busData =array();
+
+        $busData['id']=$bus[0]->id;
+        $busData['long']=$bus[0]->long;
+        $busData['lat']=$bus[0]->lat;
+  
+        #create or update your data here
+        return response()->json(['success'=>$busData]);
+      
+
     }
 
    

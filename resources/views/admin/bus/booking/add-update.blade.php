@@ -95,7 +95,7 @@
                                     </p>
                                     <input type="date" name="schedule_date" id="schedule_date" class="form-control"
                                         value="{{ $booking->schedule->schedule_date ?? Carbon\Carbon::now()->format('Y-m-d') }}"
-                                        placeholder="Date" required>
+                                        placeholder="Date" required >
                                     @if($errors->has('schedule_date'))
                                     <div class="invalid-feedback">
                                         <strong>{{ $errors->first('schedule_date') }}</strong>
@@ -194,6 +194,8 @@
 
 @section('js')
 <script>
+
+
     $( document ).ready(function() {
         var BOOKING_SCHEDULE_ID = '{{ $booking->schedule_id ?? 0 }}';
         var debounce;
@@ -287,7 +289,16 @@
 
 
         $('#schedule_date').change(function() {
-            searchScheduleByRouteIDs()
+            alert("YahoooS");
+             var scheduleDate = $('#schedule_date').val();
+                 var now = new Date();
+                      now.setHours(0,0,0,0);
+                      if (scheduleDate < now) {
+                        console.log("Selected date is in the past");
+                      } else {
+                        console.log("Selected date is NOT in the past");
+                      }
+             searchScheduleByRouteIDs()
         });
 
         $('#radioExisting').click(function(){
@@ -319,6 +330,8 @@
             $('.wrapper-unregistered').addClass('d-none');
         }
     });
+
+
 </script>
 @endsection
 

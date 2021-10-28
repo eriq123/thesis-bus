@@ -96,8 +96,12 @@
                                     class="btn btn-primary">Update</a>
                                <!--  <a href="#" role="button" class="btn btn-secondary" onclick="openModal('{{ $item->id }}')">Pay Now</a> -->
                                 <a href="#" role="button" class="btn" onclick="openModal('{{ $item->id }}')">
-                                    <img alt="Gcash" src="http://127.0.0.1:8000/images/GCash.png" width="70" height="38" style="border-radius: 16%;">
+                                   
+                                    <img alt="Gcash" src="{{ url('/')}}/images/GCash.png" width="70" height="38" style="border-radius: 16%;">
                                 </a>
+                                 
+                                 @elseif ($item->status_id == 2)
+                                 <a href="{{ route('buses.bookings.bus.location', ['id' => $item->id]) }}" role="button" class="btn btn-success" >Check Location</a>
                                  @endif
                                 <button class="btn btn-danger">Delete</button>
                             </form>
@@ -248,12 +252,12 @@
                 </div>
             </div>
         </div>
-
+       
 <script type="text/javascript">
 
     function openModal(itemId)
     {
-        
+        // initMap();
         $('#requirementModal').modal('show');
         console.log(itemId);
         $('#bookingItemId').val(itemId);

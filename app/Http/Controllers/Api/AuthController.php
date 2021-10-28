@@ -43,22 +43,33 @@ class AuthController extends Controller
     {
        
 
-        $encodedImage = $request->EN_IMAGE;
-        if($encodedImage !=""){
-            // $path = $request->file('EN_IMAGE')->storeAs('public',"test.png");
-            $result["status"] = TRUE;
+        $encodedImage = $request->proof_image;
+    //      if(!$request->hasFile('proof_image')) {
+    //         $result["status"] = FALSE;
+    //         $result["remarks"] = "File Not Found";
+    //         return response()->json($result, 400);
+        
+    // }else{
+    //      if($encodedImage !=""){
+    //          $path = $request->file('proof_image')->storeAs('public',"test.png");
+    //         $result["status"] = TRUE;
+    //         $result["remarks"] = "Image Uploaded Successfully";
+    //     }else{
+    //         $result["status"] = FALSE;
+    //     $result["remarks"] = "Image Uploading Failed";
+    //     }
+    //     $imageTitle = "myImage";
+    //     $imageLocation = "images/$imageTitle.jpg";
+          $result["status"] = TRUE;
             $result["remarks"] = "Image Uploaded Successfully";
-        }else{
-            $result["status"] = FALSE;
-        $result["remarks"] = "Image Uploading Failed";
-        }
-        $imageTitle = "myImage";
-        $imageLocation = "images/$imageTitle.jpg";
-
          return response()->json($result, 200);
+
+    }
+ 
+       
       
      
-    }
+    // }
 
     public function register(Request $request)
     {
