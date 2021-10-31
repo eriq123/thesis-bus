@@ -5,6 +5,8 @@ namespace App\Repositories;
 use App\Models\Booking;
 use App\Models\BusRoute;
 use App\Models\Schedule;
+use App\Models\Status;
+use App\Models\Bus;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -83,10 +85,20 @@ class BusBookingRepository
     {
         $this->data['bus_routes'] = BusRoute::orderBy('name')->get();
         $this->data['passengers'] = User::where('role_id', 4)->orderBy('name')->get();
+        $this->data['bus']        = Bus::orderBy('id')->get();
         $this->data['schedules'] = [];
-
         return $this->data;
     }
+    public function location()
+    {
+        $this->data['bus_routes'] = BusRoute::orderBy('name')->get();
+        $this->data['passengers'] = User::where('role_id', 4)->orderBy('name')->get();
+        $this->data['bus']        = Bus::orderBy('id')->get();
+        $this->data['status']     = Status::orderBy('id')->get();
+        $this->data['schedules'] = [];
+        return $this->data;
+    }
+
 
     public function updateStatus($request)
     {

@@ -213,6 +213,14 @@ class BusBookingController extends Controller
     
     }
 
+    public function busLocation($id)
+    {
+        $this->data = $this->busBookingRepository->location();
+        $this->data['booking'] = Booking::find($id);
+      
+        return view('admin.bus.booking.location', $this->data);
+    }
+
   
     
 }

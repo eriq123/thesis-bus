@@ -78,7 +78,12 @@ Route::middleware(['web','auth'])->group(function () {
            
         });
 
+                                    
     });
+     Route::prefix('ajax')->name('ajax.')->group(function () {
+            Route::post('/location', [AjaxController::class, 'getLocation'])->name('get.location');
+           
+        });
 
     Route::prefix('buses')->name('buses.')->group(function () {
         Route::prefix('bookings')->name('bookings.')->group(function () {
@@ -86,6 +91,7 @@ Route::middleware(['web','auth'])->group(function () {
             Route::get('/add', [BusBookingController::class, 'add'])->name('add');
             Route::get('/edit/{id}', [BusBookingController::class, 'edit'])->name('edit');
             Route::post('/update', [BusBookingController::class, 'updateStatus'])->name('update.status');
+            Route::get('/busLocation/{id}', [BusBookingController::class, 'busLocation'])->name('bus.location');
 
             Route::get('/updateBookingSuccess/{id}', [BusBookingController::class, 'updateStatusBookingSuccess'])->name('update.status.booking.success');
             Route::get('/updateBookingFail/{id}', [BusBookingController::class, 'updateStatusBookingFail'])->name('update.status.booking.fail');
