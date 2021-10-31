@@ -33,6 +33,39 @@ class AjaxController extends Controller
         return response()->json(['success'=>$bookings]);
     }
 
+    public function approveBooking(Request $request){
+      
+
+        $data = $request->all();
+        $itemId = $request->itemId; 
+       
+        $booking = Booking::find($itemId);
+        $booking->status_id = 3;
+
+        $booking->save();
+        $user_number = User::find($booking->user_id)->phone_number;
+        $message = "You have Ticket is paid for Bus route : ".$booking->user_name.'-'.$booking->schedule->starting_point->name;
+        $result = $this->itexmo($user_number,$message,$_ENV['API_CODE'], $_ENV['API_PASSWORD']);
+
+    
+        return response()->json(['success'=>$booking]);
+       
+
+    }
+    public function itexmo($number,$message,$apicode,$passwd)
+    {
+             $url = 'https://www.itexmo.com/php_api/api.php';
+             $itexmo = array('1' => $number, '2' => $message, '3' => $apicode, 'passwd' => $passwd);
+             $param = array(
+                 'http' => array(
+                     'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                     'method'  => 'POST',
+                     'content' => http_build_query($itexmo),
+                 ),
+             ); 
+             $context  = stream_context_create($param);
+             return file_get_contents($url, false, $context);
+    }
 
     public function getLocation(Request $request)
     {

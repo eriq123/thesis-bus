@@ -159,11 +159,11 @@ function hitLocation()
 // hitLocation();
  setInterval(hitLocation, 15000);
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
-<!--   <script
+<!-- <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script> -->
+  <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbLjZE7C1lRqge20MpcrXQBIo6LI2S_tw&callback=initMap&v=weekly"
       async defer
-    ></script> -->
+    ></script>
     </div>
     
      

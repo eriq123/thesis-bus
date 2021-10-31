@@ -99,10 +99,17 @@
                                    
                                     <img alt="Gcash" src="{{ url('/')}}/images/GCash.png" width="70" height="38" style="border-radius: 16%;">
                                 </a>
+                                
+                                 @elseif ($item->status_id == 6)
+                                 <a href="{{ route('buses.bookings.bus.location', ['id' => $item->id]) }}" role="button" class="btn btn-success" > Location</a>
+                                  @endif
+                                @if(Auth::user()->role_id == 1)
                                  
-                                 @elseif ($item->status_id == 2)
-                                 <a href="{{ route('buses.bookings.bus.location', ['id' => $item->id]) }}" role="button" class="btn btn-success" >Check Location</a>
+                                 @if ($item->status_id == 2)
+                                 <a onclick="approveBooking('{{ $item->id }}')" role="button" class="btn btn-primary" ><i class="fas fa-check" >Approve</i> </a>
+                                 
                                  @endif
+                                @endif
                                 <button class="btn btn-danger">Delete</button>
                             </form>
                             @endif
@@ -283,6 +290,22 @@
         }
      //   $('#paymentModal').modal('show');
 
+    }
+    function approveBooking(itemId)
+    {
+        let _token ='<?php echo csrf_token() ?>'; 
+            $.ajax({
+                       type:'POST',
+                       url:'/ajax/approve',
+                       data:{
+                            itemId   : itemId,
+                            _token : _token
+                       },
+                       success:function(data) 
+                        {
+                           window.location.reload();
+                        }      
+            });
     }
 
 </script>

@@ -42,26 +42,33 @@ class AuthController extends Controller
     public function logins(Request $request)
     {
        
+      echo "<pre>";print_r($request->all());echo "</pre>";
+      die("I am here.. LA ALA LALALA A");
 
         $encodedImage = $request->proof_image;
-    //      if(!$request->hasFile('proof_image')) {
-    //         $result["status"] = FALSE;
-    //         $result["remarks"] = "File Not Found";
-    //         return response()->json($result, 400);
+
+         if(!$request->hasFile('proof_image')) {
+            $result["status"] = FALSE;
+            $result["remarks"] = "File Not Found";
+            return response()->json($result, 400);
         
-    // }else{
-    //      if($encodedImage !=""){
-    //          $path = $request->file('proof_image')->storeAs('public',"test.png");
-    //         $result["status"] = TRUE;
-    //         $result["remarks"] = "Image Uploaded Successfully";
-    //     }else{
-    //         $result["status"] = FALSE;
-    //     $result["remarks"] = "Image Uploading Failed";
-    //     }
-    //     $imageTitle = "myImage";
-    //     $imageLocation = "images/$imageTitle.jpg";
-          $result["status"] = TRUE;
+    }else{
+         if($encodedImage !=""){
+             $path = $request->file('proof_image')->storeAs('public',"test.png");
+            $result["status"] = TRUE;
             $result["remarks"] = "Image Uploaded Successfully";
+              return response()->json($result, 200);
+        }else{
+            $result["status"] = FALSE;
+            $result["remarks"] = "Image Uploading Failed";
+          return response()->json($result, 400);
+        }
+        // $imageTitle = "myImage";
+        // $imageLocation = "images/$imageTitle.jpg";
+        //   $result["status"] = TRUE;
+        //     $result["remarks"] = "Image Uploaded Successfully";
+         $result["status"] = FALSE;
+            $result["remarks"] = "Image Uploading Successfully";
          return response()->json($result, 200);
 
     }
@@ -69,7 +76,7 @@ class AuthController extends Controller
        
       
      
-    // }
+     }
 
     public function register(Request $request)
     {
