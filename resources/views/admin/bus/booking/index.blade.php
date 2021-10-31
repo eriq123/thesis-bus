@@ -264,13 +264,12 @@
 
     function openModal(itemId)
     {
-        // initMap();
+      
         $('#requirementModal').modal('show');
         console.log(itemId);
         $('#bookingItemId').val(itemId);
       
-        // $("#itemId").val(itemId);
-        // window.location.href = "{{URL::to('/buses/payment/paymentView/"+22+"')}}";
+     
         
         var name  = $("#username-"+itemId).val();
         var fare  = $("#fare-"+itemId).val();
