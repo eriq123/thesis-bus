@@ -13,3 +13,5 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+resources/views/admin/bus/booking/add-update.blade.php
+*.php

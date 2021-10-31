@@ -289,7 +289,7 @@
 
 
         $('#schedule_date').change(function() {
-            alert("YahoooS");
+            //alert("YahoooS");
              var scheduleDate = $('#schedule_date').val();
                  var now = new Date();
                       now.setHours(0,0,0,0);
