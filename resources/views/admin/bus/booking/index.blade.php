@@ -266,11 +266,7 @@
     {
       
         $('#requirementModal').modal('show');
-        console.log(itemId);
         $('#bookingItemId').val(itemId);
-      
-     
-        
         var name  = $("#username-"+itemId).val();
         var fare  = $("#fare-"+itemId).val();
         var route = $("#route-"+itemId).val();

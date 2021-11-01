@@ -14,9 +14,15 @@
                 <p class="mb-0 ml-1 text-left">Buses :</p>
                 <select class="form-select form-control" id="bus_id" name="bus_id" required>
                     @forelse ($buses as $item)
-                    <option value="{{ $item->id }}">
-                        {{ $item->plate_number }} - {{ $item->type }} ({{ $item->capacity }})
-                    </option>
+                      @if($item->status == 'booked')
+                        <option value="{{ $item->id }}" disabled>
+                            {{ $item->plate_number }} - {{ $item->type }} ({{ $item->capacity }})
+                        </option>
+                        @elseif($item->status == 'free')
+                         <option value="{{ $item->id }}" >
+                            {{ $item->plate_number }} - {{ $item->type }} ({{ $item->capacity }})
+                        </option>
+                        @endif
                     @empty
                     <option selected>No buses available</option>
                     @endforelse
@@ -26,9 +32,15 @@
                 <p class="mb-0 ml-1 text-left">Bus Drivers :</p>
                 <select class="form-select form-control" id="driver_id" name="driver_id" required>
                     @forelse ($drivers as $item)
-                    <option value="{{ $item->id }}">
-                        {{ $item->name }}
-                    </option>
+                      @if($item->status == 'open')
+                        <option value="{{ $item->id }}">
+                            {{ $item->name }}
+                        </option>
+                      @elseif($item->status == 'booked')
+                        <option value="{{ $item->id }}" disabled>
+                            {{ $item->name }}
+                        </option>
+                       @endif 
                     @empty
                     <option selected>No drivers available</option>
                     @endforelse
@@ -38,9 +50,15 @@
                 <p class="mb-0 ml-1 text-left">Bus Conductor :</p>
                 <select class="form-select form-control" id="conductor_id" name="conductor_id" required>
                     @forelse ($conductors as $item)
-                    <option value="{{ $item->id }}">
-                        {{ $item->name }}
-                    </option>
+                        @if($item->status == 'open')
+                            <option value="{{ $item->id }}">
+                                {{ $item->name }}
+                            </option>
+                        @elseif($item->status == 'booked')
+                            <option value="{{ $item->id }}" disabled>
+                                {{ $item->name }}
+                            </option>
+                       @endif 
                     @empty
                     <option selected>No conductors available</option>
                     @endforelse
@@ -133,6 +151,7 @@
                         <th>Departure Time</th>
                         <th>Arrival Time</th>
                         <th>Fare</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </x-slot>
@@ -147,10 +166,12 @@
                         <td>{{ $item->time_departure}}</td>
                         <td>{{ $item->time_arrival}}</td>
                         <td>{{ $item->fare}}</td>
+                        <td>{{ ucfirst($item->status)}}</td>
                         <td>
                             <form action="{{ route('buses.schedules.destroy', ['id'=> $item->id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
+                                @if($item->status == 'done')
                                 <button class="btn btn-primary openUpdateModal" type="button" data-id="{{ $item->id }}"
                                     data-bus_id="{{ $item->bus_id }}" data-driver_id="{{ $item->driver_id }}"
                                     data-conductor_id="{{ $item->conductor_id }}"
@@ -158,7 +179,9 @@
                                     data-destination_id="{{ $item->destination_id }}" data-fare="{{ $item->fare }}"
                                     data-schedule_date="{{ $item->schedule_date }}"
                                     data-time_departure="{{ $item->time_departure }}"
-                                    data-time_arrival="{{ $item->time_arrival }}">Update</button>
+                                    data-time_arrival="{{ $item->time_arrival }}"
+                                    data-bus_status="{{ $item->time_arrival }}">Update</button>
+                                @endif    
                                 <button class="btn btn-danger">Delete</button>
                             </form>
                         </td>
@@ -196,6 +219,7 @@
                 $(this).data('schedule_date'),
                 $(this).data('time_departure'),
                 $(this).data('time_arrival'),
+                $(this).data('bus_status'),
             );
         });
 
@@ -225,15 +249,27 @@
             schedule_date = null,
             time_departure = null,
             time_arrival = null,
+            bus_status ,
         ){
             $('#id').val(id);
+           
             if(modalFooter == 'Update'){
                 $('#bus_id').val(bus_id);
                 $('#driver_id').val(driver_id);
                 $('#conductor_id').val(conductor_id);
                 $('#starting_point_id').val(starting_point_id);
                 $('#destination_id').val(destination_id);
+                $('#bus_id').attr('disabled', 'disabled');
+                $('#driver_id').attr('disabled', 'disabled');
+                $('#conductor_id').attr('disabled', 'disabled');
+                $('#id')
+
+            }else if(modalFooter =='Save'){
+                $('#bus_id').removeAttr("disabled");
+                $('#driver_id').removeAttr("disabled");
+                $('#conductor_id').removeAttr("disabled");
             }
+          
             $('#fare').val(fare);
             $('#schedule_date').val(schedule_date);
             $('#time_departure').val(time_departure);
@@ -245,7 +281,27 @@
             $('#footerButton').removeClass(removeClass).addClass(addClass);
             $('#crud-modal').modal('show');
         }
-    });
+
+        var dtToday = new Date();
+    
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+        
+        var maxDate = year + '-' + month + '-' + day;
+
+        // or instead:
+        // var maxDate = dtToday.toISOString().substr(0, 10);
+
+       var maxDate = year + '-' + month + '-' + day;
+       
+        $('#schedule_date').attr('min', maxDate);
+      
+        });
 </script>
 @endsection
 @stop

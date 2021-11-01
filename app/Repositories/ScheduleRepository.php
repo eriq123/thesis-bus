@@ -32,6 +32,18 @@ class ScheduleRepository
         $schedule->time_departure = $request->time_departure;
         $schedule->time_arrival = $request->time_arrival;
         $schedule->save();
+
+        $bus = Bus::find($request->bus_id);
+        $bus->status = 'booked';
+        $bus->save();
+
+        $driver = User::find($request->driver_id);
+        $driver->status = 'booked';
+        $driver->save();
+
+        $conductor = User::find($request->conductor_id);
+        $conductor->status = 'booked';
+        $conductor->save();
     }
 
     private function validateRequest($request, $isUpdate = false)
