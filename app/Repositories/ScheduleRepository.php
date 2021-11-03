@@ -31,6 +31,7 @@ class ScheduleRepository
         $schedule->schedule_date = $request->schedule_date;
         $schedule->time_departure = $request->time_departure;
         $schedule->time_arrival = $request->time_arrival;
+        $schedule->status =$request->status;
         $schedule->save();
 
         $bus = Bus::find($request->bus_id);

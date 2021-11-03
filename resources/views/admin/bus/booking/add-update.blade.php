@@ -289,15 +289,7 @@
 
 
         $('#schedule_date').change(function() {
-            //alert("YahoooS");
-             var scheduleDate = $('#schedule_date').val();
-                 var now = new Date();
-                      now.setHours(0,0,0,0);
-                      if (scheduleDate < now) {
-                        console.log("Selected date is in the past");
-                      } else {
-                        console.log("Selected date is NOT in the past");
-                      }
+            
              searchScheduleByRouteIDs()
         });
 

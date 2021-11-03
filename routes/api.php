@@ -19,7 +19,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/loginnew', [AuthController::class, 'logins']);
+// Route::post('/loginnew', [AuthController::class, 'logins']);
+Route::prefix('bookings')->name('bookings.')->group(function () {
+
+    Route::post('/payment', [BusBookingController::class, 'uploadPayment']);
+    Route::post('/conductorbus', [BusBookingController::class, 'getConductorBookedBusDetails']);
+
+});
 
 Route::post('/google', [AuthController::class, 'google']);
 
@@ -38,6 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/step/one', [BusBookingController::class, 'stepOne']);
             Route::post('/step/two', [BusBookingController::class, 'stepTwo']);
             Route::post('/confirm', [BusBookingController::class, 'confirm']);
+            Route::post('/payment', [BusBookingController::class, 'uploadPayment']);
         });
     });
 

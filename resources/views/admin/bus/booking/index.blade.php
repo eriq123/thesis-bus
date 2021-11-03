@@ -35,16 +35,20 @@
                     </tr>
                 </x-slot>
                 <x-slot name="tbody">
-                   
-                    @forelse ($bookings as $item)
                  
+                    @forelse ($bookings as $item)
+                        @if(Auth::user()->role_id == 3 || Auth::user()->role_id == 2)
+                            @if($item->schedule->status == 'done')
+                                @continue
+                            @endif
+                        @endif        
                     <tr>
                         <td>{{ $item->id }}</td>
                         <td><input type="hidden" id="status-{{ $item->id }}" value="{{  $item->status->id }}">
                             <input type="hidden" id="userId-{{ $item->id }}" value=" {{ $item->user_id  }}">
                            
                             <button class="btn btn-sm btn-{{ $item->status->class }}" >
-                                {{ $item->status->title }}
+                                {{ ucfirst($item->status->title) }}
                             </button>
                         </td>
                         <td><input type="hidden" id="username-{{ $item->id }}" value="{{ $item->user_name }}">{{ $item->user_name }}</td>
@@ -80,6 +84,8 @@
                                     <input type="text" name="status_id" value="{{ $item->status->following_id }}">
                                     <button class="btn btn-secondary">Leave</button>
                                 </form>
+                                @else
+                                    --
                                 @endif
                             </div>
                             @else
@@ -115,12 +121,14 @@
                             @endif
                         </td>
                     </tr>
+                   
                     @empty
                     <tr>
                         <td colspan="100%" class="text-center">
                             No data available.
                         </td>
                     </tr>
+
                     @endforelse
                 </x-slot>
             </x-table>
@@ -267,6 +275,9 @@
       
         $('#requirementModal').modal('show');
         $('#bookingItemId').val(itemId);
+      
+     
+        
         var name  = $("#username-"+itemId).val();
         var fare  = $("#fare-"+itemId).val();
         var route = $("#route-"+itemId).val();

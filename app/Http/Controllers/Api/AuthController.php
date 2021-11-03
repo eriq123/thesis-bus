@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Booking;
 use App\Repositories\AuthRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -33,7 +34,7 @@ class AuthController extends Controller
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
-
+     
         $user->token = $user->createToken('Access_token')->plainTextToken;
 
         return response()->json($user, 200);
@@ -41,10 +42,25 @@ class AuthController extends Controller
 
     public function logins(Request $request)
     {
-         $bodyContent = $request->all();
-         echo "***************";
-          echo "<pre>";print_r($request->referenceId);echo "</pre>";
-           echo "***************";
+        
+        $itemId      = $request->itemId;
+        $referenceId = $request->referenceId;
+        $booking     = Booking::find($itemId);
+
+        $booking->payment_source_id = $referenceId;
+        $booking->payment_image     = "storage/app/public/".$referenceId.".png";
+        $booking->status_id         = 2;
+
+        $booking->save();
+        
+        $result["status"] = TRUE;
+        $result["remarks"] = "Ticket Paid Successfully";
+
+
+         return response()->json($result, 200);
+      
+     
+     }
          // die("I am here.. LA ALA LALALA A");
 
         // echo "<pre>";print_r($request->item_id);echo "</pre>";
@@ -75,16 +91,11 @@ class AuthController extends Controller
     //     // $imageLocation = "images/$imageTitle.jpg";
     //     //   $result["status"] = TRUE;
     //     //     $result["remarks"] = "Image Uploaded Successfully";
-         $result["status"] = TRUE;
-            $result["remarks"] = "Image Uploading Successfully";
-         return response()->json($result, 200);
+       
 
     // }
  
        
-      
-     
-     }
 
     public function register(Request $request)
     {

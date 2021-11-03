@@ -92,6 +92,8 @@
                 <p class="mb-0 ml-1 text-left">Fare :</p>
                 <input type="text" name="fare" id="fare" class="form-control" value="{{ old('fare') }}"
                     placeholder="Fare" required>
+                <input type="hidden" name="status" id="status" class="form-control" value="{{'open'}}">   
+
                 @if($errors->has('fare'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('fare') }}</strong>
@@ -180,7 +182,7 @@
                                     data-schedule_date="{{ $item->schedule_date }}"
                                     data-time_departure="{{ $item->time_departure }}"
                                     data-time_arrival="{{ $item->time_arrival }}"
-                                    data-bus_status="{{ $item->time_arrival }}">Update</button>
+                                    data-status="{{'open'}}">Update</button>
                                 @endif    
                                 <button class="btn btn-danger">Delete</button>
                             </form>
@@ -219,7 +221,7 @@
                 $(this).data('schedule_date'),
                 $(this).data('time_departure'),
                 $(this).data('time_arrival'),
-                $(this).data('bus_status'),
+                $(this).data('status'),
             );
         });
 
@@ -249,7 +251,7 @@
             schedule_date = null,
             time_departure = null,
             time_arrival = null,
-            bus_status ,
+            status ,
         ){
             $('#id').val(id);
            
@@ -262,15 +264,15 @@
                 $('#bus_id').attr('disabled', 'disabled');
                 $('#driver_id').attr('disabled', 'disabled');
                 $('#conductor_id').attr('disabled', 'disabled');
-                $('#id')
-
+              
             }else if(modalFooter =='Save'){
                 $('#bus_id').removeAttr("disabled");
                 $('#driver_id').removeAttr("disabled");
                 $('#conductor_id').removeAttr("disabled");
             }
-          
+            console.LOG
             $('#fare').val(fare);
+            // $('#status').val(status);
             $('#schedule_date').val(schedule_date);
             $('#time_departure').val(time_departure);
             $('#time_arrival').val(time_arrival);
@@ -287,19 +289,16 @@
         var month = dtToday.getMonth() + 1;
         var day = dtToday.getDate();
         var year = dtToday.getFullYear();
+       
         if(month < 10)
             month = '0' + month.toString();
         if(day < 10)
             day = '0' + day.toString();
-        
-        var maxDate = year + '-' + month + '-' + day;
+            var maxDate = year + '-' + month + '-' + day;
 
-        // or instead:
-        // var maxDate = dtToday.toISOString().substr(0, 10);
-
-       var maxDate = year + '-' + month + '-' + day;
+            var maxDate = year + '-' + month + '-' + day;
        
-        $('#schedule_date').attr('min', maxDate);
+            $('#schedule_date').attr('min', maxDate);
       
         });
 </script>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\BusRoute;
 use App\Models\Schedule;
+use App\Models\Bus;
 use App\Repositories\BusBookingRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,11 +56,80 @@ class BusBookingController extends Controller
         return response()->json($this->busBookingRepository->processBooking($request, true), 200);
     }
 
-    public function upload(Request $request){
+    public function uploadPayment(Request $request){
 
-         $result = $request->all();
+        $itemId      = $request->itemId;
+        $referenceId = $request->referenceId;
+        $booking     = Booking::find($itemId);
 
-         echo "<pre>";print_r($result);echo "</pre>";
-         die("I am here.. LA ALA LALALA A");
+        $booking->payment_source_id = $referenceId;
+        $booking->payment_image     = "storage/app/public/".$referenceId.".png";
+        $booking->status_id         = 2;
+
+        $booking->save();
+        
+        $result["status"] = TRUE;
+        $result["remarks"] = "Ticket Paid Successfully";
+
+
+         return response()->json($result, 200);
+    }
+    public function getConductorBookedBusDetails(Request $request){
+
+
+       
+        $userId      = $request->userId;
+        $health      = $request->health;
+
+        if($health == "get"){
+            
+            $schedule    = Schedule::select('id','bus_id','conductor_id','status')->where('conductor_id',"=", $userId)->where('status',"=", 'open')->get();
+            $schedule    = $schedule[0]->getAttributes();
+
+       
+        $result["busId"] =$schedule['bus_id'];
+        $result["status"] = TRUE;
+        $result["remarks"] = "Current Location";
+
+        }else if($health == "update"){
+
+
+            $busId      = $request->busId;
+            $longitude  = $request->longitude;
+            $latitude   = $request->latitude;
+
+            $bus        = Bus::find($busId);
+
+          
+            // $bus        = $bus->getAttributes();
+            // $bus['long']  = $longitude;
+            // $bus['lat'] = $latitude;
+            $bus->long  = $longitude;
+            $bus->lat = $latitude;
+
+            
+            $bus->save();
+
+            $result["status"] = TRUE;
+            $result["remarks"] = "Location Updated Successfully";
+        }elseif($health == 'approve'){
+
+            $bookingId = $request->bookingId;
+            $booking   = Booking::find($bookingId);
+
+            $booking->status_id = 6;
+
+            $booking->save();
+
+            $result["status"] = TRUE;
+            $result["remarks"] = "Verfied onBoard Successfully";
+
+
+        }
+
+      
+
+
+         return response()->json($result, 200);
     }
 }

@@ -52,9 +52,11 @@ class BusBookingRepository
 
     public function index()
     {
+
         $this->data['bookings'] = Booking::with('user')
             ->with('bus')
             ->with('status')
+            ->with('schedule')
             ->with([
                 'schedule' => function($q) {
                     $q->with('starting_point')->with('destination');
@@ -62,11 +64,7 @@ class BusBookingRepository
             ])
             ->when(Auth::user()->role_id == 2, function($q) {
                 return $q->where('driver_id', Auth::id());
-            })
-            ->when(Auth::user()->role_id == 3, function($q) {
-                return $q->where('conductor_id', Auth::id());
-            })
-            ->when(Auth::user()->role_id == 4, function($q) {
+            })->when(Auth::user()->role_id == 4, function($q) {
                 return $q->where('user_id', Auth::id());
             })
             ->get()
@@ -78,6 +76,9 @@ class BusBookingRepository
                 return $booking;
             });
 
+            //  ->when(Auth::user()->role_id == 3, function($q) {
+            //      return $q->where('conductor_id', Auth::id());
+            // })
         return $this->data;
     }
 
@@ -189,7 +190,7 @@ class BusBookingRepository
         })
         ->when($request->schedule_date, function($q) use ($request){
             return $q->where('schedule_date', $request->schedule_date);
-        })
+        })->where('status','open')
         ->with('bus')
         ->get();
 

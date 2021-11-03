@@ -42,6 +42,7 @@ class AuthRepository
             'email' => $request->email,
             'password' => Hash::make($password),
             'role_id' => $this->user_default_role,
+            'status' => "free",
         ];
 
         return  User::create($user);
