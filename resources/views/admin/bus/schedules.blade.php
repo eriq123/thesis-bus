@@ -173,7 +173,7 @@
                             <form action="{{ route('buses.schedules.destroy', ['id'=> $item->id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                @if($item->status == 'done')
+                                @if($item->status == 'open')
                                 <button class="btn btn-primary openUpdateModal" type="button" data-id="{{ $item->id }}"
                                     data-bus_id="{{ $item->bus_id }}" data-driver_id="{{ $item->driver_id }}"
                                     data-conductor_id="{{ $item->conductor_id }}"
