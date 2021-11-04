@@ -283,7 +283,6 @@
             $('#footerButton').removeClass(removeClass).addClass(addClass);
             $('#crud-modal').modal('show');
         }
-
         var dtToday = new Date();
     
         var month = dtToday.getMonth() + 1;
