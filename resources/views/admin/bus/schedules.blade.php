@@ -270,7 +270,7 @@
                 $('#driver_id').removeAttr("disabled");
                 $('#conductor_id').removeAttr("disabled");
             }
-            console.LOG
+     
             $('#fare').val(fare);
             // $('#status').val(status);
             $('#schedule_date').val(schedule_date);
