@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 // Route::post('/loginnew', [AuthController::class, 'logins']);
+
+Route::post('/google', [AuthController::class, 'google']);
 Route::prefix('bookings')->name('bookings.')->group(function () {
 
     Route::post('/payment', [BusBookingController::class, 'uploadPayment']);

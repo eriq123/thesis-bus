@@ -24,6 +24,9 @@
                         <th>Passenger Name</th>
                         <th>Route</th>
                         <th>Schedule</th>
+                        @if(Auth::user()->role_id == 1)
+                            <th>Reference No.</th>
+                        @endif
                         @unless(Auth::user()->role_id == 3 || Auth::user()->role_id == 2)
                         <th>Fare</th>
                         <th>Quantity</th>
@@ -55,7 +58,10 @@
                         <td><input type="hidden" id="route-{{ $item->id }}" value="{{ $item->schedule->starting_point->name}}- {{ $item->schedule->destination->name }}">{{ $item->schedule->starting_point->name }} - {{ $item->schedule->destination->name }}</td>
                         <td>{{ $item->schedule->schedule_date }} ({{ $item->schedule->time_departure }} -
                             {{ $item->schedule->time_arrival }})</td>
-
+                        @if(Auth::user()->role_id == 1)
+                            
+                        <td>{{}}</td>
+                        @endif
                         @unless(Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
 
                         <td><input type="hidden" id="fare-{{ $item->id }}" value="{{ $item->fare_amount }}">{{ $item->fare_amount}}</td>
