@@ -27,7 +27,7 @@
         <label>&nbsp;</label>
         <br>
         <input type="button" class="btn btn-primary" value="Search" onclick="getData()">
-        <input type="button" class="btn btn-primary" value="Download" onclick="generatePdf()">
+        <input type="button" class="btn btn-primary" value="Download" onclick="demoFromHTML()">
     </div>
 </div>
 @stop
@@ -35,7 +35,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        <div class="col-12">
+        <div class="col-12" id="dataAll">
 
             <x-table>
                 <x-slot name="thead">
@@ -136,10 +136,12 @@
             </x-table>
         </div>
 
-       
-<script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+       <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
       <!-- <script src="https://rawgit.com/MrRio/jsPDF/master/dist/jspdf.debug.js"></script> -->
-<script src="https://rawgit.com/someatoms/jsPDF-AutoTable/master/jspdf.plugin.autotable.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js" integrity="sha512-V/C9Axb8EEL4ix79ERIJmpRd6Mp1rWVSxa2PIBCdCxqhEsfCBWp/R0xJ4U495czhcuDWrGOFYo8+QI3lJ9DK5g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js" integrity="sha512-P3z5YHtqjIxRAu1AjkWiIPWmMwO9jApnCMsa5s0UTgiDDEjTBjgEqRK0Wn0Uo8Ku3IDa1oer1CIBpTWAvqbmCA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script type="text/javascript">
 
   setTimeout(function(){ updateTotalAmount(); }, 500);
@@ -256,6 +258,48 @@
     var json = doc.autoTableHtmlToJson(document.getElementsByTagName("table"));
     doc.autoTable(false, json);
     doc.save('table.pdf');
+}
+
+
+function demoFromHTML() {
+    var pdf = new jsPDF('p', 'pt', 'letter');
+    // source can be HTML-formatted string, or a reference
+    // to an actual DOM element from which the text will be scraped.
+    source =$("#dataAll")[0];
+
+    // we support special element handlers. Register them with jQuery-style 
+    // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
+    // There is no support for any other type of selectors 
+    // (class, of compound) at this time.
+    specialElementHandlers = {
+        // element with id of "bypass" - jQuery style selector
+        '#bypassme': function (element, renderer) {
+            // true = "handled elsewhere, bypass text extraction"
+            return true
+        }
+    };
+    margins = {
+        top: 10,
+        bottom: 10,
+        left: 10,
+        right: 10,
+        width: 600
+    };
+    // all coords and widths are in jsPDF instance's declared units
+    // 'inches' in this case
+    pdf.fromHTML(
+    source, // HTML string or DOM elem ref.
+    margins.left, // x coord
+    margins.top, { // y coord
+        'width': margins.width, // max width of content on PDF
+        'elementHandlers': specialElementHandlers
+    },
+
+    function (dispose) {
+        // dispose: object with X, Y of the last line add to the PDF 
+        //          this allow the insertion of new lines after html
+        pdf.save('Test.pdf');
+    }, margins);
 }
       </script>
         <!-- /Modal -->

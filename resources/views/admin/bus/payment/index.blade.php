@@ -39,14 +39,29 @@
                                     <input type="text" name="passengerName" id="passengerName" class="form-control"
                                          placeholder="Passenger Name" value="{{$user_name}}" readonly="">
                                            <br>
+                                           <p class="mb-0 ml-1 text-left">
+                                        Amount to Pay:
+                                        <span class="text-danger">*</span>
+                                    </p>
+                                    
+                                    <input type="text" name="amount" id="amount" class="form-control"
+                                         placeholder="Amount to Pay" value="{{$grand_total}}" readonly="">                                   
+                                           <br>
+                                    
                                     <p class="mb-0 ml-1 text-left">
-                                        Enter Ref # :
+                                        Enter Reference Number:
                                         <span class="text-danger">*</span>
                                     </p>
                                     <input type="text" name="refernceNumber" id="refernceNumber" class="form-control"
                                          placeholder="Ref# " required>
                                            <br>
-                                    
+                                    <p class="mb-0 ml-1 text-left">
+                                           Enter Your Gcash Number:
+                                        <span class="text-danger">*</span>
+                                    </p>
+                                    <input type="text" name="gcashNumber" id="gcashNumber" class="form-control"
+                                         placeholder="GCash# " required>
+                                           <br>
 
                                     <p class="mb-0 ml-1 text-left">
                                         Upload Proof  :
