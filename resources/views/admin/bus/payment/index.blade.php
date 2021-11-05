@@ -27,7 +27,7 @@
                                         Bus Gcash  # :
                                         <span class="text-danger">*</span>
                                     </p>
-                                    <input type="text" name="refernceNumber" id="refernceNumber" class="form-control"
+                                    <input type="text" name="bus_gcash_number" id="bus_gcash_number" class="form-control"
                                          placeholder="09000013213" readonly="" value="{{$bus_gcash_number}}">
                                     <input type="hidden" name="itemId" id="itemId" class="form-control"
                                        value="{{$id}}">
@@ -38,6 +38,8 @@
                                     </p>
                                     <input type="text" name="passengerName" id="passengerName" class="form-control"
                                          placeholder="Passenger Name" value="{{$user_name}}" readonly="">
+                                    <input type="hidden" name="passengerId" id="passengerId" class="form-control"
+                                         placeholder="Passenger Name" value="{{$user_id}}" readonly="">
                                            <br>
                                            <p class="mb-0 ml-1 text-left">
                                         Amount to Pay:
@@ -60,7 +62,10 @@
                                         <span class="text-danger">*</span>
                                     </p>
                                     <input type="text" name="gcashNumber" id="gcashNumber" class="form-control"
-                                         placeholder="GCash# " required>
+                                         placeholder="GCash# " required minlength="11" maxlength="11" onkeyup="numericValidate()">
+                                    <div id="errorGcash" class="invalid-feedback" style="display:none">
+                                        <strong id="statement">* Only Numbers allowed</strong>
+                                    </div>  
                                            <br>
 
                                     <p class="mb-0 ml-1 text-left">
@@ -82,7 +87,7 @@
                                 </div>
 
                                  <div class="mb-3">
-                                    <input type="checkbox" name="" value="yes">
+                                    <input type="checkbox" name="" value="yes" checked="">
                                     I here by that information is provided is authentic and i am responsible for legal actions. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. 
                                 </div>
                             </div>
@@ -124,6 +129,21 @@
    }
    
  }
+
+ function numericValidate() {
+    let number = $("#gcashNumber").val();
+    console.log(number);
+        if(! $.isNumeric(number)){
+            $("#errorGcash").show();
+             $("#save").attr("disabled",true);
+
+        }else{
+              $("#errorGcash").hide();
+              $("#save").attr("disabled",false);
+        }
+
+}
+ 
 </script>
 @section('css')
 <style>

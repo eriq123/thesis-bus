@@ -27,7 +27,7 @@
         <label>&nbsp;</label>
         <br>
         <input type="button" class="btn btn-primary" value="Search" onclick="getData()">
-        <input type="button" class="btn btn-primary" value="Download" onclick="demoFromHTML()">
+        <input type="button" class="btn btn-primary" value="Download" onclick="pdfDownload()">
     </div>
 </div>
 @stop
@@ -52,7 +52,7 @@
                         @else
                         <th>Seats available</th>
                         @endunless
-                        <th>Actions</th>
+                        <th></th>
                     </tr>
                 </x-slot>
                 <x-slot name="tbody" id="tbody1">
@@ -75,54 +75,16 @@
 
                         @unless(Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
 
-                        <td><input type="hidden" id="fare-{{ $item->id }}" value="{{ $item->fare_amount }}">{{ $item->fare_amount}} ₱</td>
+                        <td><input type="hidden" id="fare-{{ $item->id }}" value="{{ $item->fare_amount }}">₱ {{ $item->fare_amount}}</td>
                         <td><input type="hidden" id="qty-{{ $item->id }}" value="{{ $item->quantity }}">{{ $item->quantity}}</td>
 
                         <td><input type="hidden" id="total-{{$count}}" value="{{$item->grand_total}}">
-                            {{ $item->grand_total}} ₱</td>
+                            ₱ {{ $item->grand_total}}</td>
 
                         @else
                         <td>{{ $item->schedule->seats_available }}</td>
                         @endunless  
-
-                        <td>
-                            @if (Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
-                            <div class="d-flex">
-                                @if ($item->status_id == 1 || $item->status_id == 2)
-                                <form action="{{ route('buses.bookings.update.status') }}" class="mr-1" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{ $item->id }}">
-                                    <input type="hidden" name="status_id" value="3">
-                                    <button class="btn btn-success">Verify</button>
-                                </form>
-                                @elseif ($item->status_id == 3)
-                                <form action="{{ route('buses.bookings.update.status') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{ $item->id }}">
-
-                                    <input type="text" name="status_id" value="{{ $item->status->following_id }}">
-                                    <button class="btn btn-secondary">Leave</button>
-                                </form>
-                                @endif
-                            </div>
-                            @else
-                            <form action="{{ route('buses.bookings.destroy', ['id'=> $item->id]) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-
-                               <!--  <a href="{{ route('buses.bookings.edit', ['id' => $item->id]) }}" role="button"
-                                    class="btn btn-primary">Update</a> -->
-                                <input type="hidden" name="id-{{ $item->id}}" value="{{ $item->id }}">
-    
-                                 @if ($item->status_id == 1)
-                                <a href="{{ route('buses.bookings.edit', ['id' => $item->id]) }}" role="button"
-                                    class="btn btn-primary">Update</a>
-                                <a href="#" role="button" class="btn btn-secondary" onclick="openModal('{{ $item->id }}')">Pay Now</a>
-                                 @endif
-                                <button class="btn btn-danger" disabled="">Delete</button>
-                            </form>
-                            @endif
-                        </td>
+                        <td></td> 
                     </tr>
 
                     @empty
@@ -137,12 +99,31 @@
         </div>
 
        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-      <!-- <script src="https://rawgit.com/MrRio/jsPDF/master/dist/jspdf.debug.js"></script> -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js" integrity="sha512-V/C9Axb8EEL4ix79ERIJmpRd6Mp1rWVSxa2PIBCdCxqhEsfCBWp/R0xJ4U495czhcuDWrGOFYo8+QI3lJ9DK5g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js" integrity="sha512-P3z5YHtqjIxRAu1AjkWiIPWmMwO9jApnCMsa5s0UTgiDDEjTBjgEqRK0Wn0Uo8Ku3IDa1oer1CIBpTWAvqbmCA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
 <script type="text/javascript">
+
+
+    $('.table').attr('id','tblCustomers');
+   
+
+    function pdfDownload()
+    {
+           html2canvas($('#tblCustomers')[0], {
+                onrendered: function (canvas) {
+                    var data = canvas.toDataURL();
+                    var docDefinition = {
+                        content: [{
+                            image: data,
+                            width: 500
+                        }]
+                    };
+                    pdfMake.createPdf(docDefinition).download("cutomer-details.pdf");
+                }
+            });
+    }
 
   setTimeout(function(){ updateTotalAmount(); }, 500);
 
@@ -155,7 +136,7 @@
                 total = total + parseInt($("#total-"+i).val());
                 
             }
-            $("tbody").append("<tr style='background-color:#e8eaec;color:black;'> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td style='font-weight: bold;'>Total </td>-<td style='font-weight: bold;'>"+total+" ₱</td> <td></td> </tr>");
+            $("tbody").append("<tr style='background-color:#e8eaec;color:black;'> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td style='font-weight: bold;'>Total </td>-<td style='font-weight: bold;'>₱"+total+" </td><td></td>  </tr>");
 
         }
 
@@ -214,14 +195,13 @@
                                                            "<td>"+data.success[i].user_name+"</td>"+              
                                                           "<td>"+data.success[i].name+"</td>"+
                                                           "<td>"+data.success[i].schedule_date+" ( "+data.success[i].time_departure+"-"+data.success[i].time_arrival+" )</td>"+
-                                                          "<td>"+data.success[i].fare_amount+"</td>"+
+                                                          "<td>₱"+data.success[i].fare_amount+"</td>"+
                                                           "<td>"+data.success[i].quantity+"</td>"+
-                                                          "<td>"+data.success[i].grand_total+"</td>"+
-                                                          "<td>"+actnBtn+"</td>";
+                                                          "<td>₱"+data.success[i].grand_total+"</td>"+"<td></td>";
                                       }
                                       $("tbody").empty();
                                       $("tbody").append(dataAppend);
-                                      $("tbody").append("<tr style='background-color:#e8eaec;color:black;'> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td style='font-weight: bold;'>Total </td>-<td style='font-weight: bold;'>"+total+" ₱</td> <td></td> </tr>");
+                                      $("tbody").append("<tr style='background-color:#e8eaec;color:black;'> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td style='font-weight: bold;'>Total </td>-<td style='font-weight: bold;'>₱"+total+" </td><td></td> </tr>");
 
 
                                   
@@ -252,55 +232,6 @@
           
          }
 
-
-         function generatePdf() {
-    var doc = new jsPDF('p', 'pt');
-    var json = doc.autoTableHtmlToJson(document.getElementsByTagName("table"));
-    doc.autoTable(false, json);
-    doc.save('table.pdf');
-}
-
-
-function demoFromHTML() {
-    var pdf = new jsPDF('p', 'pt', 'letter');
-    // source can be HTML-formatted string, or a reference
-    // to an actual DOM element from which the text will be scraped.
-    source =$("#dataAll")[0];
-
-    // we support special element handlers. Register them with jQuery-style 
-    // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
-    // There is no support for any other type of selectors 
-    // (class, of compound) at this time.
-    specialElementHandlers = {
-        // element with id of "bypass" - jQuery style selector
-        '#bypassme': function (element, renderer) {
-            // true = "handled elsewhere, bypass text extraction"
-            return true
-        }
-    };
-    margins = {
-        top: 10,
-        bottom: 10,
-        left: 10,
-        right: 10,
-        width: 600
-    };
-    // all coords and widths are in jsPDF instance's declared units
-    // 'inches' in this case
-    pdf.fromHTML(
-    source, // HTML string or DOM elem ref.
-    margins.left, // x coord
-    margins.top, { // y coord
-        'width': margins.width, // max width of content on PDF
-        'elementHandlers': specialElementHandlers
-    },
-
-    function (dispose) {
-        // dispose: object with X, Y of the last line add to the PDF 
-        //          this allow the insertion of new lines after html
-        pdf.save('Test.pdf');
-    }, margins);
-}
       </script>
         <!-- /Modal -->
     </div>

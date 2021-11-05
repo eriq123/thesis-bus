@@ -27,6 +27,8 @@
         <label>&nbsp;</label>
         <br>
         <input type="button" class="btn btn-primary" value="Search" onclick="getData()">
+
+        <input type="button" class="btn btn-primary" value="Download" onclick="pdfDownload()">
     </div>
 </div>
 @stop
@@ -51,7 +53,7 @@
                         @else
                         <th>Seats available</th>
                         @endunless
-                        <th>Actions</th>
+                        <th></th>
                     </tr>
                 </x-slot>
                 <x-slot name="tbody" id="tbody1">
@@ -89,42 +91,7 @@
                         @endunless  
 
                         <td>
-                            @if (Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
-                            <div class="d-flex">
-                                @if ($item->status_id == 1 || $item->status_id == 2)
-                                <form action="{{ route('buses.bookings.update.status') }}" class="mr-1" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{ $item->id }}">
-                                    <input type="hidden" name="status_id" value="3">
-                                    <button class="btn btn-success">Verify</button>
-                                </form>
-                                @elseif ($item->status_id == 3)
-                                <form action="{{ route('buses.bookings.update.status') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{ $item->id }}">
-
-                                    <input type="text" name="status_id" value="{{ $item->status->following_id }}">
-                                    <button class="btn btn-secondary">Leave</button>
-                                </form>
-                                @endif
-                            </div>
-                            @else
-                            <form action="{{ route('buses.bookings.destroy', ['id'=> $item->id]) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-
-                               <!--  <a href="{{ route('buses.bookings.edit', ['id' => $item->id]) }}" role="button"
-                                    class="btn btn-primary">Update</a> -->
-                                <input type="hidden" name="id-{{ $item->id}}" value="{{ $item->id }}">
-    
-                                 @if ($item->status_id == 1)
-                                <a href="{{ route('buses.bookings.edit', ['id' => $item->id]) }}" role="button"
-                                    class="btn btn-primary">Update</a>
-                                <a href="#" role="button" class="btn btn-secondary" onclick="openModal('{{ $item->id }}')">Pay Now</a>
-                                 @endif
-                                <button class="btn btn-danger" disabled="">Delete</button>
-                            </form>
-                            @endif
+                          
                         </td>
                     </tr>
                     @endif
@@ -140,10 +107,32 @@
         </div>
 
        
-<script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-      
+ <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
 <script type="text/javascript">
 
+
+    $('.table').attr('id','tblCustomers');
+   
+
+    function pdfDownload()
+    {
+           html2canvas($('#tblCustomers')[0], {
+                onrendered: function (canvas) {
+                    var data = canvas.toDataURL();
+                    var docDefinition = {
+                        content: [{
+                            image: data,
+                            width: 500
+                        }]
+                    };
+                    pdfMake.createPdf(docDefinition).download("cutomer-details.pdf");
+                }
+            });
+    }
   setTimeout(function(){ updateTotalAmount(); }, 500);
 
         function updateTotalAmount(){
@@ -218,7 +207,7 @@
                                                           "<td>"+data.success[i].fare_amount+"</td>"+
                                                           "<td>"+data.success[i].quantity+"</td>"+
                                                           "<td>"+data.success[i].grand_total+"</td>"+
-                                                          "<td>"+actnBtn+"</td>";
+                                                          "<td>"+""+"</td>";
                                       }
                                       $("tbody").empty();
                                       $("tbody").append(dataAppend);

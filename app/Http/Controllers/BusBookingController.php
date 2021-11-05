@@ -187,12 +187,16 @@ class BusBookingController extends Controller
     
     }
 
-    public function paymentProcessing(Request $request){
+    public function paymentProcessing(Request $request)
+    {
      
-
        $filename       = $request->file('refernceProof')->getClientOriginalName();
        $id             = $request->itemId;
        $refernceNumber = $request->refernceNumber;
+       $uPhoneNumber   = $request->gcashNumber;
+       $userId         = $request->passengerId;
+
+
        
 
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
@@ -203,10 +207,13 @@ class BusBookingController extends Controller
 
         $booking = Booking::find($id);
         $booking->payment_source_id = $refernceNumber;
-        $booking->payment_image     = "storage/app/public/".$newFileName;
+        $booking->payment_image     = $newFileName;
         $booking->status_id = 2;
         $booking->save();
 
+        $user = User::find($userId);
+        $user->phone_number = $uPhoneNumber;
+        $user->save();
 
         return redirect()->route('buses.bookings.index')->withSuccess('Ticket Paid Successfully ! Wait for Admin approval');
 

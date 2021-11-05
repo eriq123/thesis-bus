@@ -60,13 +60,10 @@
                         <td>{{ $item->schedule->schedule_date }} ({{ $item->schedule->time_departure }} -
                             {{ $item->schedule->time_arrival }})</td>
                         @if(Auth::user()->role_id == 1)
-                            @if(empty($item->payment_source_id))    
+                            
                             <td>{{$item->payment_source_id}}</td>
-                            <td><a href="#"> <img  src="{{ url('/').'/storage/'.$item->payment_source_id.'.png' }}" width="100" height="100"> </a> </td>
-                            @else
-                            <td>--</td>
-                            <td>--</td>
-                            @endif
+                            <td><a href="{{ url('/').'/storage/'.$item->payment_image }}" target="_blank"> <img  src="{{ url('/').'/storage/'.$item->payment_image }}" width="100" height="100"> </a> </td>
+                          
                         @endif
                         @unless(Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
 
