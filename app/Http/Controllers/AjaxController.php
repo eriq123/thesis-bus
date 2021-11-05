@@ -17,10 +17,18 @@ class AjaxController extends Controller
 
     public function fetchData(Request $request)
     {
-        $data = $request->all();
-        $from = $request->from; 
-        $to   = $request->to;
-      
+        $data  = $request->all();
+        $from  = $request->from; 
+        $to    = $request->to;
+        $_type = $request->_type;
+        $_id = $request->_id;
+
+        if($_type == 'a'){
+
+              $results = DB::select( DB::raw("SELECT b.*,s.*,r.*,st.* FROM bookings AS b INNER JOIN schedules AS s On b.schedule_id = s.id INNER JOIN bus_routes AS r ON s.starting_point_id = r.id INNER JOIN status AS st On b.status_id = st.id   WHERE s.schedule_date between '$from' and '$to' AND ( b.status_id = 2 OR b.status_id =3 OR b.status_id = 6)"));
+        }elseif($_type == 'p'){
+             $results = DB::select( DB::raw("SELECT b.*,s.*,r.*,st.* FROM bookings AS b INNER JOIN schedules AS s On b.schedule_id = s.id INNER JOIN bus_routes AS r ON s.starting_point_id = r.id INNER JOIN status AS st On b.status_id = st.id   WHERE s.schedule_date between '$from' and '$to' AND ( b.status_id = 2 OR b.status_id =3 OR b.status_id = 6) AND (b.user_id == '$_id')"));
+        }
 
         #create or update your data here
        // $bookings = DB::table('bookings')->join('schedules', 'schedules.id', '=', 'bookings.schedule_id')->join('bus_routes', 'bus_routes.id', '=', 'schedules.starting_point_id')
@@ -28,7 +36,7 @@ class AjaxController extends Controller
        //      ->select('bookings.*', 'schedules.*', 'bus_routes.*')
        //     ->get();  
 
-           $results = DB::select( DB::raw("SELECT b.*,s.*,r.*,st.* FROM bookings AS b INNER JOIN schedules AS s On b.schedule_id = s.id INNER JOIN bus_routes AS r ON s.starting_point_id = r.id INNER JOIN status AS st On b.status_id = st.id   WHERE s.schedule_date between '$from' and '$to' AND ( b.status_id = 2 OR b.status_id =3 OR b.status_id = 6)"));
+         
      
 
         for ($i = 0, $c = count($results); $i < $c; ++$i) {

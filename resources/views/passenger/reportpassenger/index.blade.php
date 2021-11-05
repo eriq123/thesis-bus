@@ -163,7 +163,9 @@
          function getData() {
 
             let from = $("#from").val();
-            let to = $("#to").val();
+            let to   = $("#to").val();
+            let _type   ='a';
+            let _id   ='<?php echo Auth::user()->id ?>'; 
             let _token ='<?php echo csrf_token() ?>'; 
             if(from !="" && to != "")
             {
@@ -177,6 +179,8 @@
                            data:{
                                 from   : from,
                                 to     : to,
+                                _type     : _type,
+                                _id     : _id,
                                 _token : _token
                            },
                            success:function(data) {

@@ -27,6 +27,7 @@
         <label>&nbsp;</label>
         <br>
         <input type="button" class="btn btn-primary" value="Search" onclick="getData()">
+        <input type="button" class="btn btn-primary" value="Download" onclick="generatePdf()">
     </div>
 </div>
 @stop
@@ -137,7 +138,8 @@
 
        
 <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-      
+      <!-- <script src="https://rawgit.com/MrRio/jsPDF/master/dist/jspdf.debug.js"></script> -->
+<script src="https://rawgit.com/someatoms/jsPDF-AutoTable/master/jspdf.plugin.autotable.js"></script>
 <script type="text/javascript">
 
   setTimeout(function(){ updateTotalAmount(); }, 500);
@@ -158,7 +160,9 @@
          function getData() {
 
             let from = $("#from").val();
-            let to = $("#to").val();
+            let to   = $("#to").val();
+            let _type   ='a';
+            let _id   ='<?php echo Auth::user()->id; ?>'; 
             let _token ='<?php echo csrf_token() ?>'; 
             if(from !="" && to != "")
             {
@@ -172,6 +176,8 @@
                            data:{
                                 from   : from,
                                 to     : to,
+                                _type     : _type,
+                                _id     : _id,
                                 _token : _token
                            },
                            success:function(data) {
@@ -243,6 +249,14 @@
     
           
          }
+
+
+         function generatePdf() {
+    var doc = new jsPDF('p', 'pt');
+    var json = doc.autoTableHtmlToJson(document.getElementsByTagName("table"));
+    doc.autoTable(false, json);
+    doc.save('table.pdf');
+}
       </script>
         <!-- /Modal -->
     </div>
