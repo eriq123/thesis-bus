@@ -19,9 +19,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-// Route::post('/loginnew', [AuthController::class, 'logins']);
 
 Route::post('/google', [AuthController::class, 'google']);
+// Route::post('/loginnew', [AuthController::class, 'logins']);
 Route::prefix('bookings')->name('bookings.')->group(function () {
 
     Route::post('/payment', [BusBookingController::class, 'uploadPayment']);
@@ -29,7 +29,6 @@ Route::prefix('bookings')->name('bookings.')->group(function () {
 
 });
 
-Route::post('/google', [AuthController::class, 'google']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [UserController::class, 'index']);

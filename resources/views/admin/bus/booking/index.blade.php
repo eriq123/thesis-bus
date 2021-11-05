@@ -26,6 +26,7 @@
                         <th>Schedule</th>
                         @if(Auth::user()->role_id == 1)
                             <th>Reference No.</th>
+                            <th>Receipt</th>
                         @endif
                         @unless(Auth::user()->role_id == 3 || Auth::user()->role_id == 2)
                         <th>Fare</th>
@@ -60,7 +61,8 @@
                             {{ $item->schedule->time_arrival }})</td>
                         @if(Auth::user()->role_id == 1)
                             
-                        <td>{{}}</td>
+                        <td>{{$item->payment_source_id}}</td>
+                        <td><a href="#"> <img  src="{{ url('/').'/storage/'.$item->payment_source_id.'.png' }}" width="100" height="100"> </a> </td>
                         @endif
                         @unless(Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
 
