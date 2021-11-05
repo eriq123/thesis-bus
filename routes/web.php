@@ -80,6 +80,7 @@ Route::middleware(['web','auth'])->group(function () {
                                     
     });
      Route::prefix('ajax')->name('ajax.')->group(function () {
+            Route::post('/fetch', [AjaxController::class, 'fetchData'])->name('fetching');
             Route::post('/location', [AjaxController::class, 'getLocation'])->name('get.location');
            
         });

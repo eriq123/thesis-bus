@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('contents')
 
-@if (Auth::user()->role_id == 1)
+@if (Auth::user()->role_id == 4)
 @section('content_header')
 <!-- <div class="text-center">
     <a href="{{ route('buses.bookings.add') }}" class="btn btn-outline-success" type="button">
@@ -200,6 +200,10 @@
                                          }else if(data.success[i].status_id == 3){
                                            
                                             btn = "<button class='btn btn-sm btn-success'>Verified</button>";
+
+                                         }else if(data.success[i].status_id == 6){
+                                           
+                                            btn = "<button class='btn btn-sm btn-success'>onBoard</button>";
 
                                          }
                                          total = total + parseInt(data.success[i].grand_total);
