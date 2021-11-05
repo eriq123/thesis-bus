@@ -192,6 +192,10 @@
                                            
                                             btn = "<button class='btn btn-sm btn-success'>Verified</button>";
 
+                                         }else if(data.success[i].status_id == 6){
+                                           
+                                            btn = "<button class='btn btn-sm btn-success'>onBoard</button>";
+
                                          }
                                          total = total + parseInt(data.success[i].grand_total);
 

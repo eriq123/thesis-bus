@@ -20,17 +20,22 @@ class AjaxController extends Controller
         $data = $request->all();
         $from = $request->from; 
         $to   = $request->to;
+      
 
         #create or update your data here
-       $bookings = DB::table('bookings')->join('schedules', 'schedules.id', '=', 'bookings.schedule_id')->join('bus_routes', 'bus_routes.id', '=', 'schedules.starting_point_id')
-           ->whereBetween('bookings.updated_at', [$from, $to])->where('bookings.status_id','=',2)->orWhere('bookings.status_id','=',3)
-            ->select('bookings.*', 'schedules.*', 'bus_routes.*')
-           ->get();  
-        for ($i = 0, $c = count($bookings); $i < $c; ++$i) {
-            $bookings[$i] = (array) $bookings[$i];
+       // $bookings = DB::table('bookings')->join('schedules', 'schedules.id', '=', 'bookings.schedule_id')->join('bus_routes', 'bus_routes.id', '=', 'schedules.starting_point_id')
+       //     ->whereBetween('schedules.schedule_date', [$from, $to])->where('bookings.status_id','=',2)->orWhere('bookings.status_id','=',3)
+       //      ->select('bookings.*', 'schedules.*', 'bus_routes.*')
+       //     ->get();  
+
+           $results = DB::select( DB::raw("SELECT b.*,s.*,r.*,st.* FROM bookings AS b INNER JOIN schedules AS s On b.schedule_id = s.id INNER JOIN bus_routes AS r ON s.starting_point_id = r.id INNER JOIN status AS st On b.status_id = st.id   WHERE s.schedule_date between '$from' and '$to' AND ( b.status_id = 2 OR b.status_id =3 OR b.status_id = 6)"));
+     
+
+        for ($i = 0, $c = count($results); $i < $c; ++$i) {
+            $results[$i] = (array) $results[$i];
         }
 
-        return response()->json(['success'=>$bookings]);
+        return response()->json(['success'=>$results]);
     }
 
     public function approveBooking(Request $request){

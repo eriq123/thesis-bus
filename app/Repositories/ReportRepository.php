@@ -31,7 +31,7 @@ class ReportRepository
             })
             ->when(Auth::user()->role_id == 4, function($q) {
                 return $q->where('user_id', Auth::id());
-            })->where('status_id','=',2)->orWhere('status_id','=',3)
+            })->where('status_id','=',2)->orWhere('status_id','=',3)->orWhere('status_id','=',6)
             ->get()
             ->map(function($booking) {
                 $booking->schedule->seats_available = $this->getAvailableSeats(
