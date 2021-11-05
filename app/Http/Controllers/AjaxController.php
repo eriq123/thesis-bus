@@ -40,19 +40,22 @@ class AjaxController extends Controller
 
     public function approveBooking(Request $request){
       
-
+            
         $data = $request->all();
         $itemId = $request->itemId; 
        
         $booking = Booking::find($itemId);
         $booking->status_id = 3;
 
-        $booking->save();
+          $booking->save();
         $user_number = User::find($booking->user_id)->phone_number;
         $message = "Your Ticket is paid for Bus route : ".$booking->user_name.'-'.$booking->schedule->starting_point->name." And approved by Elizabeth Transport";
-        $result = $this->itexmo($user_number,$message,$_ENV['API_CODE'], $_ENV['API_PASSWORD']);
+        $apicode = env('API_CODE','');
+        $apipassword = env('API_PASSWORD','');
+        $result = $this->itexmo($user_number,$message,$apicode, $apipassword);
 
     
+      
         return response()->json(['success'=>$booking]);
        
 

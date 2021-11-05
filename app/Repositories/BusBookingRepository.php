@@ -18,7 +18,7 @@ class BusBookingRepository
         $rules = [
             'user_id' => 'required',
             'schedule_id' => 'required',
-            'quantity' => 'required|integer',
+            'quantity' => 'required|integer|min:0',
         ];
 
         $errorMessages = [
@@ -26,6 +26,7 @@ class BusBookingRepository
             'user_id.required' => 'Please select a user.',
             'quantity.required' => 'Quantity is required.',
             'quantity.integer' => 'Quantity should be an integer.',
+            'quantity.min' => 'Error! No negative value of quantity.',
         ];
 
         if ($isUpdate) $rules['id'] = 'required';

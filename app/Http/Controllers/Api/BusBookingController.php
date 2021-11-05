@@ -118,7 +118,6 @@ class BusBookingController extends Controller
             $booking   = Booking::find($bookingId);
 
             $booking->status_id = 6;
-
             $booking->save();
 
             $result["status"] = TRUE;
