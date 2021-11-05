@@ -11,7 +11,7 @@
         <x-slot name="modalBody">
             <input type="hidden" name="id" id="id">
             <div class="alert alert-dark" role="alert">
-                The default password is <code>123456</code>
+                The default password is <code>qweasd</code>
             </div>
             <div class="mb-3">
                 <p class="mb-0 ml-1 text-left">Role :</p>
@@ -54,7 +54,7 @@
         <x-slot name="modalBody">
             <input type="hidden" name="id" id="changePasswordID">
             <div class="alert alert-dark" role="alert">
-                The default password is <code>123456</code>
+                The default password is <code>qweasd</code>
             </div>
             <div class="input-group mb-3">
                 <input type="password" name="old_password" id="old_password" class="form-control"
