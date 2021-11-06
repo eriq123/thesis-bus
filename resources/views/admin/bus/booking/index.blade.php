@@ -27,6 +27,7 @@
                         @if(Auth::user()->role_id == 1)
                             <th>Reference No.</th>
                             <th>Receipt</th>
+                            <th>Gcash#</th>
                         @endif
                         @unless(Auth::user()->role_id == 3 || Auth::user()->role_id == 2)
                         <th>Fare</th>
@@ -63,6 +64,7 @@
                             
                             <td>{{$item->payment_source_id}}</td>
                             <td><a href="{{ url('/').'/storage/'.$item->payment_image }}" target="_blank"> <img  src="{{ url('/').'/storage/'.$item->payment_image }}" width="100" height="100"> </a> </td>
+                            <td>{{$item->user->gcash_number}}</td>
                           
                         @endif
                         @unless(Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
@@ -109,6 +111,7 @@
                                  @if ($item->status_id == 1)
                                 <a href="{{ route('buses.bookings.edit', ['id' => $item->id]) }}" role="button"
                                     class="btn btn-primary">Update</a>
+                                    
                                <!--  <a href="#" role="button" class="btn btn-secondary" onclick="openModal('{{ $item->id }}')">Pay Now</a> -->
                                 <a href="#" role="button" class="btn" onclick="openModal('{{ $item->id }}')">
                                    

@@ -30,20 +30,30 @@ class AuthRepository
 
     public function createUser($request, $isGoogle = false)
     {
+       
         if ($isGoogle) {
             $user['google_id'] = $request->id;
             $password = $this->user_default_password;
+            $phone_number = NULL;
+          
         } else {
-            $password = $request->password;
-        }
 
+            $password    = $request->password;
+            $phone_number = $request->phone_number;
+
+        }
+ 
         $user = [
             'name' => $request->name,
             'email' => $request->email,
+            'phone_number' =>$phone_number,
             'password' => Hash::make($password),
             'role_id' => $this->user_default_role,
             'status' => "free",
+            
         ];
+
+
 
         return  User::create($user);
     }

@@ -129,7 +129,7 @@
                             width: 500
                         }]
                     };
-                    pdfMake.createPdf(docDefinition).download("cutomer-details.pdf");
+                    pdfMake.createPdf(docDefinition).download("customer-details.pdf");
                 }
             });
     }
@@ -175,7 +175,7 @@
                            },
                            success:function(data) {
                               // $("#msg").html(data);
-                              console.log(data.success);
+                              console.log(data.success);    
                               if(data.success.length >0){
 
                                    var dataAppend = "";

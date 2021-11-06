@@ -212,7 +212,7 @@ class BusBookingController extends Controller
         $booking->save();
 
         $user = User::find($userId);
-        $user->phone_number = $uPhoneNumber;
+        $user->gcash_number = $uPhoneNumber;
         $user->save();
 
         return redirect()->route('buses.bookings.index')->withSuccess('Ticket Paid Successfully ! Wait for Admin approval');

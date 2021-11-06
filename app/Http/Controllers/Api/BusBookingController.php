@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\BusRoute;
 use App\Models\Schedule;
 use App\Models\Bus;
+use App\Models\User;
 use App\Repositories\BusBookingRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -63,13 +64,18 @@ class BusBookingController extends Controller
         $booking     = Booking::find($itemId);
 
         $booking->payment_source_id = $referenceId;
-        $booking->payment_image     = "storage/app/public/".$referenceId.".png";
+        $booking->payment_image     = $referenceId.".png";
         $booking->status_id         = 2;
+        $userId                     = $booking->user_id;  
 
         $booking->save();
+
+        $user        = User::find($userId);
+        $user->gcash_number = $request->gcash_number;
+        $user->save();
         
         $result["status"] = TRUE;
-        $result["remarks"] = "Ticket Paid Successfully";
+        $result["remarks"] = "Wait for Admin approval ! Ticket Paid Successfully ";
 
 
          return response()->json($result, 200);
