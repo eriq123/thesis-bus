@@ -156,6 +156,7 @@
             let _type   ='a';
             let _id   ='<?php echo Auth::user()->id ?>'; 
             let _token ='<?php echo csrf_token() ?>'; 
+            let _uID   = <?php echo Auth::user()->id ;?>;
             if(from !="" && to != "")
             {
                  $("#fromerror").text("");
@@ -181,6 +182,10 @@
 
                                       for (var i = 0; i < data.success.length; i++) 
                                       {
+                                            if(data.success[i].user_id != _uID){
+                                                continue;
+                                            }
+                                            
                                          var btn="";
                                          var actnBtn = "<button class='btn btn-danger' disabled>Delete</button>"
                                   
