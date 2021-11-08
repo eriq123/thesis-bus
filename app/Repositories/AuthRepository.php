@@ -14,7 +14,7 @@ class AuthRepository
     public function __construct()
     {
         $this->user_default_role = env('USER_DEFAULT_ROLE', 4);
-        $this->user_default_password = env('USER_DEFAULT_PASSWORD', '123456');
+        $this->user_default_password = env('USER_DEFAULT_PASSWORD', 'qweasd');
     }
 
     private function validateRegistration($request)
