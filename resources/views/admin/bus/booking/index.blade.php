@@ -241,19 +241,32 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="requirementModal">{{ __('Requirements For Travel') }}</h5>
+                        <h5 class="modal-title" id="requirementModal">{{ __('COVID-19 TRAVEL & PAYMENT REMINDER!') }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
-                      <strong class="strong">IMPORTANT REMINDER FOR COVID-19 TRAVEL RESTRICTIONS</strong>
+                      <strong class="strong">Covid-19 Travel Requirement: </strong>
                        
                             <div class="row" >
                                 <div class="col-md-10">
                                     <div class="row"style="margin-right: -15px; margin-left: -15px;justify-content: center; padding: 20px; "> 
-                                      <h5>Please check the most updated travel regulations of the area you travel to and from. While we do our best to update information, the customer is responsible for checking information thoroughly from authorized sources and obtaining requirements prior to travelling. <br><br>Thank you for your cooperation and please stay safe and healthy!</h5></div>
+                                      <h5>
+
+                                        Kindly check the most updated travel regulations of the area you travel to and from through authorized sources. 
+                                        <br><br>
+                                        Don't forget to wear your Face Mask & Face Shield. 
+                                        <br><br>
+                                        Please send your payment via GCash on the Bus Gcash Number that will show.
+                                        Once paid, Take a screenshot of the reference number and
+                                        
+                                        UPLOAD YOUR PROOF OF PAYMENT, or email it to elizabethjoyn@yahoo.com.
+                                        <br><br>
+                                        Reminder: Please expect a text message once your payment has been approved by our Admin. View your booking details at Transaction History page.
+                                        </h5>
+                                    </div>
                                 </div>
                             </div>
 

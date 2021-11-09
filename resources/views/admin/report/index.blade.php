@@ -120,7 +120,7 @@
                             width: 500
                         }]
                     };
-                    pdfMake.createPdf(docDefinition).download("cutomer-details.pdf");
+                    pdfMake.createPdf(docDefinition).download("Transactions-Reports.pdf");
                 }
             });
     }
