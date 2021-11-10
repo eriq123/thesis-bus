@@ -26,6 +26,10 @@ class BusBookingController extends Controller
     {
         return response()->json($this->busBookingRepository->index(), 200);
     }
+    public function passengerList(Request $request)
+    {
+        return response()->json($this->busBookingRepository->passengerList(Request $request), 200);
+    }
 
     public function stepOne()
     {
@@ -59,6 +63,23 @@ class BusBookingController extends Controller
     }
 
     public function uploadPayment(Request $request){
+        //       echo "<pre>";print_r($request->all());echo "</pre>";
+        // die("I am here.. LA ALA LALALA A");
+  // $result["status"] = TRUE;
+  //       $result["remarks"] = "Wait for Admin approval ! Ticket Paid Successfully ";
+
+
+  //        return response()->json($result, 200);
+  //       echo "<pre>";print_r($request->all());echo "</pre>";
+  //       die("I am here.. LA ALA LALALA A");
+  //       $filename       = $request->file('image')->getClientOriginalName();
+  //       $ext = pathinfo($filename, PATHINFO_EXTENSION);
+  //       $newFileName =$refernceNumber.".".$ext;
+       
+  //       $path = $request->file('image')->storeAs('public',$newFileName);
+
+  //      echo "<pre>";print_r($path);echo "</pre>";
+  //      die("I am here.. LA ALA LALALA A");
 
         $itemId      = $request->itemId;
         $referenceId = $request->referenceId;
@@ -74,7 +95,13 @@ class BusBookingController extends Controller
         $user        = User::find($userId);
         $user->gcash_number = $request->gcash_number;
         $user->save();
-        
+
+        // $filename       = $request->file('image')->getClientOriginalName();
+        // $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        // $newFileName =$refernceNumber.".".$ext;
+       
+        // $path = $request->file('image')->storeAs('public',$newFileName);
+
         $result["status"] = TRUE;
         $result["remarks"] = "Wait for Admin approval ! Ticket Paid Successfully ";
 

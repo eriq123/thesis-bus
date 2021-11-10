@@ -41,7 +41,7 @@ class BusBookingRepository
     }
 
     private function openBookingTotalQuantity($scheduleId, $additionalQuantity = 0){
-        $seats_taken = Booking::where('schedule_id', $scheduleId)->whereIn('status_id', [1,2])->sum('quantity');
+        $seats_taken = Booking::where('schedule_id', $scheduleId)->whereIn('status_id', [1,2,3,6,7])->sum('quantity');
         return $seats_taken += $additionalQuantity;
     }
 
@@ -81,6 +81,39 @@ class BusBookingRepository
             //      return $q->where('conductor_id', Auth::id());
             // })
         return $this->data;
+    }
+    public function passengerList(Request $request)
+    {
+        $_id = $request->user_id;
+        $from = $request->from;
+        $to = $request->to;
+
+
+        $results = DB::select( DB::raw("SELECT b.*,s.*,r.*,st.* FROM bookings AS b INNER JOIN schedules AS s On b.schedule_id = s.id INNER JOIN bus_routes AS r ON s.starting_point_id = r.id INNER JOIN status AS st On b.status_id = st.id   WHERE s.schedule_date between '$from' and '$to' AND ( b.status_id = 2 OR b.status_id =3 OR b.status_id = 6) AND (b.user_id == '$_id')"));
+
+        // $this->data['bookings'] = Booking::with('user')
+        //     ->with('bus')
+        //     ->with('status')
+        //     ->with('schedule')
+        //     ->with([
+        //         'schedule' => function($q) {
+        //             $q->with('starting_point')->with('destination');
+        //         }
+        //     ])->where('user_id', $_id)
+        //     ->get()
+        //     ->map(function($booking) {
+        //         $booking->schedule->seats_available = $this->getAvailableSeats(
+        //             $booking->schedule->bus->capacity,
+        //             $this->openBookingTotalQuantity($booking->schedule->id)
+        //         );
+        //         return $booking;
+        //     });
+             for ($i = 0, $c = count($results); $i < $c; ++$i) {
+            $results[$i] = (array) $results[$i];
+        }
+
+       
+        return $results;
     }
 
     public function edit()
