@@ -57,7 +57,7 @@ class AjaxController extends Controller
 
           $booking->save();
         $user_number = User::find($booking->user_id)->phone_number;
-        $message = "Your Ticket is paid for Bus route : ".$booking->user_name.'-'.$booking->schedule->starting_point->name." And approved by Elizabeth Transport";
+        $message = "Your Ticket#".$booking->id. "is paid for Bus Route : ".$booking->schedule->starting_point->name.'-'.$booking->schedule->destination->name." and approved by ElizabethJoyTransport. Please show this message to our Conductor while boarding the bus. Thank you!";
         $apicode = env('API_CODE','');
         $apipassword = env('API_PASSWORD','');
         $result = $this->itexmo($user_number,$message,$apicode, $apipassword);

@@ -29,7 +29,7 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['web','auth'])->group(function () {
     Route::get('/', [MainController::class,'index']);
-
+    Route::get('/privacy', [MainController::class,'privacy']);
     Route::middleware('isAdmin')->group(function () {
         Route::prefix('buses')->name('buses.')->group(function () {
             Route::get('/', [BusController::class, 'index'])->name('index');

@@ -92,7 +92,7 @@
                                     knowledge. I understand that a false statement may disqualify me for benefits.   
                                     <br>
                                     <br>
-                                    Also by clicking the checkbox I agree to ElizabethJoyTransport's <a href="#" data-toggle="#tcModal" data-target="#tcModal">Term's and Conditions </a>
+                                    Also by clicking the checkbox I agree to ElizabethJoyTransport's <a href="#" data-toggle="tcModal" data-target="tcModal" onclick="tcModal()">Term's and Conditions </a>
                                     
                                     
                                 </div>
@@ -114,25 +114,25 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="#tcModal" tabindex="-1" role="dialog"  aria-hidden="true">
+<div class="modal fade" id="tcModal" tabindex="-1" role="dialog"  aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <div class="modal-content">
+                <div class="modal-content" style="width:760px !important;"> 
                     <div class="modal-header">
-                        <h5 class="modal-title" id="#tcModal">{{ __('ElizabethJoyTransport!') }}</h5>
+                        <h5 class="modal-title" id="tcModal">{{ __('ElizabethJoyTransport') }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
-                      <strong class="strong">Terms and Conditions </strong>
+                      <center> <strong class="strong">Terms and Conditions </strong></center>
                        
                             <div class="row" >
                                 <div class="col-md-10">
-                                    <div class="row"style="margin-right: -15px; margin-left: -15px;justify-content: center; padding: 20px; "> 
-                                      <h5>
+                                    <div class="row" style="margin-right: -15px; margin-left: -15px;justify-content: center; padding: 20px; "> 
+                                     
 
-                                        <p>Last updated: November 08, 2021</p>
+                                        <h6>Last updated: November 08, 2021</h6>
                                         <p>Please read these terms and conditions carefully before using Our Service.</p>
                                         <h1>Interpretation and Definitions</h1>
                                         <h2>Interpretation</h2>
@@ -147,7 +147,7 @@
                                         <p><strong>Country</strong> refers to:  Philippines</p>
                                         </li>
                                         <li>
-                                        <p><strong>Company</strong> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in this Agreement) refers to Elizabeth, address here.</p>
+                                        <p><strong>Company</strong> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in this Agreement) refers to ElizabethJoyTransport, Cubay, Libertad, Antique..</p>
                                         </li>
                                         <li>
                                         <p><strong>Device</strong> means any device that can access the Service such as a computer, a cellphone or a digital tablet.</p>
@@ -162,7 +162,7 @@
                                         <p><strong>Third-party Social Media Service</strong> means any services or content (including data, information, products or services) provided by a third-party that may be displayed, included or made available by the Service.</p>
                                         </li>
                                         <li>
-                                        <p><strong>Website</strong> refers to Elizabeth, accessible from <a href="elizabeth.com" rel="external nofollow noopener" target="_blank">elizabeth.com</a></p>
+                                        <p><strong>Website</strong> refers to Elizabeth, accessible from <a href="elizabeth.com" rel="external nofollow noopener" target="_blank">https://elizabethjoytransport.com/</a></p>
                                         </li>
                                         <li>
                                         <p><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</p>
@@ -212,10 +212,10 @@
                                         <p>If you have any questions about these Terms and Conditions, You can contact us:</p>
                                         <ul>
                                         <li>
-                                        <p>By email: emailhere@bus.com</p>
+                                        <p>By email: elizabethjoyn@yahoo.com</p>
                                         </li>
                                         <li>
-                                        <p>By phone number: 0909</p>
+                                        <p>By phone number: 09632241594</p>
                                         </li>
                                         </ul>
                                     </div>
@@ -225,21 +225,17 @@
 
                         
                     </div>
-                    <div class="modal-footer">
-                       
-                        <div class="pull-right">
-                           
-                       
-                             <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
-                             
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
 @stop
 <script type="text/javascript">
-    
+    function tcModal()
+    {
+      
+        $('#tcModal').modal('show');
+    }
  function changeImg(obj)
  {
  

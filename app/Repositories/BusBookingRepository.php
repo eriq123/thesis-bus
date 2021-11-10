@@ -41,7 +41,7 @@ class BusBookingRepository
     }
 
     private function openBookingTotalQuantity($scheduleId, $additionalQuantity = 0){
-        $seats_taken = Booking::where('schedule_id', $scheduleId)->whereIn('status_id', [1,2])->sum('quantity');
+        $seats_taken = Booking::where('schedule_id', $scheduleId)->whereIn('status_id', [1,2,3,6,7])->sum('quantity');
         return $seats_taken += $additionalQuantity;
     }
 
