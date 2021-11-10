@@ -42,6 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::prefix('bookings')->name('bookings.')->group(function () {
             Route::get('/', [BusBookingController::class, 'index']);
+            Route::post('/passenger', [BusBookingController::class, 'passengerList']);
             Route::get('/step/one', [BusBookingController::class, 'stepOne']);
             Route::post('/step/two', [BusBookingController::class, 'stepTwo']);
             Route::post('/confirm', [BusBookingController::class, 'confirm']);
