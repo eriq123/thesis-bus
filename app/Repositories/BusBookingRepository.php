@@ -18,7 +18,7 @@ class BusBookingRepository
         $rules = [
             'user_id' => 'required',
             'schedule_id' => 'required',
-            'quantity' => 'required|integer|min:0',
+            'quantity' => 'required|integer',
         ];
 
         $errorMessages = [
@@ -26,7 +26,6 @@ class BusBookingRepository
             'user_id.required' => 'Please select a user.',
             'quantity.required' => 'Quantity is required.',
             'quantity.integer' => 'Quantity should be an integer.',
-            'quantity.min' => 'Error! No negative value of quantity.',
         ];
 
         if ($isUpdate) $rules['id'] = 'required';
@@ -130,7 +129,6 @@ class BusBookingRepository
     public function processBooking($request, $isApi = false)
     { 
         try{
-
             $userName = User::find($request->user_id)->name;
             $isUpdate = $request->id == $this->defaultBusBookingId ? false : true;
 
@@ -191,7 +189,7 @@ class BusBookingRepository
         })
         ->when($request->schedule_date, function($q) use ($request){
             return $q->where('schedule_date', $request->schedule_date);
-        })->where('status','open')
+        })
         ->with('bus')
         ->get();
 

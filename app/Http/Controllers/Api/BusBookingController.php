@@ -39,13 +39,7 @@ class BusBookingController extends Controller
             'schedule_date' => 'required',
         ]);
 
-        $this->data['schedule'] = Schedule::where('starting_point_id', $request->starting_point_id)
-            ->where('destination_id', $request->destination_id)
-            ->where('schedule_date', $request->schedule_date)
-            ->with('bus')
-            ->get();
-
-        return response()->json($this->data, 200);
+        return response()->json($this->busBookingRepository->scheduleByBookingDetails($request), 200);
     }
 
     public function confirm(Request $request)
