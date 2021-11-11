@@ -100,6 +100,186 @@ class AjaxController extends Controller
       
 
     }
+    public function getTotalBooking()
+    {
+
+        $totalBooking      = Booking::get();
+        $totalBooking      =$totalBooking->count();
+        $totalBooking      = $totalBooking +1;
+        $unPaidBooking     = Booking::where('status_id',1);
+        $unPaidBooking     =$unPaidBooking->count();
+        $unPaidBooking     = $unPaidBooking +1;
+        $busOnTravel       = Bus::where('status','booked');
+        $busOnTravel       = $busOnTravel->count();
+        $totalPassengers   = User::where('role_id','4');
+        $totalPassengers   = $totalPassengers->count();
+        $totalPassengers   = $totalPassengers;
+        $totalAdmin        = User::where('role_id','1');
+        $totalAdmin        = $totalAdmin->count();
+        $totalAdmin        = $totalAdmin;
+        $totalDriver       = User::where('role_id','2');
+        $totalDriver       = $totalDriver->count();
+        $totalDriver       = $totalDriver;
+        $totalConductor    = User::where('role_id','3');
+        $totalConductor    = $totalConductor->count();
+        $totalConductor    = $totalConductor;
+        $result =array();
+        $result['totalBooking']= $totalBooking;
+        $result['unPaidBooking']= $unPaidBooking;
+        $result['busOnTravel']= $busOnTravel;
+        $result['totalPassengers']= $totalPassengers;
+        $result['totalAdmin']= $totalAdmin;
+        $result['totalDriver']= $totalDriver;
+        $result['totalConductor']= $totalConductor;
+
+        #create or update your data here
+        return response()->json(['success'=>$result]);
+      
+
+    }
+
+    public function monthlyProfit(){
+
+       
+        $january = DB::select( DB::raw(" SELECT SUM(b.grand_total) as total_points  FROM `bookings` AS b INNER JOIN schedules AS s ON b.schedule_id = s.id WHERE monthname(s.schedule_date)='January'"));
+
+      
+        for ($i = 0, $c = count($january); $i < $c; ++$i) {
+            $january[$i] = (array) $january[$i];
+        }
+        if($january[0]['total_points'] =="" || $january[0]['total_points']== NULL){
+            $january[0]['total_points'] = 0;
+
+        }
+        $january = $january[0]['total_points'];
+
+        $feburay = DB::select( DB::raw(" SELECT SUM(b.grand_total) as total_points  FROM `bookings` AS b INNER JOIN schedules AS s ON b.schedule_id = s.id WHERE monthname(s.schedule_date)='Feburay'"));
+        for ($i = 0, $c = count($feburay); $i < $c; ++$i) {
+            $feburay[$i] = (array) $feburay[$i];
+        }
+        if($feburay[0]['total_points'] =="" || $feburay[0]['total_points']== NULL){
+            $feburay[0]['total_points'] = 0;
+        }
+        $feburay = $feburay[0]['total_points'];
+
+        $march = DB::select( DB::raw(" SELECT SUM(b.grand_total) as total_points  FROM `bookings` AS b INNER JOIN schedules AS s ON b.schedule_id = s.id WHERE monthname(s.schedule_date)='March'"));
+        for ($i = 0, $c = count($march); $i < $c; ++$i) {
+            $march[$i] = (array) $march[$i];
+        }
+        if($march[0]['total_points'] =="" || $march[0]['total_points']== NULL){
+            $march[0]['total_points'] = 0;
+
+        }
+        $march = $march[0]['total_points'];
+
+        $april = DB::select( DB::raw(" SELECT SUM(b.grand_total) as total_points  FROM `bookings` AS b INNER JOIN schedules AS s ON b.schedule_id = s.id WHERE monthname(s.schedule_date)='April'"));
+
+         for ($i = 0, $c = count($april); $i < $c; ++$i) {
+            $april[$i] = (array) $april[$i];
+        }
+        if($april[0]['total_points'] =="" || $april[0]['total_points']== NULL){
+            $april[0]['total_points'] = 0;
+
+        }
+        $april = $april[0]['total_points'];
+
+        $may = DB::select( DB::raw(" SELECT SUM(b.grand_total) as total_points  FROM `bookings` AS b INNER JOIN schedules AS s ON b.schedule_id = s.id WHERE monthname(s.schedule_date)='May'"));
+        for ($i = 0, $c = count($may); $i < $c; ++$i) {
+            $may[$i] = (array) $may[$i];
+        }
+        if($may[0]['total_points'] =="" || $may[0]['total_points']== NULL){
+            $may[0]['total_points'] = 0;
+
+        }
+        $may = $may[0]['total_points'];
+        $june = DB::select( DB::raw(" SELECT SUM(b.grand_total) as total_points  FROM `bookings` AS b INNER JOIN schedules AS s ON b.schedule_id = s.id WHERE monthname(s.schedule_date)='June'"));
+        for ($i = 0, $c = count($june); $i < $c; ++$i) {
+            $june[$i] = (array) $june[$i];
+        }
+        if($june[0]['total_points'] =="" || $june[0]['total_points']== NULL){
+            $june[0]['total_points'] = 0;
+
+        }
+        $june = $june[0]['total_points'];
+        $july = DB::select( DB::raw(" SELECT SUM(b.grand_total) as total_points  FROM `bookings` AS b INNER JOIN schedules AS s ON b.schedule_id = s.id WHERE monthname(s.schedule_date)='July'"));
+        for ($i = 0, $c = count($july); $i < $c; ++$i) {
+            $july[$i] = (array) $july[$i];
+        }
+        if($july[0]['total_points'] =="" || $july[0]['total_points']== NULL){
+            $july[0]['total_points'] = 0;
+
+        }
+        $july = $july[0]['total_points'];
+        $august = DB::select( DB::raw(" SELECT SUM(b.grand_total) as total_points  FROM `bookings` AS b INNER JOIN schedules AS s ON b.schedule_id = s.id WHERE monthname(s.schedule_date)='August'"));
+        for ($i = 0, $c = count($august); $i < $c; ++$i) {
+            $august[$i] = (array) $august[$i];
+        }
+        if($august[0]['total_points'] =="" || $august[0]['total_points']== NULL){
+            $august[0]['total_points'] = 0;
+
+        }
+        $august = $august[0]['total_points'];
+        $september = DB::select( DB::raw(" SELECT SUM(b.grand_total) as total_points  FROM `bookings` AS b INNER JOIN schedules AS s ON b.schedule_id = s.id WHERE monthname(s.schedule_date)='September'"));
+        for ($i = 0, $c = count($september); $i < $c; ++$i) {
+            $september[$i] = (array) $september[$i];
+        }
+        if($september[0]['total_points'] =="" || $september[0]['total_points']== NULL){
+            $september[0]['total_points'] = 0;
+
+        }
+        $september = $september[0]['total_points'];
+        $october = DB::select( DB::raw(" SELECT SUM(b.grand_total) as total_points  FROM `bookings` AS b INNER JOIN schedules AS s ON b.schedule_id = s.id WHERE monthname(s.schedule_date)='October'"));
+        for ($i = 0, $c = count($october); $i < $c; ++$i) {
+            $october[$i] = (array) $october[$i];
+        }
+        if($october[0]['total_points'] =="" || $october[0]['total_points']== NULL){
+            $october[0]['total_points'] = 0;
+
+        }
+        $october = $october[0]['total_points'];
+        $november = DB::select( DB::raw(" SELECT SUM(b.grand_total) as total_points  FROM `bookings` AS b INNER JOIN schedules AS s ON b.schedule_id = s.id WHERE monthname(s.schedule_date)='November'"));
+        for ($i = 0, $c = count($november); $i < $c; ++$i) {
+            $november[$i] = (array) $november[$i];
+        }
+        if($november[0]['total_points'] =="" || $november[0]['total_points']== NULL){
+            $november[0]['total_points'] = 0;
+
+        }
+        $november = $november[0]['total_points'];
+        $december = DB::select( DB::raw(" SELECT SUM(b.grand_total) as total_points  FROM `bookings` AS b INNER JOIN schedules AS s ON b.schedule_id = s.id WHERE monthname(s.schedule_date)='December'"));
+        for ($i = 0, $c = count($december); $i < $c; ++$i) {
+            $december[$i] = (array) $december[$i];
+        }
+        if($december[0]['total_points'] =="" || $december[0]['total_points']== NULL){
+            $december[0]['total_points'] = 0;
+
+        }
+        $december = $december[0]['total_points'];
+
+
+
+
+
+
+        $result = array();
+
+        $result['january']=$january;
+        $result['feburay']=$feburay;
+        $result['march']=$march;
+        $result['april']=$april;
+        $result['may']=$may;
+        $result['june']=$june;
+        $result['july']=$july;
+        $result['august']=$august;
+        $result['september']=$september;
+        $result['october']=$october;
+        $result['november']=$november;
+        $result['december']=$december;
+
+
+         #create or update your data here
+        return response()->json(['success'=>$result]);
+    }
 
    
 

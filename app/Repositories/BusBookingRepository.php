@@ -10,6 +10,7 @@ use App\Models\Bus;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class BusBookingRepository
 {
@@ -82,32 +83,15 @@ class BusBookingRepository
             // })
         return $this->data;
     }
-    public function passengerList(Request $request)
+    public function passengerList($request)
     {
         $_id = $request->user_id;
         $from = $request->from;
         $to = $request->to;
 
 
-        $results = DB::select( DB::raw("SELECT b.*,s.*,r.*,st.* FROM bookings AS b INNER JOIN schedules AS s On b.schedule_id = s.id INNER JOIN bus_routes AS r ON s.starting_point_id = r.id INNER JOIN status AS st On b.status_id = st.id   WHERE s.schedule_date between '$from' and '$to' AND ( b.status_id = 2 OR b.status_id =3 OR b.status_id = 6) AND (b.user_id == '$_id')"));
+        $results = DB::select( DB::raw("SELECT b.*,s.*,r.*,st.* FROM bookings AS b INNER JOIN schedules AS s On b.schedule_id = s.id INNER JOIN bus_routes AS r ON s.starting_point_id = r.id INNER JOIN status AS st On b.status_id = st.id   WHERE s.schedule_date between '$from' and '$to' AND ( b.status_id = 2 OR b.status_id =3 OR b.status_id = 6) AND (b.user_id = '$_id')"));
 
-        // $this->data['bookings'] = Booking::with('user')
-        //     ->with('bus')
-        //     ->with('status')
-        //     ->with('schedule')
-        //     ->with([
-        //         'schedule' => function($q) {
-        //             $q->with('starting_point')->with('destination');
-        //         }
-        //     ])->where('user_id', $_id)
-        //     ->get()
-        //     ->map(function($booking) {
-        //         $booking->schedule->seats_available = $this->getAvailableSeats(
-        //             $booking->schedule->bus->capacity,
-        //             $this->openBookingTotalQuantity($booking->schedule->id)
-        //         );
-        //         return $booking;
-        //     });
              for ($i = 0, $c = count($results); $i < $c; ++$i) {
             $results[$i] = (array) $results[$i];
         }

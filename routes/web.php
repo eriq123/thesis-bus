@@ -82,6 +82,10 @@ Route::middleware(['web','auth'])->group(function () {
      Route::prefix('ajax')->name('ajax.')->group(function () {
             Route::post('/fetch', [AjaxController::class, 'fetchData'])->name('fetching');
             Route::post('/location', [AjaxController::class, 'getLocation'])->name('get.location');
+            Route::get('/totalBooking', [AjaxController::class, 'getTotalBooking'])->name('total.booking');
+            Route::get('/monthlyProfit', [AjaxController::class, 'monthlyProfit'])->name('monthly.profit');
+
+            
            
         });
 

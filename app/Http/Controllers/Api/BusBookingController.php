@@ -28,7 +28,7 @@ class BusBookingController extends Controller
     }
     public function passengerList(Request $request)
     {
-        return response()->json($this->busBookingRepository->passengerList(Request $request), 200);
+        return response()->json($this->busBookingRepository->passengerList($request), 200);
     }
 
     public function stepOne()

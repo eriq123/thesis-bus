@@ -14,9 +14,9 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3 id="totalBooking">Fetching</h3>
 
-                <p>New Bookings</p>
+                <p>Total Bookings</p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
@@ -29,7 +29,7 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <h3 id="unPaid">Fetching</h3>
 
                 <p>unPaid Bookings</p>
               </div>
@@ -44,7 +44,7 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>5</h3>
+                <h3 id="busOnTravel">Fetching</h3>
 
                 <p>Buses on Travel</p>
               </div>
@@ -59,7 +59,7 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>65</h3>
+                <h3 id="totalPassenger">Fetching</h3>
 
                 <p>Total Passengers</p>
               </div>
@@ -123,6 +123,7 @@
 </div>
 <script src="https://adminlte.io/themes/v3/plugins/jquery/jquery.min.js"></script>
 <script src="https://adminlte.io/themes/v3/plugins/chart.js/Chart.min.js"></script>
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
 <script>
   $(function () {
@@ -213,55 +214,83 @@
     //- DONUT CHART -
     //-------------
     // Get context with jQuery - using jQuery's .get() method.
-    var donutChartCanvas = $('#donutChart').get(0)
-    var donutData        = {
-      labels: [
-          'Admin',
-          'Conductor',
-          'Driver',
-          'Passenger',
-      ],
-      datasets: [
-        {
-          data: [1,5,5,50],
-          backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-        }
-      ]
-    }
-    var donutOptions     = {
-      maintainAspectRatio : false,
-      responsive : true,
-    }
-    //Create pie or douhnut chart
-    // You can switch between pie and douhnut using the method below.
-    new Chart(donutChartCanvas, {
-      type: 'doughnut',
-      data: donutData,
-      options: donutOptions
-    })
+    
 
-    // -------------
-    // - PIE CHART -
-    // -------------
-    // Get context with jQuery - using jQuery's .get() method.
-    // var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-    // var pieData        = donutData;
-    // var pieOptions     = {
-    //   maintainAspectRatio : false,
-    //   responsive : true,
-    // }
-    // //Create pie or douhnut chart
-    // // You can switch between pie and douhnut using the method below.
-    // new Chart(pieChartCanvas, {
-    //   type: 'pie',
-    //   data: pieData,
-    //   options: pieOptions
-    // })
 
     //-------------
     //- BAR CHART -
     //-------------
-    var areaChartDataNew = {
+
+
+
+  })
+  
+  function totalBooking(){
+
+    $.ajax({
+             type:'GET',
+             url:'/ajax/totalBooking',
+             success:function(data) 
+             {
+                 console.log(data.success);    
+                  
+                  $("#totalBooking").text(data.success['totalBooking']);
+                  $("#unPaid").text(data.success['unPaidBooking']);
+                  $("#totalPassenger").text(data.success['totalPassengers']);
+                  $("#busOnTravel").text(data.success['busOnTravel']);
+
+                  const person = [parseInt(data.success['totalAdmin']),parseInt(data.success['totalConductor']),parseInt(data.success['totalDriver']),parseInt(data.success['totalPassengers'])];
+                    var donutChartCanvas = $('#donutChart').get(0)
+                              var donutData        = {
+                                labels: [
+                                    'Admin',
+                                    'Conductor',
+                                    'Driver',
+                                    'Passenger',
+                                ],
+                                datasets: [
+                                  {
+                                    data: person,
+                                    backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+                                  }
+                                ]
+                              }
+                              var donutOptions     = {
+                                maintainAspectRatio : false,
+                                responsive : true,
+                              }
+                              //Create pie or douhnut chart
+                              // You can switch between pie and douhnut using the method below.
+                              new Chart(donutChartCanvas, {
+                                type: 'doughnut',
+                                data: donutData,
+                                options: donutOptions
+                              })
+                               }
+            });
+
+  setTimeout(function(){ totalBooking(); }, 10000);
+  
+monthlyProfit();
+  }
+
+function monthlyProfit() {
+     $.ajax({
+             type:'GET',
+             url:'/ajax/monthlyProfit',
+             success:function(data) 
+             {
+                 console.log(data.success);    
+                  
+                  // $("#totalBooking").text(data.success['totalBooking']);
+                  // $("#unPaid").text(data.success['unPaidBooking']);
+                  // $("#totalPassenger").text(data.success['totalPassengers']);
+                  // $("#busOnTravel").text(data.success['busOnTravel']);
+
+                   const months = [parseInt(data.success['january']),parseInt(data.success['february']),parseInt(data.success['march']),parseInt(data.success['april']),parseInt(data.success['may']),parseInt(data.success['june']),parseInt(data.success['july']),parseInt(data.success['august']),parseInt(data.success['september']),parseInt(data.success['october']),parseInt(data.success['november']),parseInt(data.success['december'])];
+
+
+                       var areaChartDataNew = {
       labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'],
       datasets: [
         {
@@ -273,7 +302,7 @@
           pointStrokeColor    : 'rgba(60,141,188,1)',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [0, 0, 0, 0, 0,0,0,0,0,0, 27, 90]
+          data                : months
         }
       ]
     }
@@ -295,32 +324,13 @@
       data: barChartData,
       options: barChartOptions
     })
+              } 
+            });
+}
+monthlyProfit();
+totalBooking();
 
-    //---------------------
-    //- STACKED BAR CHART -
-    //---------------------
-    // var stackedBarChartCanvas = $('#stackedBarChart').get(0).getContext('2d')
-    // var stackedBarChartData = $.extend(true, {}, barChartData)
-
-    // var stackedBarChartOptions = {
-    //   responsive              : true,
-    //   maintainAspectRatio     : false,
-    //   scales: {
-    //     xAxes: [{
-    //       stacked: true,
-    //     }],
-    //     yAxes: [{
-    //       stacked: true
-    //     }]
-    //   }
-    // }
-
-    // new Chart(stackedBarChartCanvas, {
-    //   type: 'bar',
-    //   data: stackedBarChartData,
-    //   options: stackedBarChartOptions
-    // })
-  })
+              
 </script>
 @endif
 @stop

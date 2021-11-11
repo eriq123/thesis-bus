@@ -144,7 +144,7 @@
                 total = total + parseInt($("#total-"+i).val());
                 
             }
-            console.log(total);
+            
             $("tbody").append("<tr style='background-color:#e8eaec;color:black;'> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td>-</td> <td style='font-weight: bold;'>Total </td>-<td style='font-weight: bold;'>₱"+total+" </td> <td></td> </tr>");
 
         }
