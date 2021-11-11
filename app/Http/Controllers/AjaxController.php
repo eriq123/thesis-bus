@@ -105,10 +105,10 @@ class AjaxController extends Controller
 
         $totalBooking      = Booking::get();
         $totalBooking      =$totalBooking->count();
-        $totalBooking      = $totalBooking +1;
+        $totalBooking      = $totalBooking;
         $unPaidBooking     = Booking::where('status_id',1);
         $unPaidBooking     =$unPaidBooking->count();
-        $unPaidBooking     = $unPaidBooking +1;
+        $unPaidBooking     = $unPaidBooking;
         $busOnTravel       = Bus::where('status','booked');
         $busOnTravel       = $busOnTravel->count();
         $totalPassengers   = User::where('role_id','4');

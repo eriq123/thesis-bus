@@ -36,7 +36,21 @@ class BusBookingController extends Controller
         $this->data['routes'] = BusRoute::all();
         return response()->json($this->data, 200);
     }
+    private function getAvailableSeats($capacity, $seats_taken)
+    {
+        return $capacity - $seats_taken;
+    }
 
+    private function openBookingTotalQuantity($scheduleId, $additionalQuantity = 0){
+        $seats_taken = Booking::where('schedule_id', $scheduleId)->whereIn('status_id', [1,2,3,6,7])->sum('quantity');
+        return $seats_taken += $additionalQuantity;
+    }
+
+    private function checkIfNoSeatsAvailable($request, $schedule)
+    {
+        $seats_taken = $this->openBookingTotalQuantity($request->schedule_id, $request->quantity);
+        return $schedule->bus->capacity < $seats_taken;
+    }
     public function stepTwo(Request $request)
     {
         $this->validate($request, [
@@ -49,9 +63,13 @@ class BusBookingController extends Controller
             ->where('destination_id', $request->destination_id)
             ->where('schedule_date', $request->schedule_date)
             ->with('bus')
-            ->get();
+            ->get()->map(function($item) {
+            $item->seats_available = $this->getAvailableSeats($item->bus->capacity, $this->openBookingTotalQuantity($item->id));
+            return $item;
+        });
 
-        return response()->json($this->data, 200);
+         return response()->json($this->data, 200);
+       
     }
 
     public function confirm(Request $request)
