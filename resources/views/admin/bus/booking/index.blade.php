@@ -128,7 +128,11 @@
                                  
                                  @endif
                                 @endif
+                                @if ($item->status_id <> 1 )
+
+                                @else
                                 <button class="btn btn-danger">Delete</button>
+                                @endif
                             </form>
                             @endif
                         </td>
@@ -259,10 +263,12 @@
                                         <br><br>
                                         Don't forget to wear your Face Mask & Face Shield. 
                                         <br><br>
+                                        <strong> Payment Reminder: </strong>
+                                        <br> 
                                         Please send your payment via GCash on the Bus Gcash Number that will show.
                                         Once paid, Take a screenshot of the reference number and
                                         
-                                        UPLOAD YOUR PROOF OF PAYMENT, or email it to elizabethjoyn@yahoo.com.
+                                        <strong> UPLOAD YOUR PROOF OF PAYMENT </strong>, or email it to elizabethjoyn@yahoo.com.
                                         <br><br>
                                         Reminder: Please expect a text message once your payment has been approved by our Admin. View your booking details at Transaction History page.
                                         </h5>
