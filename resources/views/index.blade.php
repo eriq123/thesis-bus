@@ -1,7 +1,9 @@
 @extends('adminlte::page')
 
 @section('content_header')
-<h1>Welcome, {{ Auth::user()->name }}!</h1>
+<h1>Welcome, {{ Auth::user()->name }}!  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</h1>
+
+
 @stop
 
 @section('content')

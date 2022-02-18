@@ -25,4 +25,9 @@ class MainController extends Controller
             return abort(401);
         }
     }
+
+    public function privacy()
+    {
+        return view ('admin.privacy.index');
+    }
 }

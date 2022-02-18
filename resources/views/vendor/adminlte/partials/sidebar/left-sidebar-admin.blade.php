@@ -37,3 +37,16 @@
         <p class="ml-1">Users</p>
     </a>
 </li>
+<li class="nav-item">
+    <a href="{{route('report.index')}}" class="nav-link">
+        <i class="fas fa-file"></i>
+        <p class="ml-1">Reports</p>
+    </a>
+</li>
+<!-- <li class="nav-item">
+    <a href="{{route('report.index')}}" class="nav-link">
+        <i class="fas fa-calendar-check"></i>
+        <p class="ml-1">Status</p>
+    </a>
+</li>
+ -->

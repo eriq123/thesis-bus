@@ -95,7 +95,7 @@
                                     </p>
                                     <input type="date" name="schedule_date" id="schedule_date" class="form-control"
                                         value="{{ $booking->schedule->schedule_date ?? Carbon\Carbon::now()->format('Y-m-d') }}"
-                                        placeholder="Date" required>
+                                        placeholder="Date" required >
                                     @if($errors->has('schedule_date'))
                                     <div class="invalid-feedback">
                                         <strong>{{ $errors->first('schedule_date') }}</strong>
@@ -194,6 +194,8 @@
 
 @section('js')
 <script>
+
+
     $( document ).ready(function() {
         var BOOKING_SCHEDULE_ID = '{{ $booking->schedule_id ?? 0 }}';
         var debounce;
@@ -287,7 +289,8 @@
 
 
         $('#schedule_date').change(function() {
-            searchScheduleByRouteIDs()
+            
+             searchScheduleByRouteIDs()
         });
 
         $('#radioExisting').click(function(){
@@ -318,7 +321,27 @@
             $('.wrapper-existing').removeClass('d-none');
             $('.wrapper-unregistered').addClass('d-none');
         }
+
+        var dtToday = new Date();
+    
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+       
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+            var maxDate = year + '-' + month + '-' + day;
+
+            var maxDate = year + '-' + month + '-' + day;
+       
+            $('#schedule_date').attr('min', maxDate);
+      
+       
     });
+
+
 </script>
 @endsection
 

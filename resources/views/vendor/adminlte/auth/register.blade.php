@@ -48,6 +48,25 @@
         </div>
         @endif
     </div>
+    {{-- Phone field --}}
+    <div class="input-group mb-3">
+        <input type="text" name="phone_number" id="phone_number" class="form-control {{ $errors->has('phone_number') ? 'is-invalid' : '' }}"
+            value="{{ old('phone_number') }}" placeholder="{{ __('Phone Number') }}" minlength="11" maxlength="11" onkeyup="numericValidate()">
+         
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <span class="fas fa-phone {{ config('adminlte.classes_auth_icon', '') }}"></span>
+            </div>
+        </div>
+        <div id="errorPhone" class="invalid-feedback" style="display:none">
+            <strong id="statement">* Only 11 Digit Phone Number allowed</strong>
+        </div> 
+        @if($errors->has('phone_number'))
+        <div class="invalid-feedback">
+            <strong>{{ $errors->first('phone_number') }}</strong>
+        </div>
+        @endif
+    </div>
 
     {{-- Password field --}}
     <div class="input-group mb-3">
@@ -83,12 +102,34 @@
     </div>
 
     {{-- Register button --}}
-    <button type="submit" class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
+    <button type="submit" class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}" id="save">
         <span class="fas fa-user-plus"></span>
         {{ __('adminlte::adminlte.register') }}
     </button>
 
 </form>
+<script type="text/javascript">
+     function numericValidate() {
+        let number = $("#phone_number").val();
+       
+            if(! $.isNumeric(number)){
+                $("#errorPhone").show();
+                 $("#save").attr("disabled",true);
+
+            }else{
+                if(number.length ==11){
+                     $("#errorPhone").hide();
+                  $("#save").attr("disabled",false);
+              }else{
+                $("#errorPhone").show();
+                 $("#save").attr("disabled",true);
+              }
+                 
+            
+              }
+
+}
+</script>
 @stop
 
 @section('auth_footer')

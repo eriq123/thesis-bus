@@ -10,6 +10,10 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\PassengerReportController;
+use App\Http\Controllers\AjaxController;
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -25,7 +29,7 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['web','auth'])->group(function () {
     Route::get('/', [MainController::class,'index']);
-
+    Route::get('/privacy', [MainController::class,'privacy']);
     Route::middleware('isAdmin')->group(function () {
         Route::prefix('buses')->name('buses.')->group(function () {
             Route::get('/', [BusController::class, 'index'])->name('index');
@@ -62,8 +66,28 @@ Route::middleware(['web','auth'])->group(function () {
             Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
             Route::post('/searchByName', [UserController::class, 'searchByName'])->name('searchByName');
         });
+         Route::prefix('report')->name('report.')->group(function () {
+            Route::get('/', [ReportController::class, 'index'])->name('index');
+           
+        });
+        Route::prefix('ajax')->name('ajax.')->group(function () {
+            Route::post('/fetch', [AjaxController::class, 'fetchData'])->name('fetching');
+            Route::post('/approve', [AjaxController::class, 'approveBooking'])->name('approve.booking');
 
+           
+        });
+
+                                    
     });
+     Route::prefix('ajax')->name('ajax.')->group(function () {
+            Route::post('/fetch', [AjaxController::class, 'fetchData'])->name('fetching');
+            Route::post('/location', [AjaxController::class, 'getLocation'])->name('get.location');
+            Route::get('/totalBooking', [AjaxController::class, 'getTotalBooking'])->name('total.booking');
+            Route::get('/monthlyProfit', [AjaxController::class, 'monthlyProfit'])->name('monthly.profit');
+
+            
+           
+        });
 
     Route::prefix('buses')->name('buses.')->group(function () {
         Route::prefix('bookings')->name('bookings.')->group(function () {
@@ -71,14 +95,32 @@ Route::middleware(['web','auth'])->group(function () {
             Route::get('/add', [BusBookingController::class, 'add'])->name('add');
             Route::get('/edit/{id}', [BusBookingController::class, 'edit'])->name('edit');
             Route::post('/update', [BusBookingController::class, 'updateStatus'])->name('update.status');
+            Route::get('/busLocation/{id}', [BusBookingController::class, 'busLocation'])->name('bus.location');
+
+            Route::get('/updateBookingSuccess/{id}', [BusBookingController::class, 'updateStatusBookingSuccess'])->name('update.status.booking.success');
+            Route::get('/updateBookingFail/{id}', [BusBookingController::class, 'updateStatusBookingFail'])->name('update.status.booking.fail');
+            Route::post('/payment', [BusBookingController::class, 'payingBooking'])->name('paying.booking');
+
             Route::delete('/{id}', [BusBookingController::class, 'destroy'])->name('destroy');
 
             Route::post('/process', [BusBookingController::class, 'submitProcess'])->name('submit.process');
             Route::post('/scheduleByBookingDetails', [BusBookingController::class, 'scheduleByBookingDetails'])->name('scheduleByBookingDetails');
         });
-    });
 
-    Route::middleware('isPassenger')->group(function () {
-
+        Route::prefix('payments')->name('payments.')->group(function () {
+            Route::post('/', [BusBookingController::class, 'payment'])->name('payment.view');
+            Route::post('/paymentProcess', [BusBookingController::class, 'paymentProcessing'])->name('payment.processing');
+            
+        });
     });
+    
+    
+    
+});
+
+Route::prefix('passenger')->name('passenger.')->group(function () {
+    Route::get('/report', [PassengerReportController::class, 'index'])->name('index');
+    Route::get('/download', [ReportController::class, 'download'])->name('download');
+
+   
 });
